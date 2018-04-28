@@ -22,7 +22,12 @@
         <activity android:name=".RegisterActivity" />
         <activity android:name=".BrowserActivity" />
         <activity android:name=".NewsOverviewActivity" />
-        <activity android:name=".SportsOverviewctivity"></activity>
+        <activity android:name=".SportsActivity" />
+        <activity android:name=".GuestActivity" />
+        <activity android:name=".NewsShowActivity" />
+        <activity android:name=".EconomyActivity" />
+        <activity android:name=".ChinaActivity" />
+        <activity android:name=".AddCommentActivity"></activity>
     </application>
 
 </manifest>

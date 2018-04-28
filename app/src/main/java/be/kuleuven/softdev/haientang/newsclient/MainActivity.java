@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         guestBut.setOnClickListener(new View.OnClickListener() {//need to pass information telling the database the guest
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(MainActivity.this,BrowserActivity.class);
+                Intent intent=new Intent(MainActivity.this,GuestActivity.class);
                 startActivity(intent);
             }
         });

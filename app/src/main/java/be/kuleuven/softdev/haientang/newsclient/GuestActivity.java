@@ -6,21 +6,24 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class LoginActivity extends AppCompatActivity {
+public class GuestActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_guest);
+        guestStart();
+    }
 
-        Button loginBut = (Button) findViewById(R.id.butLogin);
+    public void guestStart()
+    {
+        Button loginBut = (Button) findViewById(R.id.butGuestView);
         loginBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(LoginActivity.this,NewsOverviewActivity.class);
+                Intent intent = new Intent(GuestActivity.this, NewsOverviewActivity.class);
                 startActivity(intent);
             }
-        });
-
+         });
     }
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="be.kuleuven.softdev.haientang.newsclient.SportsActivity">
+    tools:context="be.kuleuven.softdev.haientang.newsclient.EconomyActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -16,10 +16,10 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/SportsTitle"
+                android:id="@+id/EconomyTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Sports"
+                android:text="Economy"
                 android:textSize="30sp"
                 android:gravity="center_horizontal"
                 />
@@ -46,17 +46,17 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/SportsNews1"
+                        android:id="@+id/EconomyNewsOne"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="News1"
                         android:textSize="20dp" />
 
                     <TextView
-                        android:id="@+id/SportsTag1"
+                        android:id="@+id/EconomyTagOne"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Sports" />
+                        android:text="Economy" />
 
                 </LinearLayout>
             </LinearLayout>

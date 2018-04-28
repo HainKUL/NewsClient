@@ -41,15 +41,14 @@
                     />
 
                 <Button
-                    android:id="@+id/Theme2"
+                    android:id="@+id/Economy"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Economy"
-                    />
+                    android:text="Economy" />
 
                 <Button
-                    android:id="@+id/Theme3"
+                    android:id="@+id/China"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
