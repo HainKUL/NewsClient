@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="be.kuleuven.softdev.haientang.newsclient.NewsOverviewActivity">
+
+    <ScrollView
+        android:id="@+id/ScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/Layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/NewsOverView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="newsoverview"
+                android:textColor="#ffee9cff"
+                android:textSize="30sp" />
+
+            <LinearLayout
+                android:id="@+id/NewsCategroy"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/Sports"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="sports"
+
+                    />
+
+                <Button
+                    android:id="@+id/Theme2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Economy"
+                    />
+
+                <Button
+                    android:id="@+id/Theme3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="China" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/BreakingNews"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_weight="1"
+                android:text="Breaking   News"
+                android:textSize="30sp"
+                />
+
+            <Button
+                android:id="@+id/BreakingNewsBut1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="News1"
+                />
+
+            <Button
+                android:id="@+id/BreakingNewsBut2"
+                android:layout_width="365dp"
+                android:layout_height="229dp"
+                android:text="News2" />
+
+            <Button
+                android:id="@+id/BreakingNewsBut"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="News3" />
+
+            <TextView
+                android:id="@+id/NewsDemo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="NewsDemo" />
+
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="bird"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>

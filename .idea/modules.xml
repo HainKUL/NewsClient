@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/NewsClient.iml" filepath="$PROJECT_DIR$/NewsClient.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/NewsClient.iml" filepath="$PROJECT_DIR$/.idea/NewsClient.iml" />
+      <module fileurl="file://D:\learning_2\News_Client\NewsClient\NewsClient.iml" filepath="D:\learning_2\News_Client\NewsClient\NewsClient.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
