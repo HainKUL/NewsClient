@@ -2,7 +2,6 @@
     <string name="app_name">NewsClient</string>
     <string name="welcome">Welcome!</string>
     <string name="register">Register</string>
-    <string name="login">Login</string>
     <string name="username">Username</string>
     <string name="button">Button</string>
     <string name="confirm_password">Confirm Password</string>
@@ -11,10 +10,15 @@
     <string name="email_address">Email address:</string>
     <string name="set_password">Set password:</string>
     <string name="repeat_password">Repeat password:</string>
-    <string name="firstname_surname">Firstname Surname</string>
-    <string name="view_as_a_guest">view_as_a_guest</string>
     <string name="account">Account:</string>
-    <string name="password">Password</string>
     <string name="email">Email</string>
     <string name="welcome_to_login">Welcome to login</string>
+    <string name="view_as_a_guest">View As A Guest</string>
+    <string name="login_to_your_account">Login to Your Account</string>
+    <string name="password">Password</string>
+    <string name="forgot_your_password">Forgot your password?</string>
+    <string name="login">Login</string>
+    <string name="todo">TODO</string>
+    <string name="firstname">Firstname</string>
+    <string name="surname">Surname</string>
 </resources>

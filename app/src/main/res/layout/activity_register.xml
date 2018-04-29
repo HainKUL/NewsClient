@@ -26,18 +26,31 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/user" />
+                    android:text="@string/user"
+                    android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/userName"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/firstName"
+                    android:layout_width="240dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="0"
                     android:ems="10"
                     android:gravity="center"
-                    android:hint="@string/firstname_surname"
+                    android:hint="@string/firstname"
                     android:inputType="textPersonName" />
+
             </LinearLayout>
+
+            <EditText
+                android:id="@+id/surname"
+                android:layout_width="240dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_weight="1"
+                android:ems="10"
+                android:hint="@string/surname"
+                android:inputType="textPersonName"
+                android:textAlignment="center" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -49,13 +62,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/email_address" />
+                    android:text="@string/email_address"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/email"
-                    android:layout_width="wrap_content"
+                    android:layout_width="240dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="0"
                     android:ems="10"
                     android:gravity="center"
                     android:hint="@string/email"
@@ -73,13 +87,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/set_password" />
+                    android:text="@string/set_password"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/passwd"
-                    android:layout_width="wrap_content"
+                    android:layout_width="240dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="0"
                     android:ems="10"
                     android:hint="@string/password"
                     android:inputType="textPassword"
@@ -96,13 +111,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/repeat_password" />
+                    android:text="@string/repeat_password"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/repeatPasswd"
-                    android:layout_width="wrap_content"
+                    android:layout_width="240dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="0"
                     android:ems="10"
                     android:hint="@string/confirm_password"
                     android:inputType="textPassword"
@@ -115,9 +131,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:background="@android:color/holo_blue_light"
                 android:text="@string/submit" />
 
         </LinearLayout>
 
     </ScrollView>
+
 </android.support.constraint.ConstraintLayout>

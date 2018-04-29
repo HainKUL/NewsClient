@@ -7,8 +7,15 @@
     tools:context="be.kuleuven.softdev.haientang.newsclient.MainActivity">
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:id="@+id/scrollView3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -17,6 +24,13 @@
             android:orientation="vertical"
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="135dp">
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="142dp"
+                android:layout_height="85dp"
+                android:contentDescription="@string/todo"
+                app:srcCompat="@drawable/logo_kul" />
 
             <TextView
                 android:id="@+id/textView4"
@@ -30,26 +44,29 @@
 
             <Button
                 android:id="@+id/butLogin"
-                android:layout_width="wrap_content"
+                android:layout_width="155dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
+                android:background="@android:color/holo_blue_light"
                 android:text="@string/login" />
 
             <Button
                 android:id="@+id/butRegister"
-                android:layout_width="wrap_content"
+                android:layout_width="155dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
+                android:background="@android:color/holo_blue_bright"
                 android:text="@string/register" />
 
             <Button
                 android:id="@+id/butGuest"
-                android:layout_width="wrap_content"
+                android:layout_width="155dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
+                android:background="@android:color/holo_blue_dark"
                 android:text="@string/view_as_a_guest" />
 
         </LinearLayout>
