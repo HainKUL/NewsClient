@@ -24,7 +24,7 @@
                 android:textSize="30sp" />
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/newsShowTags"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView" />
@@ -47,11 +47,49 @@
                 android:layout_height="wrap_content"
                 android:text="Review Here" />
 
-            <TextView
+            <EditText
                 android:id="@+id/CommentBoard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="NoneReview" />
+                android:ems="10"
+                android:hint="comment"
+                android:inputType="textMultiLine|textShortMessage|textLongMessage" />
+
+            <TextView
+                android:id="@+id/commentOne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="null" />
+
+            <TextView
+                android:id="@+id/commentTwo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="null" />
+
+            <TextView
+                android:id="@+id/commentThree"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="null" />
+
+            <TextView
+                android:id="@+id/commentFour"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="null" />
+
+            <TextView
+                android:id="@+id/commentFive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="null" />
+
+            <TextView
+                android:id="@+id/cache"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
 
         </LinearLayout>
     </ScrollView>

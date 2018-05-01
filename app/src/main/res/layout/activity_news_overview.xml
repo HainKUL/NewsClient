@@ -66,36 +66,35 @@
                 android:textSize="30sp"
                 />
 
-            <Button
-                android:id="@+id/BreakingNewsBut1"
+            <TextView
+                android:id="@+id/TopNewsOne"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="News1"
-                />
-
-            <Button
-                android:id="@+id/BreakingNewsBut2"
-                android:layout_width="365dp"
-                android:layout_height="229dp"
-                android:text="News2" />
-
-            <Button
-                android:id="@+id/BreakingNewsBut"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="News3" />
+                android:text="TopNews" />
 
             <TextView
-                android:id="@+id/NewsDemo"
+                android:id="@+id/TopNewsTwo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="NewsDemo" />
+                android:text="TopNews" />
 
-            <ImageButton
-                android:id="@+id/imageButton"
+            <TextView
+                android:id="@+id/TopNewsThree"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="bird"/>
+                android:text="TopNews" />
+
+            <TextView
+                android:id="@+id/TopNewsFour"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TopNews" />
+
+            <TextView
+                android:id="@+id/TopNewsFive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TopNews" />
 
         </LinearLayout>
 

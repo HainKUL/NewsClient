@@ -23,19 +23,21 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class NewsOverviewActivity extends AppCompatActivity {
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_overview);
+
         ButtonSports();
         ButtonChina();
         ButtonEconomy();
-        TextView tv = (TextView) findViewById(R.id.NewsDemo);
-        Requests("http://api.a17-sd606.studev.groept.be/database");
-        //doTheWorkInSql();
+        RequestsTopTenNews("http://api.a17-sd606.studev.groept.be/selectTopTenNews");
     }
 
     public void ButtonSports() {
@@ -74,13 +76,25 @@ public class NewsOverviewActivity extends AppCompatActivity {
     }
 
 
-    public void Requests(String url) {
-        final TextView mTextView = (TextView) findViewById(R.id.NewsDemo);
-// ...
+    public void RequestsTopTenNews(String url) {
+
+        // the arraylist would store five textviews which is applied to demonstrate the news
+
+        // assign the parameters of textview
+        final TextView tn1 = (TextView) findViewById(R.id.TopNewsOne);
+        final TextView tn2 = (TextView) findViewById(R.id.TopNewsTwo);
+        final TextView tn3 = (TextView) findViewById(R.id.TopNewsThree);
+        final TextView tn4 = (TextView) findViewById(R.id.TopNewsFour);
+        final TextView tn5 = (TextView) findViewById(R.id.TopNewsFive);
+        final ArrayList<TextView> textViewList = new ArrayList<TextView>();
+        textViewList.add(tn1);
+        textViewList.add(tn2);
+        textViewList.add(tn3);
+        textViewList.add(tn4);
+        textViewList.add(tn5);
 
 // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-
 
 // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -91,61 +105,26 @@ public class NewsOverviewActivity extends AppCompatActivity {
                         String words="";
                         try {
                             JSONArray jArr=new JSONArray(response);
-                            for(int i=0;i<jArr.length();i++)
+                            for(int i=0;i<5;i++) //here we just select the tpo 10
                             {
                                 JSONObject jo=jArr.getJSONObject(i);
-                                String id=jo.getString("firstName");
-                                //String txt=jo.getString("txt");
-                                words=words+id;
-
-
+                                String NewsContent=jo.getString("Title");
+                                textViewList.get(i).setText(NewsContent);
                             }
-
-
-
 
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        mTextView.setText(words);
-
+    //之后再增加tag 等东西
 
                     }
                 }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                mTextView.setText("That didn't work!");
-            }
+            public void onErrorResponse(VolleyError error) {}
         });
-
-
 // Add the request to the RequestQueue.
         queue.add(stringRequest);
 
     }
-
-    public void doTheWorkInSql()
-    {
-        final TextView mTextView = (TextView) findViewById(R.id.NewsDemo);
-        Connection c=null;
-        try
-        {
-            Class.forName("com.mysql.jdbc.Driver");
-            c= DriverManager.getConnection("jdbc:mysql://studev.groept.be:3306/a17_sd606","a17_sd606","a17_sd606");
-            Statement stmt=c.createStatement();
-            ResultSet rs=stmt.executeQuery("SELECT * FROM news");
-            while(rs.next())
-            {
-                mTextView.setText(rs.getString("id"));
-            }
-
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
-
 
 }

@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -18,22 +19,32 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
+//还有title的传输，tag的传输等等
 public class NewsShowActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_show);
-        Requests("http://api.a17-sd606.studev.groept.be/news");
-        ButtonComment();
-        setComment();
+        Requests();
+        updateComment();
+        showComments();
     }
 
 
-    public void Requests(String url) {
+    public void Requests() {
+        //get the id from the previous layout
+        int id=getIntent().getExtras().getInt("id");
+
         final TextView mTextView = (TextView) findViewById(R.id.Content);
+        final TextView TitleView=(TextView) findViewById(R.id.ShowTitle);
+        final TextView tagView=(TextView) findViewById(R.id.newsShowTags);
 // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
+
+        String url="http://api.a17-sd606.studev.groept.be/selectNewsToDisplay/"+id;
 
 
 // Request a string response from the provided URL.
@@ -42,22 +53,24 @@ public class NewsShowActivity extends AppCompatActivity {
 
                     public void onResponse(String response) {
 
-                        String words="l";
                         try {
                             JSONArray jArr=new JSONArray(response);
-                            for(int i=0;i<jArr.length();i++)
+                            for(int i=0;i<1;i++)
                             {
                                 JSONObject jo=jArr.getJSONObject(i);
-                                String id=jo.getString("NewsContent");
-                                //String txt=jo.getString("txt");
-                                words=words+id;
+                                String NewsContent=jo.getString("NewsContent");
+                                String NewsTitle=jo.getString("Title");
+                                String NewsTag=jo.getString("Tag");
+                                mTextView.setText(NewsContent);
+                                TitleView.setText(NewsTitle);
+                                tagView.setText(NewsTag);
 
                             }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        mTextView.setText(words);
+
 
 
                     }
@@ -72,25 +85,97 @@ public class NewsShowActivity extends AppCompatActivity {
 
     }
 
-    public void ButtonComment() {
-        Button CommentBut = (Button) findViewById(R.id.ButtonComment);
-        CommentBut.setOnClickListener(new View.OnClickListener() {
+
+    //好了，可以上传评论了。接下来的任务是加载评论，且刷新后可见。
+    public void updateComment()
+    {
+        final EditText tv=(EditText) findViewById(R.id.CommentBoard);
+
+        final Button updateComment = (Button) findViewById(R.id.ButtonComment);
+        final int idNews=getIntent().getExtras().getInt("id");
+
+        updateComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {//switch to new activity
-                Intent intent = new Intent(NewsShowActivity.this, AddCommentActivity.class);
-                startActivity(intent);
-
+                //int idComment=getLengthOfComments("http://api.a17-sd606.studev.groept.be/getCommentsLength");
+                final String content=tv.getText().toString();
+                updateToJson("http://api.a17-sd606.studev.groept.be/addComments/"+idNews+"/"+content);
+                tv.setText(null);
+                showComments();
             }
         });
     }
 
-    public void setComment()
-    {
-        final TextView tv=(TextView) findViewById(R.id.CommentBoard);
-        String txt=null;
-        txt=getIntent().getExtras().getString("comment");
-        tv.setText(txt);
+    public void updateToJson(String url) {
+        //get the id from the previous layout
+        RequestQueue queue = Volley.newRequestQueue(this);
+// Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+
+                    public void onResponse(String response) {
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+// Add the request to the RequestQueue.
+        queue.add(stringRequest);
 
     }
+
+
+    //http://api.a17-sd606.studev.groept.be/showCommentContent/
+    public void showComments() {
+        int idnews=getIntent().getExtras().getInt("id");
+        String url="http://api.a17-sd606.studev.groept.be/showCommentContent/"+idnews;
+
+        final TextView comment1=(TextView) findViewById(R.id.commentOne);
+        final TextView comment2=(TextView) findViewById(R.id.commentTwo);
+        final TextView comment3=(TextView) findViewById(R.id.commentThree);
+        final TextView comment4=(TextView) findViewById(R.id.commentFour);
+        final TextView comment5=(TextView) findViewById(R.id.commentFive);
+
+        final ArrayList<TextView> commentList=new ArrayList<>();
+        commentList.add(comment1);
+        commentList.add(comment2);
+        commentList.add(comment3);
+        commentList.add(comment4);
+        commentList.add(comment5);
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+// Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+
+                    public void onResponse(String response) {
+
+                        try {
+                            JSONArray jArr=new JSONArray(response);
+                            for(int i=0;i<5;i++)
+                            {
+                                JSONObject jo=jArr.getJSONObject(i);
+                                String content=jo.getString("content");
+                                commentList.get(i).setText(content);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        //之后再增加tag 等东西
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {}
+        });
+// Add the request to the RequestQueue.
+        queue.add(stringRequest);
+
+    }
+
 
 }

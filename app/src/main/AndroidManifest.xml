@@ -25,7 +25,6 @@
         <activity android:name=".NewsShowActivity" />
         <activity android:name=".EconomyActivity" />
         <activity android:name=".ChinaActivity" />
-        <activity android:name=".AddCommentActivity"></activity>
     </application>
 
 </manifest>
