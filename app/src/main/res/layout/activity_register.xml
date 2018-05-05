@@ -87,7 +87,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="150dp"
-                android:text="@string/example_hello_world_kuleuven_be" android:layout_marginStart="150dp" />
+                android:layout_marginStart="150dp"
+                android:text="@string/example_hello_world_kuleuven_be" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -111,7 +112,20 @@
                     android:hint="@string/password"
                     android:inputType="textPassword"
                     android:textAlignment="center" />
+
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/multiline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="18dp"
+                android:layout_marginStart="18dp"
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:text="Must start with uppercase letter\nnMust contain at least one digit\nMust be 8-16 characters"
+                android:textSize="12sp"
+                android:textStyle="bold|italic" />
 
             <LinearLayout
                 android:layout_width="match_parent"

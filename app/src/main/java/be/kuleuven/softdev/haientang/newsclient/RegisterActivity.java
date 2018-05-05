@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -19,66 +20,75 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {//maybe add extra features, such as sending verification code by email
 
     //declare globle variables here
     EditText firstNameTxt,surnameTxt,emailTxt,passwd,rePasswd;
+    TextView multiText;
     Button submitBut;
     String URL;
+    boolean emailOK;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        //1. get references to the buttons and textbox
+        //get references to the buttons and textbox
         firstNameTxt = (EditText) findViewById(R.id.firstName);
         surnameTxt = (EditText) findViewById(R.id.surname);
         emailTxt = (EditText) findViewById(R.id.email);
         passwd = (EditText) findViewById(R.id.passwd);
         rePasswd = (EditText) findViewById(R.id.repeatPasswd);
+        multiText=(TextView) findViewById(R.id.multiline);
         submitBut = (Button) findViewById(R.id.butSubmit);
 
-        //check email format in java
+        //dynamically check email format in java
         emailTxt.addTextChangedListener(new TextWatcher() {//haien.tang@student.kuleuven.be
-            String pattern="^[a-zA-Z0-9]+[-|_|.]?[a-zA-Z0-9]+[@]{1}[a-zA-Z0-9]+[.]{1}[a-zA-Z]+[.]?[a-zA-Z]+";//"+" means [1,infinite] times
-            Pattern p= Pattern.compile(pattern);
-
+            String reg="^[a-zA-Z0-9]+[-|_|.]?[a-zA-Z0-9]+[@]{1}[a-zA-Z0-9]+[.]{1}[a-zA-Z]+[.]?[a-zA-Z]+";//"+" means [1,infinite] times
+            //Pattern p= Pattern.compile(reg);
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
             @Override
             public void afterTextChanged(Editable s) {
-                String email=emailTxt.getText().toString();
-                Matcher m=p.matcher(email);
-                if(m.matches())
+                boolean bool=Pattern.matches(reg,emailTxt.getText().toString());
+                //Matcher m=p.matcher(emailTxt.getText().toString());
+                //if(m.matches())
+                if(bool)
                     emailTxt.setTextColor(Color.BLACK);
                 else
                     emailTxt.setTextColor(Color.RED);
             }
         });
-/*
-        //check passwd format in java      at least one upper case with combination with numerial numbers,lenght longer than 8,
+
+        //dynamically check passwd format in java
         passwd.addTextChangedListener(new TextWatcher() {
-            String pattern="^[A-Z]+[@#$%^&+=!]+[a-z]+[a-zA-Z0-9]+";
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
             @Override
             public void afterTextChanged(Editable editable) {
-
+                String password=passwd.getText().toString();
+                boolean isUpper = Pattern.matches("^[A-Z].+",password);//start with uppercase
+                boolean isDigitNoSpace = Pattern.matches(".+[0-9]+.+",password);//contains digit(s) and no space
+                boolean isLength = (password.length()>7&&password.length()<17);//8<=lenght<=16
+                if(!isUpper||!isDigitNoSpace||!isLength) {
+                    multiText.setTextColor(Color.RED);
+                }else
+                    multiText.setTextColor(Color.BLACK);
             }
         });
-*/
-        //button on click,first check empty field, then check email format, check passwd consistence, check email in database
+
         submitBut.setOnClickListener(new View.OnClickListener() {
-            Boolean emailOK=false;
             @Override
             public void onClick(View view) {
                 //1. check empty fields
@@ -90,20 +100,22 @@ public class RegisterActivity extends AppCompatActivity {//maybe add extra featu
                     Toast.makeText(getApplicationContext(), "Please fill in any empty fields!", Toast.LENGTH_SHORT).show();
                 }
                 //2.check email format in java
-                else if (emailTxt.getCurrentTextColor()==Color.RED){
+                else if (emailTxt.getCurrentTextColor()!=Color.BLACK){
                     Toast.makeText(getApplicationContext(), "Please enter valid email!", Toast.LENGTH_SHORT).show();
                 }
-
-                //3.check passwd consistence
+                //3.check passwd format
+                else if (multiText.getCurrentTextColor()!=Color.BLACK){
+                    Toast.makeText(getApplicationContext(),"Please enter valid password", Toast.LENGTH_SHORT).show();
+                }
+                //4.check passwd consistence
                 else if(!passwd.getText().toString().equals(rePasswd.getText().toString())){
                     Toast.makeText(getApplicationContext(),"Your password doesn't match!",Toast.LENGTH_SHORT).show();
                 }
-
-                //4.check existing emails in database
-                else if(!checkEmailsOK(emailTxt.getText().toString())){//new method, see below
+                //5.check emails duplication in database
+                else if(!checkEmailDuplication()){//new method, see below
                     Toast.makeText(getApplicationContext(), "Email already existed!", Toast.LENGTH_SHORT).show();
                 }
-                //5.send request to database
+                //6.send request to database
                 else{
                     Requests("http://api.a17-sd606.studev.groept.be/UsersRegister/");
                     switchToLogin();//new method to switch to login dialog
@@ -111,12 +123,38 @@ public class RegisterActivity extends AppCompatActivity {//maybe add extra featu
         });
     }
 
-    private boolean checkEmailsOK(String email){
-        return true;
+    private boolean checkEmailDuplication(){
+        String url="http://api.a17-sd606.studev.groept.be/checkEmailDuplication/"+emailTxt.getText().toString();
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jArr=new JSONArray(response);
+                            if(jArr.length()!=0){//email already existed
+                                //Toast.makeText(RegisterActivity.this, "The Email has already been registered!", Toast.LENGTH_SHORT).show();
+                                emailOK=false;
+                            }else{
+                                emailOK=true;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(RegisterActivity.this, "Oops,please try again later!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        queue.add(stringRequest);
+
+        return emailOK;
     }
 
     public void Requests(String url) {
-        URL=url+firstNameTxt.getText()+"/"+surnameTxt.getText()+"/"+emailTxt.getText()+"/"+passwd.getText();
+        URL=url+firstNameTxt.getText().toString()+"/"+surnameTxt.getText().toString()+"/"+emailTxt.getText().toString()+"/"+passwd.getText().toString();
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
         // Request a string response from the provided URL.
