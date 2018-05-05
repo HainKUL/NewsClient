@@ -31,39 +31,13 @@ public class ChinaActivity extends AppCompatActivity {
         GoToNewsTwo();
     }
 
-    public void GoToNewsOne() {
-        TextView NewsOne = (TextView) findViewById(R.id.ChinaNewsOne);
-        NewsOne.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {//switch to new activity
-                Intent intent = new Intent(ChinaActivity.this, NewsShowActivity.class);
-                intent.putExtra("id",ids[0]);
-                startActivity(intent);
-            }
-        });
-    }
-
-    public void GoToNewsTwo() {
-        TextView NewsTwo = (TextView) findViewById(R.id.ChinaNewsTwo);
-        NewsTwo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {//switch to new activity
-                Intent intent = new Intent(ChinaActivity.this, NewsShowActivity.class);
-                intent.putExtra("id",ids[1]);
-                startActivity(intent);
-            }
-        });
-    }
-
     public void RequestsTopTwoNews(String url) {
-
-        // the arraylist would store five textviews which is applied to demonstrate the news
-
         // assign the parameters of title textview
         final TextView title1 = (TextView) findViewById(R.id.ChinaNewsOne);
         final TextView title2 = (TextView) findViewById(R.id.ChinaNewsTwo);
-
+        // the arraylist would store five textviews which is applied to demonstrate the news
         final ArrayList<TextView> titleViewList = new ArrayList<TextView>();
+
         titleViewList.add(title1);
         titleViewList.add(title2);
 
@@ -111,5 +85,29 @@ public class ChinaActivity extends AppCompatActivity {
         });
 // Add the request to the RequestQueue.
         queue.add(stringRequest);
+    }
+
+    public void GoToNewsOne() {
+        TextView NewsOne = (TextView) findViewById(R.id.ChinaNewsOne);
+        NewsOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {//switch to new activity
+                Intent intent = new Intent(ChinaActivity.this, NewsShowActivity.class);
+                intent.putExtra("id",ids[0]);
+                startActivity(intent);
+            }
+        });
+    }
+
+    public void GoToNewsTwo() {
+        TextView NewsTwo = (TextView) findViewById(R.id.ChinaNewsTwo);
+        NewsTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {//switch to new activity
+                Intent intent = new Intent(ChinaActivity.this, NewsShowActivity.class);
+                intent.putExtra("id",ids[1]);
+                startActivity(intent);
+            }
+        });
     }
 }

@@ -18,16 +18,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 public class NewsOverviewActivity extends AppCompatActivity {
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +44,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
         });
     }
 
-    public void ButtonEconomy()
-    {
+    public void ButtonEconomy() {
         Button EconomyBut = (Button) findViewById(R.id.Economy);
         EconomyBut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,8 +55,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
         });
     }
 
-    public void ButtonChina()
-    {
+    public void ButtonChina() {
         Button ChinaBut = (Button) findViewById(R.id.China);
         ChinaBut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,15 +68,14 @@ public class NewsOverviewActivity extends AppCompatActivity {
 
 
     public void RequestsTopTenNews(String url) {
-
-        // the arraylist would store five textviews which is applied to demonstrate the news
-
-        // assign the parameters of textview
+        // get references to the textbox
         final TextView tn1 = (TextView) findViewById(R.id.TopNewsOne);
         final TextView tn2 = (TextView) findViewById(R.id.TopNewsTwo);
         final TextView tn3 = (TextView) findViewById(R.id.TopNewsThree);
         final TextView tn4 = (TextView) findViewById(R.id.TopNewsFour);
         final TextView tn5 = (TextView) findViewById(R.id.TopNewsFive);
+
+        // the arraylist would store five textviews which is applied to demonstrate the news
         final ArrayList<TextView> textViewList = new ArrayList<TextView>();
         textViewList.add(tn1);
         textViewList.add(tn2);
@@ -99,13 +89,12 @@ public class NewsOverviewActivity extends AppCompatActivity {
 // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
-
+                    @Override
                     public void onResponse(String response) {
-
                         String words="";
                         try {
                             JSONArray jArr=new JSONArray(response);
-                            for(int i=0;i<5;i++) //here we just select the tpo 10
+                            for(int i=0;i<5;i++) //here we just select the tpo 5
                             {
                                 JSONObject jo=jArr.getJSONObject(i);
                                 String NewsContent=jo.getString("Title");
@@ -122,7 +111,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {}
         });
-// Add the request to the RequestQueue.
+        // Add the request to the RequestQueue.
         queue.add(stringRequest);
 
     }
