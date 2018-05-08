@@ -22,11 +22,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
 
-    private String[] mStrs = {"aaa", "bbb", "ccc", "airsaid"};
+    private ArrayList<String> mStrs = new ArrayList<>();
+    private ArrayList<Integer> ids = new ArrayList<>();
     private SearchView mSearchView;
     private ListView mListView;
     @Override
@@ -39,7 +41,8 @@ public class SearchActivity extends AppCompatActivity {
         ButtonHome();
         mSearchView = (SearchView) findViewById(R.id.searchView);
         mListView = (ListView) findViewById(R.id.listView);
-        mListView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mStrs));
+        final ArrayAdapter<String> adapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mStrs);
+        mListView.setAdapter(adapter);
         mListView.setTextFilterEnabled(true);
 
         // 设置搜索文本监听
@@ -48,9 +51,11 @@ public class SearchActivity extends AppCompatActivity {
             // 当点击搜索按钮时触发该方法
             @Override
             public boolean onQueryTextSubmit(String query) {
-                mStrs=null;
-                //request(query);
 
+                mStrs.clear();
+                ids.clear();
+                request("http://api.a17-sd606.studev.groept.be/search/"+query);
+                adapter.notifyDataSetChanged();
                 return false;
             }
 
@@ -58,9 +63,10 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (!TextUtils.isEmpty(newText)){
-                    mListView.setFilterText(newText);
+
                 }else{
-                    mListView.clearTextFilter();
+
+                    //mListView.clearTextFilter();
                 }
                 return false;
             }
@@ -69,10 +75,26 @@ public class SearchActivity extends AppCompatActivity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //点击listview中的内容转到相关地方
                 if(position==0)
                 {
-                    Intent myIntent=new Intent(view.getContext(),NewsOverviewActivity.class);
+                    Intent myIntent=new Intent(view.getContext(),NewsShowActivity.class);
+                    myIntent.putExtra("id",ids.get(0));
                     startActivityForResult(myIntent,0);
+                }
+
+                if(position==1)
+                {
+                    Intent myIntent=new Intent(view.getContext(),NewsShowActivity.class);
+                    myIntent.putExtra("id",ids.get(1));
+                    startActivityForResult(myIntent,1);
+                }
+
+                if(position==2)
+                {
+                    Intent myIntent=new Intent(view.getContext(),NewsShowActivity.class);
+                    myIntent.putExtra("id",ids.get(2));
+                    startActivityForResult(myIntent,2);
                 }
             }
         });
@@ -89,12 +111,15 @@ public class SearchActivity extends AppCompatActivity {
 
 
                         try {
+                            //mStrs.clear();
                             JSONArray jArr=new JSONArray(response);
-                            for(int i=0;i<5;i++) //here we just select the tpo 10
+                            for(int i=0;i<10;i++) //here we just select the tpo 10
                             {
                                 JSONObject jo=jArr.getJSONObject(i);
                                 String NewsTitle=jo.getString("Title");
-                                mStrs[i]=NewsTitle;
+                                int id=jo.getInt("idNews");
+                                ids.add(id);
+                                mStrs.add(NewsTitle);
                             }
 
                         } catch (JSONException e) {
