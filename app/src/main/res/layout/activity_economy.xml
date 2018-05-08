@@ -15,14 +15,27 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/EconomyTitle"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Economy"
-                android:textSize="30sp"
-                android:gravity="center_horizontal"
-                />
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/economyToHome"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/home" />
+
+                <TextView
+                    android:id="@+id/EconomyTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="Economy"
+                    android:textSize="30sp" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/BoardNewsOne"

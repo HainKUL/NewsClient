@@ -1,11 +1,13 @@
 package be.kuleuven.softdev.haientang.newsclient;
 
 import android.content.Intent;
+import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -24,6 +26,8 @@ import java.util.ArrayList;
 //还有title的传输，tag的传输等等
 public class NewsShowActivity extends AppCompatActivity {
 
+    private int num=0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +35,8 @@ public class NewsShowActivity extends AppCompatActivity {
         Requests();
         updateComment();
         showComments();
+        ButtonHome();
+        updateLikes();
     }
 
 
@@ -41,6 +47,7 @@ public class NewsShowActivity extends AppCompatActivity {
         final TextView mTextView = (TextView) findViewById(R.id.Content);
         final TextView TitleView=(TextView) findViewById(R.id.ShowTitle);
         final TextView tagView=(TextView) findViewById(R.id.newsShowTags);
+        final TextView likesView=(TextView) findViewById(R.id.likes);
 // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
 
@@ -61,9 +68,11 @@ public class NewsShowActivity extends AppCompatActivity {
                                 String NewsContent=jo.getString("NewsContent");
                                 String NewsTitle=jo.getString("Title");
                                 String NewsTag=jo.getString("Tag");
+                                num=jo.getInt("Likes");
                                 mTextView.setText(NewsContent);
                                 TitleView.setText(NewsTitle);
                                 tagView.setText(NewsTag);
+                                likesView.setText("Likes:"+num);
 
                             }
 
@@ -102,6 +111,23 @@ public class NewsShowActivity extends AppCompatActivity {
                 updateToJson("http://api.a17-sd606.studev.groept.be/addComments/"+idNews+"/"+content);
                 tv.setText(null);
                 showComments();
+            }
+        });
+    }
+
+    public void updateLikes()
+    {
+        //likesImg
+        ImageView like=(ImageView) findViewById(R.id.likesImg);
+        final TextView likesView=(TextView) findViewById(R.id.likes);
+        final int idnews=getIntent().getExtras().getInt("id");
+
+        like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                num++;
+                updateToJson("http://api.a17-sd606.studev.groept.be/addLike/"+num+"/"+idnews);
+                likesView.setText("Likes:"+num);
             }
         });
     }
@@ -176,6 +202,19 @@ public class NewsShowActivity extends AppCompatActivity {
         queue.add(stringRequest);
 
     }
+
+    public void ButtonHome()
+    {
+        ImageView SearchBut=(ImageView) findViewById(R.id.home);
+        SearchBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {//switch to new activity
+                Intent intent = new Intent(NewsShowActivity.this, NewsOverviewActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
 
 
 }

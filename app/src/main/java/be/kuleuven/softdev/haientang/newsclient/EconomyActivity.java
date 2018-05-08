@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -29,6 +30,7 @@ public class EconomyActivity extends AppCompatActivity {
         RequestsTopTwoNews("http://api.a17-sd606.studev.groept.be/selectTpoTwoNews/"+"Economy");
         GoToNewsOne();
         GoToNewsTwo();
+        ButtonHome();
     }
 
 
@@ -112,6 +114,18 @@ public class EconomyActivity extends AppCompatActivity {
         });
 // Add the request to the RequestQueue.
         queue.add(stringRequest);
+    }
+
+    public void ButtonHome()
+    {
+        ImageView SearchBut=(ImageView) findViewById(R.id.economyToHome);
+        SearchBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {//switch to new activity
+                Intent intent = new Intent(EconomyActivity.this, NewsOverviewActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 }

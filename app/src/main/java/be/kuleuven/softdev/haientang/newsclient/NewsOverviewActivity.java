@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -37,7 +39,20 @@ public class NewsOverviewActivity extends AppCompatActivity {
         ButtonSports();
         ButtonChina();
         ButtonEconomy();
+        ButtonSearch();
         RequestsTopTenNews("http://api.a17-sd606.studev.groept.be/selectTopTenNews");
+    }
+
+    public void ButtonSearch()
+    {
+        ImageView SearchBut=(ImageView) findViewById(R.id.searchIcon);
+        SearchBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {//switch to new activity
+                Intent intent = new Intent(NewsOverviewActivity.this, SearchActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void ButtonSports() {
@@ -126,5 +141,6 @@ public class NewsOverviewActivity extends AppCompatActivity {
         queue.add(stringRequest);
 
     }
+
 
 }

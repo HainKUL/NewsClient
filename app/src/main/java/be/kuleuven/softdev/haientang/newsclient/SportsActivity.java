@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -32,6 +33,7 @@ public class SportsActivity extends AppCompatActivity {
         RequestsTopTwoNews("http://api.a17-sd606.studev.groept.be/selectTpoTwoNews/"+"Sports");
         GoToNewsOne();
         GoToNewsTwo();
+        ButtonHome();
     }
 
     public void GoToNewsOne() {
@@ -114,5 +116,17 @@ public class SportsActivity extends AppCompatActivity {
         });
 // Add the request to the RequestQueue.
         queue.add(stringRequest);
+    }
+
+    public void ButtonHome()
+    {
+        ImageView SearchBut=(ImageView) findViewById(R.id.sportsToHome);
+        SearchBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {//switch to new activity
+                Intent intent = new Intent(SportsActivity.this, NewsOverviewActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
