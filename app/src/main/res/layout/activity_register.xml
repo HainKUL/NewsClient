@@ -4,11 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="5dp"
     tools:context="be.kuleuven.softdev.haientang.newsclient.RegisterActivity">
 
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,7 +49,7 @@
             <EditText
                 android:id="@+id/surname"
                 android:layout_width="240dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_gravity="end"
                 android:layout_weight="1"
                 android:ems="10"
@@ -77,6 +82,14 @@
 
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="150dp"
+                android:layout_marginStart="150dp"
+                android:text="@string/example_hello_world_kuleuven_be" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -99,7 +112,20 @@
                     android:hint="@string/password"
                     android:inputType="textPassword"
                     android:textAlignment="center" />
+
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/multiline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="18dp"
+                android:layout_marginStart="18dp"
+                android:background="@android:color/transparent"
+                android:ems="10"
+                android:text="Must start with uppercase letter\nnMust contain at least one digit\nMust be 8-16 characters"
+                android:textSize="12sp"
+                android:textStyle="bold|italic" />
 
             <LinearLayout
                 android:layout_width="match_parent"

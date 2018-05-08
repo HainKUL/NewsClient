@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -30,7 +29,6 @@ public class ChinaActivity extends AppCompatActivity {
         RequestsTopTwoNews("http://api.a17-sd606.studev.groept.be/selectTpoTwoNews/"+"China");
         GoToNewsOne();
         GoToNewsTwo();
-        ButtonHome();
     }
 
     public void GoToNewsOne() {
@@ -113,17 +111,5 @@ public class ChinaActivity extends AppCompatActivity {
         });
 // Add the request to the RequestQueue.
         queue.add(stringRequest);
-    }
-
-    public void ButtonHome()
-    {
-        ImageView SearchBut=(ImageView) findViewById(R.id.chinaToHome);
-        SearchBut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {//switch to new activity
-                Intent intent = new Intent(ChinaActivity.this, NewsOverviewActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 }

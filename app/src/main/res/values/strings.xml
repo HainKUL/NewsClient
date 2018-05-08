@@ -21,4 +21,5 @@
     <string name="todo">TODO</string>
     <string name="firstname">Firstname</string>
     <string name="surname">Surname</string>
+    <string name="example_hello_world_kuleuven_be">example: hello.world@kuleuven.be</string>
 </resources>

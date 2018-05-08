@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
                 //create a new view,login view(mView) instead of main_activity view
                 View mView=getLayoutInflater().inflate(R.layout.dialog_login,null);//referencing the alert dialog to the login dialog
                 //define the view inside the login layout
-                //EditText mEmail=(EditText) findViewById(R.id.etEmail);----email not in the main activity
                 final EditText mEmail=(EditText) mView.findViewById(R.id.etEmail);
                 final EditText mpasswd=(EditText) mView.findViewById(R.id.etPasswd);
                 Button mLogin=(Button) mView.findViewById(R.id.butLogin);
@@ -39,13 +38,12 @@ public class MainActivity extends AppCompatActivity {
                 mLogin.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {//here to switch to another activity or not
-                        if(!mEmail.getText().toString().isEmpty()&&!mpasswd.getText().toString().isEmpty())
-                        {
+                        if(!mEmail.getText().toString().isEmpty()&&!mpasswd.getText().toString().isEmpty()) {
                             Toast.makeText(MainActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
                             Intent intent=new Intent(MainActivity.this,NewsOverviewActivity.class);
                             startActivity(intent);
                         }else{
-                            Toast.makeText(MainActivity.this, "Please fill in any empty fields...", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "Please fill in any empty fields!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -73,5 +71,4 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
 }
