@@ -40,7 +40,7 @@ public class NewsShowActivity extends AppCompatActivity {
     }
 
 
-    public void Requests() {
+    public void Requests() {  //get news content from json server
         //get the id from the previous layout
         int id=getIntent().getExtras().getInt("id");
 
@@ -101,7 +101,7 @@ public class NewsShowActivity extends AppCompatActivity {
         final EditText tv=(EditText) findViewById(R.id.CommentBoard);
 
         final Button updateComment = (Button) findViewById(R.id.ButtonComment);
-        final int idNews=getIntent().getExtras().getInt("id");
+        final int idNews=getIntent().getExtras().getInt("id");//news id
 
         updateComment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,7 +158,7 @@ public class NewsShowActivity extends AppCompatActivity {
         int idnews=getIntent().getExtras().getInt("id");
         String url="http://api.a17-sd606.studev.groept.be/showCommentContent/"+idnews;
 
-        final TextView comment1=(TextView) findViewById(R.id.commentOne);
+        final TextView comment1=(TextView) findViewById(R.id.commentOne);  //now sort by id, but later we can sort them by time
         final TextView comment2=(TextView) findViewById(R.id.commentTwo);
         final TextView comment3=(TextView) findViewById(R.id.commentThree);
         final TextView comment4=(TextView) findViewById(R.id.commentFour);

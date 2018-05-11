@@ -123,7 +123,7 @@
                 android:layout_marginStart="18dp"
                 android:background="@android:color/transparent"
                 android:ems="10"
-                android:text="Must start with uppercase letter\nnMust contain at least one digit\nMust be 8-16 characters"
+                android:text="Must start with uppercase letter\nMust contain at least one digit\nMust be 8-16 characters"
                 android:textSize="12sp"
                 android:textStyle="bold|italic" />
 

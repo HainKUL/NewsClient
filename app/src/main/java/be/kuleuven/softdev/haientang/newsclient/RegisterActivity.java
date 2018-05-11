@@ -22,18 +22,16 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.regex.Pattern;
 
-public class RegisterActivity extends AppCompatActivity {//maybe add extra features, such as sending verification code by email
+public class RegisterActivity extends AppCompatActivity {
 
     //declare globle variables here
     EditText firstNameTxt,surnameTxt,emailTxt,passwd,rePasswd;
     TextView multiText;
     Button submitBut;
     String URL;
-    boolean emailOK;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +48,7 @@ public class RegisterActivity extends AppCompatActivity {//maybe add extra featu
         submitBut = (Button) findViewById(R.id.butSubmit);
 
         //dynamically check email format in java
-        emailTxt.addTextChangedListener(new TextWatcher() {//haien.tang@student.kuleuven.be
+        emailTxt.addTextChangedListener(new TextWatcher() {//haien.tang@student.kuleuven.be or r0650137@kuleuven.be
             String reg="^[a-zA-Z0-9]+[-|_|.]?[a-zA-Z0-9]+[@]{1}[a-zA-Z0-9]+[.]{1}[a-zA-Z]+[.]?[a-zA-Z]+";//"+" means [1,infinite] times
             //Pattern p= Pattern.compile(reg);
             @Override
@@ -112,18 +110,13 @@ public class RegisterActivity extends AppCompatActivity {//maybe add extra featu
                     Toast.makeText(getApplicationContext(),"Your password doesn't match!",Toast.LENGTH_SHORT).show();
                 }
                 //5.check emails duplication in database
-                else if(!checkEmailDuplication()){//new method, see below
-                    Toast.makeText(getApplicationContext(), "Email already existed!", Toast.LENGTH_SHORT).show();
-                }
-                //6.send request to database
-                else{
-                    Requests("http://api.a17-sd606.studev.groept.be/UsersRegister/");
-                    switchToLogin();//new method to switch to login dialog
-                }}
+                else
+                    checkEmailDuplication();
+            }
         });
     }
 
-    private boolean checkEmailDuplication(){
+    private void checkEmailDuplication(){
         String url="http://api.a17-sd606.studev.groept.be/checkEmailDuplication/"+emailTxt.getText().toString();
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -133,10 +126,9 @@ public class RegisterActivity extends AppCompatActivity {//maybe add extra featu
                         try {
                             JSONArray jArr=new JSONArray(response);
                             if(jArr.length()!=0){//email already existed
-                                //Toast.makeText(RegisterActivity.this, "The Email has already been registered!", Toast.LENGTH_SHORT).show();
-                                emailOK=false;
-                            }else{
-                                emailOK=true;
+                                Toast.makeText(getApplicationContext(), "Email already existed!", Toast.LENGTH_SHORT).show();
+                            }else if(jArr.length()==0){////email not existed
+                                Requests("http://api.a17-sd606.studev.groept.be/UsersRegister/");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -149,8 +141,6 @@ public class RegisterActivity extends AppCompatActivity {//maybe add extra featu
             }
         });
         queue.add(stringRequest);
-
-        return emailOK;
     }
 
     public void Requests(String url) {
@@ -163,6 +153,7 @@ public class RegisterActivity extends AppCompatActivity {//maybe add extra featu
                     @Override
                     public void onResponse(String response) {
                         Toast.makeText(RegisterActivity.this, "Registration succeed!", Toast.LENGTH_SHORT).show();
+                        switchToLogin();//new method to switch to login dialog
                     }
                 }, new Response.ErrorListener() {
                 @Override
@@ -173,8 +164,7 @@ public class RegisterActivity extends AppCompatActivity {//maybe add extra featu
         queue.add(stringRequest);// Add the request to the RequestQueue.
     }
 
-    public void switchToLogin()
-    {
+    public void switchToLogin() {
         AlertDialog.Builder mBuilder=new AlertDialog.Builder(this);//create alert dialog
         View mView=getLayoutInflater().inflate(R.layout.dialog_login,null);//referencing the alert dialog to the login dialog
         //define the view inside the login layout
@@ -184,12 +174,10 @@ public class RegisterActivity extends AppCompatActivity {//maybe add extra featu
 
         mLogin.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {//here to switch to another activity or not
+            public void onClick(View view) {
                 if(!mEmail.getText().toString().isEmpty()&&!mpasswd.getText().toString().isEmpty())
                 {
-                    Toast.makeText(RegisterActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
-                    Intent intent=new Intent(RegisterActivity.this,NewsOverviewActivity.class);
-                    startActivity(intent);
+                    LoginCheck(mEmail.getText().toString(),mpasswd.getText().toString());
                 }else{
                     Toast.makeText(RegisterActivity.this, "Please fill in any empty fields!", Toast.LENGTH_SHORT).show();
                 }
@@ -198,5 +186,34 @@ public class RegisterActivity extends AppCompatActivity {//maybe add extra featu
         mBuilder.setView(mView);
         AlertDialog dialog=mBuilder.create();
         dialog.show();
+    }
+
+    public void LoginCheck(String emailCheck,String passwdCheck) {
+        String url="http://api.a17-sd606.studev.groept.be/LoginCheck/"+emailCheck+"/"+passwdCheck;
+        RequestQueue queue= Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jArr=new JSONArray(response);
+                            if(jArr.length()==0){//email or passwd wrong
+                                Toast.makeText(getApplicationContext(), "Please enter correct Email or password!", Toast.LENGTH_SHORT).show();
+                            }else if(jArr.length()==1){
+                                Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_SHORT).show();
+                                Intent intent=new Intent(getApplicationContext(),NewsOverviewActivity.class);
+                                startActivity(intent);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Oops,please try again later!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        queue.add(stringRequest);
     }
 }

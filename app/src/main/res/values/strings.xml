@@ -18,8 +18,15 @@
     <string name="password">Password</string>
     <string name="forgot_your_password">Forgot your password?</string>
     <string name="login">Login</string>
-    <string name="todo">TODO</string>
     <string name="firstname">Firstname</string>
     <string name="surname">Surname</string>
     <string name="example_hello_world_kuleuven_be">example: hello.world@kuleuven.be</string>
+    <string name="must_start_with_uppercase_letter_nnmust_contain_at_least_one_digit_nmust_be_8_16_characters">Must start with uppercase letter nMust contain at least one digit Must be 8-16 characters</string>
+    <string name="sports">sports</string>
+    <string name="news">News</string>
+    <string name="economy">Economy</string>
+    <string name="china">China</string>
+    <string name="breaking_news">Breaking News</string>
+    <string name="topnews">TopNews</string>
+    <string name="todo">TODO</string>
 </resources>

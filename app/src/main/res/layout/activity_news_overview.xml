@@ -4,12 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="5dp"
     tools:context="be.kuleuven.softdev.haientang.newsclient.NewsOverviewActivity">
 
     <ScrollView
         android:id="@+id/ScrollView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:id="@+id/Layout"
@@ -27,7 +36,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="News"
+                    android:text="@string/news"
                     android:textColor="#ffee9cff"
                     android:textSize="30sp" />
 
@@ -36,80 +45,87 @@
                     android:layout_width="20dp"
                     android:layout_height="30dp"
                     android:layout_weight="1"
+                    android:contentDescription="@string/todo"
                     app:srcCompat="@drawable/search" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/NewsCategroy"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                style="?android:attr/buttonBarStyle">
 
                 <Button
                     android:id="@+id/Sports"
-                    android:layout_width="wrap_content"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="122dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="sports"
-
-                    />
+                    android:background="?attr/colorButtonNormal"
+                    android:text="@string/sports"
+                    android:textColor="@android:color/holo_orange_dark" />
 
                 <Button
                     android:id="@+id/Economy"
-                    android:layout_width="wrap_content"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="122dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Economy" />
+                    android:background="@android:color/holo_purple"
+                    android:text="@string/economy"
+                    android:textColor="@android:color/holo_blue_dark" />
 
                 <Button
                     android:id="@+id/China"
-                    android:layout_width="wrap_content"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="122dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="China" />
+                    android:background="@android:color/holo_blue_light"
+                    android:text="@string/china"
+                    android:textColor="@android:color/holo_red_dark" />
 
             </LinearLayout>
 
             <TextView
                 android:id="@+id/BreakingNews"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
+                android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="Breaking   News"
-                android:textSize="30sp"
-                />
+                android:gravity="center_horizontal"
+                android:text="@string/breaking_news"
+                android:textSize="30sp" />
 
             <TextView
                 android:id="@+id/TopNewsOne"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TopNews" />
+                android:text="@string/topnews" />
 
             <TextView
                 android:id="@+id/TopNewsTwo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TopNews" />
+                android:text="@string/topnews" />
 
             <TextView
                 android:id="@+id/TopNewsThree"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TopNews" />
+                android:text="@string/topnews" />
 
             <TextView
                 android:id="@+id/TopNewsFour"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TopNews" />
+                android:text="@string/topnews" />
 
             <TextView
                 android:id="@+id/TopNewsFive"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TopNews" />
+                android:text="@string/topnews" />
 
         </LinearLayout>
 

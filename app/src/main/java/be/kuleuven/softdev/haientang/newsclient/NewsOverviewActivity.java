@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -36,7 +35,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
         RequestsTopTenNews("http://api.a17-sd606.studev.groept.be/selectTopTenNews");
     }
 
-    public void ButtonSearch()
+    public void ButtonSearch() //search button
     {
         ImageView SearchBut=(ImageView) findViewById(R.id.searchIcon);
         SearchBut.setOnClickListener(new View.OnClickListener() {
@@ -112,7 +111,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
                             for(int i=0;i<5;i++) //here we just select the tpo 5
                             {
                                 JSONObject jo=jArr.getJSONObject(i);
-                                String NewsContent=jo.getString("Title");
+                                String NewsContent=jo.getString("Title");//sort: according to date.
                                 textViewList.get(i).setText(NewsContent);
                             }
 

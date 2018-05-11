@@ -93,7 +93,7 @@ public class SportsActivity extends AppCompatActivity {
                         String words="";
                         try {
                             JSONArray jArr=new JSONArray(response);
-                            for(int i=0;i<2;i++) //here we just select the tpo 10
+                            for(int i=0;i<2;i++) //here we just select the tpo 2 later we can select 10 pieces of news
                             {
                                 JSONObject jo=jArr.getJSONObject(i);
                                 String newsTitle=jo.getString("Title");
@@ -118,7 +118,7 @@ public class SportsActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    public void ButtonHome()
+    public void ButtonHome() //return to newsoverview
     {
         ImageView SearchBut=(ImageView) findViewById(R.id.sportsToHome);
         SearchBut.setOnClickListener(new View.OnClickListener() {

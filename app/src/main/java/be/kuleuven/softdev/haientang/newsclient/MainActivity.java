@@ -9,6 +9,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
 public class MainActivity extends AppCompatActivity {
 
     //declare globle variables
@@ -37,11 +47,9 @@ public class MainActivity extends AppCompatActivity {
 
                 mLogin.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {//here to switch to another activity or not
+                    public void onClick(View view) {
                         if(!mEmail.getText().toString().isEmpty()&&!mpasswd.getText().toString().isEmpty()) {
-                            Toast.makeText(MainActivity.this, "Login successful!", Toast.LENGTH_SHORT).show();
-                            Intent intent=new Intent(MainActivity.this,NewsOverviewActivity.class);
-                            startActivity(intent);
+                            LoginCheck(mEmail.getText().toString(),mpasswd.getText().toString());
                         }else{
                             Toast.makeText(MainActivity.this, "Please fill in any empty fields!", Toast.LENGTH_SHORT).show();
                         }
@@ -70,5 +78,34 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void LoginCheck(String emailCheck,String passwdCheck) {
+        String url="http://api.a17-sd606.studev.groept.be/LoginCheck/"+emailCheck+"/"+passwdCheck;
+        RequestQueue queue= Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jArr=new JSONArray(response);
+                            if(jArr.length()==0){//email or passwd wrong
+                                Toast.makeText(getApplicationContext(), "Please enter correct Email or password!", Toast.LENGTH_SHORT).show();
+                            }else if(jArr.length()==1){
+                                Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_SHORT).show();
+                                Intent intent=new Intent(getApplicationContext(),NewsOverviewActivity.class);
+                                startActivity(intent);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Oops,please try again later!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        queue.add(stringRequest);
     }
 }
