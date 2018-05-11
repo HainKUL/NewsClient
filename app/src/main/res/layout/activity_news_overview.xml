@@ -50,12 +50,11 @@
 
                 <Button
                     android:id="@+id/butRegister"
-                    android:layout_width="5dp"
+                    android:layout_width="12dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
-                    android:text="login"
-                    android:textSize="10sp"
-                    />
+                    android:hint="@string/username"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 

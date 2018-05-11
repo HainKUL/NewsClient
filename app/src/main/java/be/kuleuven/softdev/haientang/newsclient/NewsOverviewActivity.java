@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -53,7 +52,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
         SportsBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {//switch to new activity
-                Intent intent = new Intent(NewsOverviewActivity.this, SportsActivity.class);
+                Intent intent = new Intent(NewsOverviewActivity.this, CategoryActivity.class);
                 startActivity(intent);
             }
         });
@@ -64,7 +63,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
         EconomyBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {//switch to new activity
-                Intent intent = new Intent(NewsOverviewActivity.this, EconomyActivity.class);
+                Intent intent = new Intent(NewsOverviewActivity.this, CategoryActivity.class);
                 startActivity(intent);
             }
         });
@@ -75,7 +74,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
         ChinaBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {//switch to new activity
-                Intent intent = new Intent(NewsOverviewActivity.this, ChinaActivity.class);
+                Intent intent = new Intent(NewsOverviewActivity.this, CategoryActivity.class);
                 startActivity(intent);
             }
         });
