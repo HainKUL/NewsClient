@@ -65,7 +65,7 @@ public class NewsShowActivity extends AppCompatActivity {
                             for(int i=0;i<1;i++)
                             {
                                 JSONObject jo=jArr.getJSONObject(i);
-                                String NewsContent=jo.getString("NewsContent");
+                                String NewsContent=jo.getString("NewsContent").toString();
                                 String NewsTitle=jo.getString("Title");
                                 String NewsTag=jo.getString("Tag");
                                 num=jo.getInt("Likes");
