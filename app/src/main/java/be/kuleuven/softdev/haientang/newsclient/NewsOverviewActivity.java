@@ -33,12 +33,12 @@ public class NewsOverviewActivity extends AppCompatActivity {
         ButtonChina();
         ButtonEconomy();
         ButtonSearch();
+        ButtonLogin();
         RequestsTopTenNews("http://api.a17-sd606.studev.groept.be/selectTopTenNews");
     }
 
-    public void ButtonSearch()
-    {
-        ImageView SearchBut=(ImageView) findViewById(R.id.searchIcon);
+    public void ButtonSearch() {
+        ImageView SearchBut = (ImageView) findViewById(R.id.searchIcon);
         SearchBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {//switch to new activity
@@ -81,6 +81,17 @@ public class NewsOverviewActivity extends AppCompatActivity {
         });
     }
 
+    public void ButtonLogin() {
+        Button ButRegister = (Button) findViewById(R.id.butRegister);
+        ButRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {//switch to new activity
+                Intent intent = new Intent(NewsOverviewActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
 
     public void RequestsTopTenNews(String url) {
         // get references to the textbox
@@ -106,30 +117,33 @@ public class NewsOverviewActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        String words="";
+                        String words = "";
                         try {
-                            JSONArray jArr=new JSONArray(response);
-                            for(int i=0;i<5;i++) //here we just select the tpo 5
+                            JSONArray jArr = new JSONArray(response);
+                            for (int i = 0; i < 5; i++) //here we just select the tpo 5
                             {
-                                JSONObject jo=jArr.getJSONObject(i);
-                                String NewsContent=jo.getString("Title");
+                                JSONObject jo = jArr.getJSONObject(i);
+                                String NewsContent = jo.getString("Title");
                                 textViewList.get(i).setText(NewsContent);
                             }
 
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-    //之后再增加tag 等东西
+                        //之后再增加tag 等东西
 
                     }
                 }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {}
+            public void onErrorResponse(VolleyError error) {
+            }
         });
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
 
     }
-
-
 }
+
+
+
+

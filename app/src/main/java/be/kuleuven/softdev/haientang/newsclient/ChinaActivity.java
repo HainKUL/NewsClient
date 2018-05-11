@@ -51,6 +51,7 @@ public class ChinaActivity extends AppCompatActivity {
                 Intent intent = new Intent(ChinaActivity.this, NewsShowActivity.class);
                 intent.putExtra("id",ids[1]);
                 startActivity(intent);
+
             }
         });
     }
