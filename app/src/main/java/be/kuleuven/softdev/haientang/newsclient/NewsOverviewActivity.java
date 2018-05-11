@@ -33,6 +33,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
         ButtonChina();
         ButtonEconomy();
         ButtonSearch();
+        ButtonLogin();
         RequestsTopTenNews("http://api.a17-sd606.studev.groept.be/selectTopTenNews");
     }
 
@@ -54,6 +55,16 @@ public class NewsOverviewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {//switch to new activity
                 Intent intent = new Intent(NewsOverviewActivity.this, SportsActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+    public void ButtonLogin() {
+        Button login = (Button) findViewById(R.id.butRegister);
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {//switch to new activity
+                Intent intent = new Intent(NewsOverviewActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
