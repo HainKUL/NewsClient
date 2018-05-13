@@ -22,11 +22,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".NewsOverviewActivity" />
-        <activity android:name=".NewsShowActivity" />
         <activity android:name=".abcCategoryActivity" />
         <activity android:name=".SearchActivity" />
-        <activity android:name=".CategoryActivity"></activity>
+        <activity android:name=".CategoryActivity" />
+        <activity android:name=".NewsOverviewActivity" />
+        <activity android:name=".NewsShowActivity"></activity>
     </application>
 
 </manifest>

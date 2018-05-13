@@ -22,25 +22,107 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class NewsOverviewActivity extends AppCompatActivity {
+    ArrayList<ImageView> TNImages = new ArrayList<ImageView>();
+    ArrayList<TextView> TNTitles = new ArrayList<TextView>();
+    ArrayList<TextView> TNTags = new ArrayList<TextView>();
+    ArrayList<TextView> TNDates = new ArrayList<TextView>();
+    ImageView SearchIcon;
+    Button SportsBut,EconomyBut,ChinaBut;
+    int[] ids;
+    //int i;// make gloable to avoid final
+    //int[] likesNr;//to store id and likesNr for each Top News
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_overview);
 
-        ButtonSports();
-        ButtonChina();
-        ButtonEconomy();
+
+        init();//initialise all references
+
+        //new method to display top 5 breaking news on newsOverview
+        requestsBreakingNews("http://api.a17-sd606.studev.groept.be/selectBreakingNews");
+
         ButtonSearch();
-        RequestsTopTenNews("http://api.a17-sd606.studev.groept.be/selectTopTenNews");
+        ButtonSports();
+        ButtonEconomy();
+        ButtonChina();
+
+        clickOnEachNews();
+    }
+
+    private void init(){
+        SearchIcon=(ImageView) findViewById(R.id.searchIcon);
+        SportsBut = (Button) findViewById(R.id.Sports);
+        EconomyBut = (Button) findViewById(R.id.Economy);
+        ChinaBut = (Button) findViewById(R.id.China);
+
+        TNImages.add((ImageView) findViewById(R.id.TNImage1));
+        TNImages.add((ImageView) findViewById(R.id.TNImage2));
+        TNImages.add((ImageView) findViewById(R.id.TNImage3));
+        TNImages.add((ImageView) findViewById(R.id.TNImage4));
+        TNImages.add((ImageView) findViewById(R.id.TNImage5));
+
+        TNTitles.add((TextView) findViewById(R.id.TNTitle1));
+        TNTitles.add((TextView) findViewById(R.id.TNTitle2));
+        TNTitles.add((TextView) findViewById(R.id.TNTitle3));
+        TNTitles.add((TextView) findViewById(R.id.TNTitle4));
+        TNTitles.add((TextView) findViewById(R.id.TNTitle5));
+
+        TNTags.add((TextView) findViewById(R.id.TNTag1));
+        TNTags.add((TextView) findViewById(R.id.TNTag2));
+        TNTags.add((TextView) findViewById(R.id.TNTag3));
+        TNTags.add((TextView) findViewById(R.id.TNTag4));
+        TNTags.add((TextView) findViewById(R.id.TNTag5));
+
+        TNDates.add((TextView) findViewById(R.id.TNDate1));
+        TNDates.add((TextView) findViewById(R.id.TNDate2));
+        TNDates.add((TextView) findViewById(R.id.TNDate3));
+        TNDates.add((TextView) findViewById(R.id.TNDate4));
+        TNDates.add((TextView) findViewById(R.id.TNDate5));
+
+        ids=new int[5];
+        //likesNr=new int[5];
+    }
+
+    public void requestsBreakingNews(String url) {//display top 5 breaking news on newsOverview
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jArr=new JSONArray(response);
+                            for(int i=0;i<5;i++) {
+                                JSONObject jo=jArr.getJSONObject(i);
+                                String newsTitle=jo.getString("title");
+                                String newsTags=jo.getString("tags");
+                                String newsDate=jo.getString("date");
+
+                                ids[i]=jo.getInt("newsID");
+                                //likesNr[i]=jo.getInt("likes");
+                                TNTitles.get(i).setText(newsTitle);
+                                TNTags.get(i).setText(newsTags);
+                                TNDates.get(i).setText(newsDate);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }}
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {}
+        });
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
     }
 
     public void ButtonSearch()
     {
-        ImageView SearchBut=(ImageView) findViewById(R.id.searchIcon);
-        SearchBut.setOnClickListener(new View.OnClickListener() {
+        SearchIcon.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {//switch to new activity
+            public void onClick(View view) {
                 Intent intent = new Intent(NewsOverviewActivity.this, SearchActivity.class);
                 startActivity(intent);
             }
@@ -48,10 +130,9 @@ public class NewsOverviewActivity extends AppCompatActivity {
     }
 
     public void ButtonSports() {
-        Button SportsBut = (Button) findViewById(R.id.Sports);
         SportsBut.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {//switch to new activity
+            public void onClick(View view) {
                 Intent intent = new Intent(NewsOverviewActivity.this, CategoryActivity.class);
                 startActivity(intent);
             }
@@ -59,10 +140,9 @@ public class NewsOverviewActivity extends AppCompatActivity {
     }
 
     public void ButtonEconomy() {
-        Button EconomyBut = (Button) findViewById(R.id.Economy);
         EconomyBut.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {//switch to new activity
+            public void onClick(View view) {
                 Intent intent = new Intent(NewsOverviewActivity.this, CategoryActivity.class);
                 startActivity(intent);
             }
@@ -70,65 +150,29 @@ public class NewsOverviewActivity extends AppCompatActivity {
     }
 
     public void ButtonChina() {
-        Button ChinaBut = (Button) findViewById(R.id.China);
         ChinaBut.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {//switch to new activity
+            public void onClick(View view) {
                 Intent intent = new Intent(NewsOverviewActivity.this, CategoryActivity.class);
                 startActivity(intent);
             }
         });
     }
 
-
-    public void RequestsTopTenNews(String url) {
-        // get references to the textbox
-        final TextView tn1 = (TextView) findViewById(R.id.TopNewsOne);
-        final TextView tn2 = (TextView) findViewById(R.id.TopNewsTwo);
-        final TextView tn3 = (TextView) findViewById(R.id.TopNewsThree);
-        final TextView tn4 = (TextView) findViewById(R.id.TopNewsFour);
-        final TextView tn5 = (TextView) findViewById(R.id.TopNewsFive);
-
-        // the arraylist would store five textviews which is applied to demonstrate the news
-        final ArrayList<TextView> textViewList = new ArrayList<TextView>();
-        textViewList.add(tn1);
-        textViewList.add(tn2);
-        textViewList.add(tn3);
-        textViewList.add(tn4);
-        textViewList.add(tn5);
-
-// Instantiate the RequestQueue.
-        RequestQueue queue = Volley.newRequestQueue(this);
-
-// Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        String words="";
-                        try {
-                            JSONArray jArr=new JSONArray(response);
-                            for(int i=0;i<5;i++) //here we just select the tpo 5
-                            {
-                                JSONObject jo=jArr.getJSONObject(i);
-                                String NewsContent=jo.getString("Title");
-                                textViewList.get(i).setText(NewsContent);
-                            }
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-    //之后再增加tag 等东西
-
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {}
-        });
-        // Add the request to the RequestQueue.
-        queue.add(stringRequest);
+    public void clickOnEachNews(){
+        for(int i=0;i<5;i++){
+            final int j = i;
+            TNTitles.get(i).setOnClickListener(new View.OnClickListener() {//search full news by id( and title)
+                @Override
+                public void onClick(View view) {
+                    Intent intent=new Intent(getApplicationContext(),NewsShowActivity.class);
+                    intent.putExtra("newsID",ids[j]);
+                    //intent.putExtra("newsLikes",likesNr[i]);
+                    startActivity(intent);
+                }
+            });
+        }
+        //i=j;
 
     }
-
-
 }
