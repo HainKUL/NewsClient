@@ -78,6 +78,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        final Button but=(Button) findViewById(R.id.button);
+
+        but.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(MainActivity.this,imageView.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     public void LoginCheck(String emailCheck,String passwdCheck) {
