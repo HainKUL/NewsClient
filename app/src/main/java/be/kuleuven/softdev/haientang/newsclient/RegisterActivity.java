@@ -128,7 +128,7 @@ public class RegisterActivity extends AppCompatActivity {
                             if(jArr.length()!=0){//email already existed
                                 Toast.makeText(getApplicationContext(), "Email already existed!", Toast.LENGTH_SHORT).show();
                             }else if(jArr.length()==0){////email not existed
-                                Requests("http://api.a17-sd606.studev.groept.be/UsersRegister/");
+                                Requests("http://api.a17-sd606.studev.groept.be/usersRegister/");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -144,7 +144,11 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void Requests(String url) {
-        URL=url+firstNameTxt.getText().toString()+"/"+surnameTxt.getText().toString()+"/"+emailTxt.getText().toString()+"/"+passwd.getText().toString();
+        URL=url+firstNameTxt.getText().toString()
+                +"/"+surnameTxt.getText().toString()+
+                "/"+emailTxt.getText().toString()
+                +"/"+passwd.getText().toString()
+                +"/"+1;//1 refers to teh userType registered user, 2 refers to guest
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
         // Request a string response from the provided URL.
@@ -189,7 +193,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void LoginCheck(String emailCheck,String passwdCheck) {
-        String url="http://api.a17-sd606.studev.groept.be/LoginCheck/"+emailCheck+"/"+passwdCheck;
+        String url="http://api.a17-sd606.studev.groept.be/loginCheck/"+emailCheck+"/"+passwdCheck;
         RequestQueue queue= Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {

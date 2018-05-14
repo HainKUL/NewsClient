@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -22,26 +20,26 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class SportsActivity extends AppCompatActivity {
+public class CategoryActivity extends AppCompatActivity {
 
-    //id变量，用来存储用以传输到newsshow的id
     private int[] ids=new int[2];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sports_overviewctivity);
-        RequestsTopTwoNews("http://api.a17-sd606.studev.groept.be/selectTpoTwoNews/"+"Sports");
+        setContentView(R.layout.activity_category);
+        RequestsTopTwoNews("http://api.a17-sd606.studev.groept.be/selectTpoTwoNews/"+"Economy");
         GoToNewsOne();
         GoToNewsTwo();
         ButtonHome();
     }
 
+
     public void GoToNewsOne() {
-        TextView NewsOne = (TextView) findViewById(R.id.SportsNewsOne);
+        TextView NewsOne = (TextView) findViewById(R.id.CategoryNewsOne);
         NewsOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {//switch to new activity
-                Intent intent = new Intent(SportsActivity.this, NewsShowActivity.class);
+                Intent intent = new Intent(CategoryActivity.this, NewsShowActivity.class);
                 intent.putExtra("id",ids[0]);
                 startActivity(intent);
             }
@@ -49,11 +47,11 @@ public class SportsActivity extends AppCompatActivity {
     }
 
     public void GoToNewsTwo() {
-        TextView NewsTwo = (TextView) findViewById(R.id.SportsNewsTwo);
+        TextView NewsTwo = (TextView) findViewById(R.id.CategoryNewsTwo);
         NewsTwo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {//switch to new activity
-                Intent intent = new Intent(SportsActivity.this, NewsShowActivity.class);
+                Intent intent = new Intent(CategoryActivity.this, NewsShowActivity.class);
                 intent.putExtra("id",ids[1]);
                 startActivity(intent);
             }
@@ -65,16 +63,16 @@ public class SportsActivity extends AppCompatActivity {
         // the arraylist would store five textviews which is applied to demonstrate the news
 
         // assign the parameters of title textview
-        final TextView title1 = (TextView) findViewById(R.id.SportsNewsOne);
-        final TextView title2 = (TextView) findViewById(R.id.SportsNewsTwo);
+        final TextView title1 = (TextView) findViewById(R.id.CategoryNewsOne);
+        final TextView title2 = (TextView) findViewById(R.id.CategoryNewsTwo);
 
         final ArrayList<TextView> titleViewList = new ArrayList<TextView>();
         titleViewList.add(title1);
         titleViewList.add(title2);
 
         //assign the parameters of  tags textview
-        final TextView tagView1 = (TextView) findViewById(R.id.SportsTagOne);
-        final TextView tagView2 = (TextView) findViewById(R.id.SportsTagTwo);
+        final TextView tagView1 = (TextView) findViewById(R.id.CategoryNewsOne);
+        final TextView tagView2 = (TextView) findViewById(R.id.CategoryNewsTwo);
 
         final ArrayList<TextView> textViewList = new ArrayList<TextView>();
         textViewList.add(tagView1);
@@ -93,7 +91,7 @@ public class SportsActivity extends AppCompatActivity {
                         String words="";
                         try {
                             JSONArray jArr=new JSONArray(response);
-                            for(int i=0;i<2;i++) //here we just select the tpo 2 later we can select 10 pieces of news
+                            for(int i=0;i<2;i++) //here we just select the tpo 10
                             {
                                 JSONObject jo=jArr.getJSONObject(i);
                                 String newsTitle=jo.getString("Title");
@@ -118,15 +116,16 @@ public class SportsActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    public void ButtonHome() //return to newsoverview
+    public void ButtonHome()
     {
-        ImageView SearchBut=(ImageView) findViewById(R.id.sportsToHome);
+        ImageView SearchBut=(ImageView) findViewById(R.id.Ima_Category);
         SearchBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {//switch to new activity
-                Intent intent = new Intent(SportsActivity.this, NewsOverviewActivity.class);
+                Intent intent = new Intent(CategoryActivity.this, NewsOverviewActivity.class);
                 startActivity(intent);
             }
         });
     }
+
 }

@@ -22,14 +22,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".BrowserActivity" />
-        <activity android:name=".NewsOverviewActivity" />
-        <activity android:name=".SportsActivity" />
-        <activity android:name=".NewsShowActivity" />
-        <activity android:name=".EconomyActivity" />
-        <activity android:name=".ChinaActivity" />
+        <activity android:name=".abcCategoryActivity" />
         <activity android:name=".SearchActivity" />
-        <activity android:name=".imageView"></activity>
+        <activity android:name=".CategoryActivity" />
+        <activity android:name=".NewsOverviewActivity" />
+        <activity android:name=".NewsShowActivity"></activity>
     </application>
 
 </manifest>

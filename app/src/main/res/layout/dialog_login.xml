@@ -10,7 +10,7 @@
         android:layout_width="120dp"
         android:layout_height="52dp"
         android:layout_marginTop="25dp"
-        app:srcCompat="@drawable/logo_kul" />
+        app:srcCompat="@drawable/logo_kul" android:contentDescription="@string/todo" />
 
     <TextView
         android:id="@+id/txtLogin"
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textStyle="bold"
-        android:text="Login"
+        android:text="@string/login"
         android:textSize="25sp"/>
 
     <EditText

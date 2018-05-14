@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         if(!mEmail.getText().toString().isEmpty()&&!mpasswd.getText().toString().isEmpty()) {
-                            LoginCheck(mEmail.getText().toString(),mpasswd.getText().toString());
+                            loginCheck(mEmail.getText().toString(),mpasswd.getText().toString());
                         }else{
                             Toast.makeText(MainActivity.this, "Please fill in any empty fields!", Toast.LENGTH_SHORT).show();
                         }
@@ -72,26 +72,32 @@ public class MainActivity extends AppCompatActivity {
 
         guestBut.setOnClickListener(new View.OnClickListener() {//need to pass information telling the database the guest
             @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(MainActivity.this,NewsOverviewActivity.class);
-                startActivity(intent);
+            public void onClick(View view) {//send guest info to database
+                String URL="http://api.a17-sd606.studev.groept.be/guestsLogin";
+                // Instantiate the RequestQueue.
+                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                // Request a string response from the provided URL.
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Toast.makeText(getApplicationContext(), "You can browser news as a guest now!", Toast.LENGTH_SHORT).show();
+                                Intent intent=new Intent(MainActivity.this,NewsOverviewActivity.class);
+                                startActivity(intent);
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Oops,please try again later!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                queue.add(stringRequest);// Add the request to the RequestQueue.
             }
         });
-
-        final Button but=(Button) findViewById(R.id.button);
-
-        but.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(MainActivity.this,imageView.class);
-                startActivity(intent);
-            }
-        });
-
     }
 
-    public void LoginCheck(String emailCheck,String passwdCheck) {
-        String url="http://api.a17-sd606.studev.groept.be/LoginCheck/"+emailCheck+"/"+passwdCheck;
+    public void loginCheck(String emailCheck,String passwdCheck) {
+        String url="http://api.a17-sd606.studev.groept.be/loginCheck/"+emailCheck+"/"+passwdCheck;
         RequestQueue queue= Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
