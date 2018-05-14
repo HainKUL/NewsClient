@@ -40,7 +40,7 @@ public class CategoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {//switch to new activity
                 Intent intent = new Intent(CategoryActivity.this, NewsShowActivity.class);
-                intent.putExtra("id",ids[0]);
+                intent.putExtra("newsID",ids[0]);
                 startActivity(intent);
             }
         });
@@ -52,7 +52,7 @@ public class CategoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {//switch to new activity
                 Intent intent = new Intent(CategoryActivity.this, NewsShowActivity.class);
-                intent.putExtra("id",ids[1]);
+                intent.putExtra("newsID",ids[1]);
                 startActivity(intent);
             }
         });

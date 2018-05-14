@@ -1,8 +1,11 @@
 package be.kuleuven.softdev.haientang.newsclient;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,14 +37,6 @@ public class NewsShowActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_show);
 
-        init();
-        displayNews();
-        addLike();
-        addComments();//meanwhile, refresh comments list
-        iconHome();//back to news_overview
-    }
-
-    private void init(){
         homeIcon = (ImageView) findViewById(R.id.home);
         thumbUpIcon = (ImageView) findViewById(R.id.likesIcon);
         newsID = getIntent().getExtras().getInt("newsID");
@@ -51,6 +46,11 @@ public class NewsShowActivity extends AppCompatActivity {
         newsLikes=(TextView) findViewById(R.id.likesNr);
         commentBoard = (EditText) findViewById(R.id.CommentBoard);
         submitBut = (Button) findViewById(R.id.ButSubmit);
+
+        displayNews();
+        addLike();
+        addComments();//meanwhile, refresh comments list
+        iconHome();//back to news_overview
     }
 
     public void displayNews() { //get news content from json server
@@ -59,6 +59,7 @@ public class NewsShowActivity extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
+                    @TargetApi(Build.VERSION_CODES.N)
                     public void onResponse(String response) {
                         try {
                             JSONArray jArr=new JSONArray(response);
@@ -71,10 +72,11 @@ public class NewsShowActivity extends AppCompatActivity {
 
                                 newsTitle.setText(ttl);
                                 newsTags.setText(tg);
-                                newsContent.setText(cnt);
+                                newsContent.setText(Html.fromHtml(cnt, Html.FROM_HTML_MODE_LEGACY));
                                 newsLikes.setText(""+likesNr);//set integer value into TextView
                         } catch (JSONException e) {
                             e.printStackTrace();
+
                         }
                     }
                 }, new Response.ErrorListener() {

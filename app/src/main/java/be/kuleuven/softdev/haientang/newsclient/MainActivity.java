@@ -22,7 +22,7 @@ import org.json.JSONException;
 public class MainActivity extends AppCompatActivity {
 
     //declare globle variables
-    Button loginBut,registerBut,guestBut;
+    Button loginBut,registerBut,guestBut,imageBut,phpBut;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
         loginBut=(Button) findViewById(R.id.butLogin);
         registerBut=(Button) findViewById(R.id.butRegister);
         guestBut=(Button) findViewById(R.id.butGuest);
+        imageBut=(Button) findViewById(R.id.button);
+        phpBut=(Button) findViewById(R.id.php);
 
         //2. set click listeners to the buttons
         loginBut.setOnClickListener(new View.OnClickListener() {
@@ -69,6 +71,24 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        imageBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(MainActivity.this,imageShow.class);
+                startActivity(intent);
+            }
+        });
+
+       /* phpBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(MainActivity.this,phpView.class);
+                startActivity(intent);
+            }
+        });*/
+
+
 
         guestBut.setOnClickListener(new View.OnClickListener() {//need to pass information telling the database the guest
             @Override

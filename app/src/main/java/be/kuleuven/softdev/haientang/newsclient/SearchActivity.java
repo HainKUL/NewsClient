@@ -76,21 +76,21 @@ public class SearchActivity extends AppCompatActivity {
                 if(position==0)
                 {
                     Intent myIntent=new Intent(view.getContext(),NewsShowActivity.class);
-                    myIntent.putExtra("id",ids.get(0));
+                    myIntent.putExtra("newsID",ids.get(0));
                     startActivityForResult(myIntent,0);
                 }
 
                 if(position==1)
                 {
                     Intent myIntent=new Intent(view.getContext(),NewsShowActivity.class);
-                    myIntent.putExtra("id",ids.get(1));
+                    myIntent.putExtra("newsID",ids.get(1));
                     startActivityForResult(myIntent,1);
                 }
 
                 if(position==2)
                 {
                     Intent myIntent=new Intent(view.getContext(),NewsShowActivity.class);
-                    myIntent.putExtra("id",ids.get(2));
+                    myIntent.putExtra("newsID",ids.get(2));
                     startActivityForResult(myIntent,2);
                 }
             }
@@ -113,8 +113,8 @@ public class SearchActivity extends AppCompatActivity {
                             for(int i=0;i<10;i++) //here we just select the tpo 10
                             {
                                 JSONObject jo=jArr.getJSONObject(i);
-                                String NewsTitle=jo.getString("Title");
-                                int id=jo.getInt("idNews");
+                                String NewsTitle=jo.getString("title");
+                                int id=jo.getInt("newsID");
                                 ids.add(id);
                                 mStrs.add(NewsTitle);
                             }
