@@ -80,13 +80,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-       /* phpBut.setOnClickListener(new View.OnClickListener() {
+        phpBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(MainActivity.this,phpView.class);
+                Intent intent=new Intent(MainActivity.this,fileUploadTest.class);
                 startActivity(intent);
             }
-        });*/
+        });
 
 
 

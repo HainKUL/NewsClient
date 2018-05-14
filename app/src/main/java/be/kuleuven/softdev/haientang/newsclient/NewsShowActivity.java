@@ -2,6 +2,7 @@ package be.kuleuven.softdev.haientang.newsclient;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -31,6 +33,7 @@ public class NewsShowActivity extends AppCompatActivity {
     TextView newsTitle,newsTags,newsContent,newsLikes;
     EditText commentBoard;
     Button submitBut;
+    ImageView iv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,7 @@ public class NewsShowActivity extends AppCompatActivity {
         newsLikes=(TextView) findViewById(R.id.likesNr);
         commentBoard = (EditText) findViewById(R.id.CommentBoard);
         submitBut = (Button) findViewById(R.id.ButSubmit);
+        iv=(ImageView) findViewById(R.id.newsImage);
 
         displayNews();
         addLike();
@@ -157,6 +161,28 @@ public class NewsShowActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    public void showImage()
+    {
+        String url="http://a17-sd606.studev.groept.be/Image/adrien-robert-505037-unsplash.jpg";
+
+        RequestQueue mQueue = Volley.newRequestQueue(this);
+
+        ImageLoader imageLoader = new ImageLoader(mQueue, new BitmapCache() {
+            @Override
+            public void putBitmap(String url, Bitmap bitmap) {
+            }
+
+            @Override
+            public Bitmap getBitmap(String url) {
+                return null;
+            }
+        });
+        ImageLoader.ImageListener listener = ImageLoader.getImageListener(iv,
+                R.drawable.home, R.drawable.like);
+        imageLoader.get(url,
+                listener, 200, 200);
     }
 }
 
