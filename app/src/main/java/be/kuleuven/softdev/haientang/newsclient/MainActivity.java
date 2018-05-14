@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         registerBut=(Button) findViewById(R.id.butRegister);
         guestBut=(Button) findViewById(R.id.butGuest);
         imageBut=(Button) findViewById(R.id.button);
-        phpBut=(Button) findViewById(R.id.php);
+        phpBut=(Button) findViewById(R.id.php);  //the phpBut is the second gray button on the bottom of the layout, on which you click to get access to fileUploadTest testing the php!
 
         //2. set click listeners to the buttons
         loginBut.setOnClickListener(new View.OnClickListener() {
