@@ -134,6 +134,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(NewsOverviewActivity.this, CategoryActivity.class);
+                intent.putExtra("category","sports");
                 startActivity(intent);
             }
         });
@@ -144,6 +145,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(NewsOverviewActivity.this, CategoryActivity.class);
+                intent.putExtra("category","economy");
                 startActivity(intent);
             }
         });
@@ -154,6 +156,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(NewsOverviewActivity.this, CategoryActivity.class);
+                intent.putExtra("category","china");
                 startActivity(intent);
             }
         });

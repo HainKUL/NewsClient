@@ -47,19 +47,24 @@
                 android:textStyle="italic" />
 
             <ImageView
-                android:id="@+id/newsImage"
+                android:id="@+id/newsImageUp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/todo"
                 app:srcCompat="@mipmap/ic_launcher" />
 
             <TextView
                 android:id="@+id/Content"
                 android:layout_width="match_parent"
-                android:layout_height="147dp"
-                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
                 android:hint="@string/content" />
+
+            <ImageView
+                android:id="@+id/newsImageDown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srcCompat="@mipmap/ic_launcher_round" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -92,6 +97,12 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/holo_green_light"
                 android:text="@string/submitBut" />
+
+            <TextView
+                android:id="@+id/showTest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView" />
 
             <EditText
                 android:id="@+id/CommentBoard"

@@ -27,18 +27,25 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class NewsShowActivity extends AppCompatActivity {
     ImageView homeIcon,thumbUpIcon;
     int newsID,likesNr;
     TextView newsTitle,newsTags,newsContent,newsLikes;
     EditText commentBoard;
     Button submitBut;
-    ImageView iv;
+    ImageView ivUp;
+    ImageView ivDown;
+    String[] imageUrl=new String[2];
+    String[] imagePosition=new String[2];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_show);
+
+        ivUp=(ImageView) findViewById(R.id.newsImageUp);
 
         homeIcon = (ImageView) findViewById(R.id.home);
         thumbUpIcon = (ImageView) findViewById(R.id.likesIcon);
@@ -49,12 +56,17 @@ public class NewsShowActivity extends AppCompatActivity {
         newsLikes=(TextView) findViewById(R.id.likesNr);
         commentBoard = (EditText) findViewById(R.id.CommentBoard);
         submitBut = (Button) findViewById(R.id.ButSubmit);
-        iv=(ImageView) findViewById(R.id.newsImage);
+
+        ivDown=(ImageView)findViewById(R.id.newsImageDown);
 
         displayNews();
         addLike();
         addComments();//meanwhile, refresh comments list
         iconHome();//back to news_overview
+        getImageInfo("http://api.a17-sd606.studev.groept.be/addPhotos/"+newsID);
+        //showImage(imageUrl[0]);
+
+
     }
 
     public void displayNews() { //get news content from json server
@@ -163,9 +175,37 @@ public class NewsShowActivity extends AppCompatActivity {
         });
     }
 
-    public void showImage()
+    public void getImageInfo(String url) {//display top 5 breaking news on newsOverview
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+        final TextView tvTest=(TextView)findViewById(R.id.showTest);
+        // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jArr=new JSONArray(response);
+                            for(int i=0;i<2;i++) {
+                                JSONObject jo=jArr.getJSONObject(i);
+                                String name=jo.getString("photo_name");
+                               String position=jo.getString("newsPosition");
+                                showImage("http://a17-sd606.studev.groept.be/Image/"+name,position);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }}
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {}
+        });
+
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
+    }
+
+    public void showImage(String url,String pos)  //through which you can show image.  the url is the image`s url
     {
-        String url="http://a17-sd606.studev.groept.be/Image/adrien-robert-505037-unsplash.jpg";
 
         RequestQueue mQueue = Volley.newRequestQueue(this);
 
@@ -179,10 +219,30 @@ public class NewsShowActivity extends AppCompatActivity {
                 return null;
             }
         });
-        ImageLoader.ImageListener listener = ImageLoader.getImageListener(iv,
-                R.drawable.home, R.drawable.like);
-        imageLoader.get(url,
-                listener, 200, 200);
+
+           if(pos.equals("up"))
+           {
+               ImageLoader.ImageListener listener = ImageLoader.getImageListener(ivUp,
+                       R.drawable.home, R.drawable.home);
+               imageLoader.get(url,
+                       listener, 600, 600);
+           }
+           else if(pos.equals("down"))
+           {
+
+               ImageLoader.ImageListener listener = ImageLoader.getImageListener(ivDown,
+                       R.drawable.home, R.drawable.home);
+               imageLoader.get(url,
+                       listener, 600, 600);
+           }
+           else
+           {
+               ivUp.setImageResource(R.drawable.home);
+               ivDown.setImageResource(R.drawable.home);
+           }
+
+
+
     }
 }
 

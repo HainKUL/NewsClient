@@ -23,16 +23,40 @@ import java.util.ArrayList;
 public class CategoryActivity extends AppCompatActivity {
 
     private int[] ids=new int[2];
+    private String category=new String();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
-        RequestsTopTwoNews("http://api.a17-sd606.studev.groept.be/selectTpoTwoNews/"+"Economy");
+        category=getIntent().getExtras().getString("category");
+
+
+
         GoToNewsOne();
         GoToNewsTwo();
         ButtonHome();
     }
 
+    public void getNewsInfo()
+    {
+        if(category.equals("china"))
+        {
+            RequestsTopTwoNews("http://api.a17-sd606.studev.groept.be/selectTpoTwoNews/"+"China");
+        }
+        else if(category.equals("economy"))
+        {
+            RequestsTopTwoNews("http://api.a17-sd606.studev.groept.be/selectTpoTwoNews/"+"Economy");
+        }
+        else if(category.equals("sports"))
+        {
+            RequestsTopTwoNews("http://api.a17-sd606.studev.groept.be/selectTpoTwoNews/"+"Sports");
+        }
+        else
+        {
+
+        }
+    }
 
     public void GoToNewsOne() {
         TextView NewsOne = (TextView) findViewById(R.id.CategoryNewsOne);
