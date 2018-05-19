@@ -73,26 +73,10 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //点击listview中的内容转到相关地方
-                if(position==0)
-                {
-                    Intent myIntent=new Intent(view.getContext(),NewsShowActivity.class);
-                    myIntent.putExtra("newsID",ids.get(0));
-                    startActivityForResult(myIntent,0);
-                }
 
-                if(position==1)
-                {
                     Intent myIntent=new Intent(view.getContext(),NewsShowActivity.class);
-                    myIntent.putExtra("newsID",ids.get(1));
-                    startActivityForResult(myIntent,1);
-                }
-
-                if(position==2)
-                {
-                    Intent myIntent=new Intent(view.getContext(),NewsShowActivity.class);
-                    myIntent.putExtra("newsID",ids.get(2));
-                    startActivityForResult(myIntent,2);
-                }
+                    myIntent.putExtra("newsID",ids.get(position));
+                    startActivityForResult(myIntent,position);
             }
         });
     }
@@ -110,13 +94,17 @@ public class SearchActivity extends AppCompatActivity {
                         try {
                             //mStrs.clear();
                             JSONArray jArr=new JSONArray(response);
-                            for(int i=0;i<10;i++) //here we just select the tpo 10
+                            for(int i=0;i<jArr.length();i++) //here we just select the tpo 10
                             {
                                 JSONObject jo=jArr.getJSONObject(i);
                                 String NewsTitle=jo.getString("title");
                                 int id=jo.getInt("newsID");
-                                ids.add(id);
-                                mStrs.add(NewsTitle);
+                                if(!NewsTitle.equals("null"))
+                                {
+                                    ids.add(id);
+                                    mStrs.add(NewsTitle);
+                                }
+
                             }
 
                         } catch (JSONException e) {

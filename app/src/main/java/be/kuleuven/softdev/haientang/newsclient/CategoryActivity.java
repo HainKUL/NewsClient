@@ -1,10 +1,14 @@
 package be.kuleuven.softdev.haientang.newsclient;
 
+import android.app.ListActivity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -19,46 +23,64 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CategoryActivity extends AppCompatActivity {
 
-    private int[] ids=new int[2];
+    static private int[] ids=new int[2];
     private String category=new String();
+    private TextView title;
+    final private ArrayList<newsInfo> newsList=new ArrayList<>();
+
+    private ListView listView;
+    private  SimpleAdapter simpleAdapter;
+    final static private ArrayList<Map<String,Object>> datas=new ArrayList<>();
+
+
+    //private List<Map<String,Object>> mData;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
         category=getIntent().getExtras().getString("category");
+        title=(TextView) findViewById(R.id.CategoryTitle);
+        title.setText(category);
+        RequestsTopTwoNews("http://api.a17-sd606.studev.groept.be/selectTopTwoNews/"+category);
+
+        listView=(ListView) findViewById(R.id.newsList);
+
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //点击listview中的内容转到相关地方
+                Intent myIntent = new Intent(view.getContext(), NewsShowActivity.class);
+                myIntent.putExtra("newsID", ids[position]);
+                startActivityForResult(myIntent, position);
+            }
+        });
 
 
 
-        GoToNewsOne();
-        GoToNewsTwo();
+        generateSimpleAdapter();
+
+
+
+        /*SimpleAdapter adapter = new SimpleAdapter(this,getData(),R.layout.activity_category,
+                new String[]{"newsTitle","newsTag","newsImage"},
+                new int[]{R.id.newsTitle,R.id.newsTag,R.id.newsImage});
+        setListAdapter(adapter);*/
+
         ButtonHome();
     }
 
-    public void getNewsInfo()
-    {
-        if(category.equals("china"))
-        {
-            RequestsTopTwoNews("http://api.a17-sd606.studev.groept.be/selectTpoTwoNews/"+"China");
-        }
-        else if(category.equals("economy"))
-        {
-            RequestsTopTwoNews("http://api.a17-sd606.studev.groept.be/selectTpoTwoNews/"+"Economy");
-        }
-        else if(category.equals("sports"))
-        {
-            RequestsTopTwoNews("http://api.a17-sd606.studev.groept.be/selectTpoTwoNews/"+"Sports");
-        }
-        else
-        {
 
-        }
-    }
 
-    public void GoToNewsOne() {
+    /*public void GoToNewsOne() {
         TextView NewsOne = (TextView) findViewById(R.id.CategoryNewsOne);
         NewsOne.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,28 +102,9 @@ public class CategoryActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
+    }*/
 
     public void RequestsTopTwoNews(String url) {
-
-        // the arraylist would store five textviews which is applied to demonstrate the news
-
-        // assign the parameters of title textview
-        final TextView title1 = (TextView) findViewById(R.id.CategoryNewsOne);
-        final TextView title2 = (TextView) findViewById(R.id.CategoryNewsTwo);
-
-        final ArrayList<TextView> titleViewList = new ArrayList<TextView>();
-        titleViewList.add(title1);
-        titleViewList.add(title2);
-
-        //assign the parameters of  tags textview
-        final TextView tagView1 = (TextView) findViewById(R.id.CategoryNewsOne);
-        final TextView tagView2 = (TextView) findViewById(R.id.CategoryNewsTwo);
-
-        final ArrayList<TextView> textViewList = new ArrayList<TextView>();
-        textViewList.add(tagView1);
-        textViewList.add(tagView2);
-
 
 // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -112,19 +115,22 @@ public class CategoryActivity extends AppCompatActivity {
 
                     public void onResponse(String response) {
 
-                        String words="";
                         try {
                             JSONArray jArr=new JSONArray(response);
                             for(int i=0;i<2;i++) //here we just select the tpo 10
                             {
                                 JSONObject jo=jArr.getJSONObject(i);
-                                String newsTitle=jo.getString("Title");
-                                String newsTag=jo.getString("Tag");
-                                ids[i]=jo.getInt("idNews");
-                                titleViewList.get(i).setText(newsTitle);
-                                textViewList.get(i).setText(newsTag);
+                                String newsTitle=jo.getString("title");
+                                String newsTag=jo.getString("tags");
+                                ids[i]=jo.getInt("newsID");
+
+                                Map<String,Object> data = new HashMap<>();
+                                data.put("pic",R.drawable.home);
+                                data.put("text",newsTitle);
+                                datas.add(data);
 
                             }
+
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -138,6 +144,7 @@ public class CategoryActivity extends AppCompatActivity {
         });
 // Add the request to the RequestQueue.
         queue.add(stringRequest);
+
     }
 
     public void ButtonHome()
@@ -151,5 +158,15 @@ public class CategoryActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void generateSimpleAdapter(){
+        simpleAdapter = new SimpleAdapter(this,datas,
+                R.layout.item,new String[]{"pic","text"},
+                new int[]{R.id.imageView,R.id.title});
+
+        listView.setAdapter(simpleAdapter);
+    }
+
+
 
 }
