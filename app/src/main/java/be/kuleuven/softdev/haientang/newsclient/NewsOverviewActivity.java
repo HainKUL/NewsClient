@@ -1,6 +1,7 @@
 package be.kuleuven.softdev.haientang.newsclient;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +13,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -26,6 +28,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
     ArrayList<TextView> TNTitles = new ArrayList<TextView>();
     ArrayList<TextView> TNTags = new ArrayList<TextView>();
     ArrayList<TextView> TNDates = new ArrayList<TextView>();
+    ArrayList<String> imgUrls=new ArrayList<>();
     ImageView SearchIcon;
     Button SportsBut,EconomyBut,ChinaBut;
     int[] ids;
@@ -47,6 +50,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
         ButtonSports();
         ButtonEconomy();
         ButtonChina();
+//        displayImage();
 
         clickOnEachNews();
     }
@@ -100,12 +104,13 @@ public class NewsOverviewActivity extends AppCompatActivity {
                                 String newsTitle=jo.getString("title");
                                 String newsTags=jo.getString("tags");
                                 String newsDate=jo.getString("date");
-
                                 ids[i]=jo.getInt("newsID");
                                 //likesNr[i]=jo.getInt("likes");
                                 TNTitles.get(i).setText(newsTitle);
                                 TNTags.get(i).setText(newsTags);
                                 TNDates.get(i).setText(newsDate);
+                                displayImage(i,ids[i]);
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -176,6 +181,63 @@ public class NewsOverviewActivity extends AppCompatActivity {
             });
         }
         //i=j;
+
+    }
+
+    //http://api.a17-sd606.studev.groept.be/selectPhotosOnFrontFace/
+    public void displayImage(int i,int id) {//display top 5 breaking news on newsOverview
+        // Instantiate the RequestQueue.
+        String url;
+            final int j=i;
+            url="http://api.a17-sd606.studev.groept.be/selectPhotosOnFrontFace/"+id;
+
+            RequestQueue queue = Volley.newRequestQueue(this);
+
+            // Request a string response from the provided URL.
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONArray jArr=new JSONArray(response);
+                                JSONObject jo=jArr.getJSONObject(0);
+                                String name=jo.getString("photo_name");
+                                showImage("http://a17-sd606.studev.groept.be/Image/"+name,j);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }}
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {}
+            });
+
+            // Add the request to the RequestQueue.
+            queue.add(stringRequest);
+
+        }
+
+
+
+    public void showImage(String url,int j)  //through which you can show image.  the url is the image`s url
+    {
+
+        RequestQueue mQueue = Volley.newRequestQueue(this);
+
+        ImageLoader imageLoader = new ImageLoader(mQueue, new BitmapCache() {
+            @Override
+            public void putBitmap(String url, Bitmap bitmap) {
+            }
+
+            @Override
+            public Bitmap getBitmap(String url) {
+                return null;
+            }
+        });
+
+        ImageLoader.ImageListener listener = ImageLoader.getImageListener(TNImages.get(j),
+                R.drawable.home, R.drawable.home);
+        imageLoader.get(url,
+                listener, 600, 600);
 
     }
 }
