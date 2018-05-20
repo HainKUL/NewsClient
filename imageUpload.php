@@ -13,8 +13,7 @@ define("DB_HOST","studev.groept.be");
             mysqli_connect_error() . " - " . mysqli_connect_errno() . ")"
                 );
     }
-// $upload_path = 'Image/'; //this is our upload folder
-// $server_ip = 'http://a17-sd606.studev.groept.be/'; //Getting the server ip
+
 $upload_url = 'http://a17-sd606.studev.groept.be/Image/'; //upload url
 
 //response array
@@ -30,12 +29,11 @@ if($_SERVER['REQUEST_METHOD']=='POST'){
         $caption = $_POST['caption'];
         $fileinfo = pathinfo($_FILES['image']['name']);//getting file info from the request
         $extension = $fileinfo['extension']; //getting the file extension
-        $file_url = $upload_url . getFileName() . '.' . $extension; //file url to store in the database
-        $file_path = $upload_path . getFileName() . '.'. $extension; //file path to upload in the server
+        $file_url = $upload_url.getFileName().'.'.$extension; //file url to store in the server
         $img_name = getFileName() . '.'. $extension; //file name to store in the database
 
         try{
-            move_uploaded_file($_FILES['image']['tmp_name'],$file_path); //saving the file to the uploads folder;
+            move_uploaded_file($_FILES['image']['name'],$file_url); //saving the file to the uploads folder;
 
             //adding the path and name to database
             $sql = "INSERT INTO Photos(photo_name, photo_url, caption) ";
