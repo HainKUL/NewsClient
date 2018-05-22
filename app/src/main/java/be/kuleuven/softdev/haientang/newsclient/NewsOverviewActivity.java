@@ -18,29 +18,29 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
+//this avtivity displays top 5 news ordered by Nr of likes and the option to switch to other categories.
 public class NewsOverviewActivity extends AppCompatActivity {
-    ArrayList<ImageView> TNImages = new ArrayList<ImageView>();
+    ArrayList<ImageView> TNImages = new ArrayList<ImageView>();//TN--> top news
     ArrayList<TextView> TNTitles = new ArrayList<TextView>();
     ArrayList<TextView> TNTags = new ArrayList<TextView>();
     ArrayList<TextView> TNDates = new ArrayList<TextView>();
+    ArrayList<TextView> TNLikes= new ArrayList<TextView>();
     ImageView SearchIcon;
     Button SportsBut,EconomyBut,ChinaBut;
-    int[] ids;
-    //int i;// make gloable to avoid final
-    //int[] likesNr;//to store id and likesNr for each Top News
+    int[] ids;//just one id can associates every attribute, so no variable for likes
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_overview);
 
+        init();//initialise all references using ArrayList
 
-        init();//initialise all references
-
-        //new method to display top 5 breaking news on newsOverview
+        //new method to display top 5 breaking news odered by Nr of likes on newsOverview
         requestsBreakingNews("http://api.a17-sd606.studev.groept.be/selectBreakingNews");
 
         ButtonSearch();
@@ -81,8 +81,13 @@ public class NewsOverviewActivity extends AppCompatActivity {
         TNDates.add((TextView) findViewById(R.id.TNDate4));
         TNDates.add((TextView) findViewById(R.id.TNDate5));
 
+        TNLikes.add((TextView) findViewById(R.id.likesNr1));
+        TNLikes.add((TextView) findViewById(R.id.likesNr2));
+        TNLikes.add((TextView) findViewById(R.id.likesNr3));
+        TNLikes.add((TextView) findViewById(R.id.likesNr4));
+        TNLikes.add((TextView) findViewById(R.id.likesNr5));
+
         ids=new int[5];
-        //likesNr=new int[5];
     }
 
     public void requestsBreakingNews(String url) {//display top 5 breaking news on newsOverview
@@ -100,12 +105,14 @@ public class NewsOverviewActivity extends AppCompatActivity {
                                 String newsTitle=jo.getString("title");
                                 String newsTags=jo.getString("tags");
                                 String newsDate=jo.getString("date");
+                                String newsLikes=jo.getString("likes");
 
                                 ids[i]=jo.getInt("newsID");
                                 //likesNr[i]=jo.getInt("likes");
                                 TNTitles.get(i).setText(newsTitle);
                                 TNTags.get(i).setText(newsTags);
                                 TNDates.get(i).setText(newsDate);
+                                TNLikes.get(i).setText(newsLikes);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

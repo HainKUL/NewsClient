@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     //declare globle variables
     Button loginBut,registerBut,guestBut,imageBut,phpBut;
+    TextView adverTV;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,8 +34,9 @@ public class MainActivity extends AppCompatActivity {
         loginBut=(Button) findViewById(R.id.butLogin);
         registerBut=(Button) findViewById(R.id.butRegister);
         guestBut=(Button) findViewById(R.id.butGuest);
-        imageBut=(Button) findViewById(R.id.button);
+        //imageBut=(Button) findViewById(R.id.button);
         phpBut=(Button) findViewById(R.id.php);  //the phpBut is the second gray button on the bottom of the layout, on which you click to get access to fileUploadTest testing the php!
+        adverTV=(TextView) findViewById(R.id.advertiser);
 
         //2. set click listeners to the buttons
         loginBut.setOnClickListener(new View.OnClickListener() {
@@ -72,24 +75,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        imageBut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(MainActivity.this,imageShow.class);
-                startActivity(intent);
-            }
-        });
-
-        phpBut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(MainActivity.this,fileUploadTest.class);
-                startActivity(intent);
-            }
-        });
-
-
-
         guestBut.setOnClickListener(new View.OnClickListener() {//need to pass information telling the database the guest
             @Override
             public void onClick(View view) {//send guest info to database
@@ -114,7 +99,35 @@ public class MainActivity extends AppCompatActivity {
                 queue.add(stringRequest);// Add the request to the RequestQueue.
             }
         });
+
+        /*
+        imageBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(MainActivity.this,imageShow.class);
+                startActivity(intent);
+            }
+        });
+*/
+        phpBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(MainActivity.this,fileUploadTest.class);
+                startActivity(intent);
+            }
+        });
+
+
+        adverTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(),AdvertiseActivity.class);
+                startActivity(intent);
+            }
+        });
     }
+
+
 
     public void loginCheck(String emailCheck,String passwdCheck) {
         String url="http://api.a17-sd606.studev.groept.be/loginCheck/"+emailCheck+"/"+passwdCheck;

@@ -50,6 +50,7 @@
                 android:id="@+id/newsImageUp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:contentDescription="@string/todo"
                 app:srcCompat="@mipmap/ic_launcher" />
 
             <TextView
@@ -102,12 +103,13 @@
                 android:id="@+id/showTest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="@string/textview" />
 
             <EditText
                 android:id="@+id/CommentBoard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/textview_border"
                 android:ems="10"
                 android:hint="@string/make_your_comment"
                 android:inputType="textMultiLine|textShortMessage|textLongMessage" />

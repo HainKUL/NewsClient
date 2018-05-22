@@ -63,7 +63,7 @@ public class NewsShowActivity extends AppCompatActivity {
         addLike();
         addComments();//meanwhile, refresh comments list
         iconHome();//back to news_overview
-        getImageInfo("http://api.a17-sd606.studev.groept.be/addPhotos/"+newsID);
+        //getImageInfo("http://api.a17-sd606.studev.groept.be/addPhotos/"+newsID);
         //showImage(imageUrl[0]);
 
 
@@ -174,7 +174,7 @@ public class NewsShowActivity extends AppCompatActivity {
             }
         });
     }
-
+/*
     public void getImageInfo(String url) {//display top 5 breaking news on newsOverview
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -203,6 +203,7 @@ public class NewsShowActivity extends AppCompatActivity {
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
     }
+    */
 
     public void showImage(String url,String pos)  //through which you can show image.  the url is the image`s url
     {
