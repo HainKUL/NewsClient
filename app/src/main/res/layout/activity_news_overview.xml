@@ -44,12 +44,12 @@
                     android:id="@+id/searchIcon"
                     android:layout_width="40dp"
                     android:layout_height="30dp"
-                    android:layout_weight="1"
+                    android:layout_weight="0"
                     android:contentDescription="@string/todo"
                     app:srcCompat="@drawable/search" />
 
                 <Button
-                    android:id="@+id/butRegister"
+                    android:id="@+id/userInfo"
                     android:layout_width="12dp"
                     android:layout_height="40dp"
                     android:layout_weight="1"
@@ -98,30 +98,29 @@
 
             <TextView
                 android:id="@+id/BreakingNews"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="sans-serif"
                 android:text="@string/breaking_news"
+                android:textAlignment="center"
+                android:layout_marginTop="10dp"
                 android:textSize="30sp" />
 
             <LinearLayout
                 android:id="@+id/BoardNews1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/TNImage1"
-                    android:layout_width="200dp"
-                    android:layout_height="100dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_weight="1"
-                    android:contentDescription="@string/todo"
-                    android:scaleType="fitStart"
-                    app:srcCompat="@mipmap/ic_launcher" />
+                    android:layout_width="250dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/textview_border"
+                    android:layout_weight="1" />
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -132,14 +131,15 @@
 
                     <TextView
                         android:id="@+id/TNTitle1"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:contentDescription="@string/image1"
                         android:text="@string/title1"
                         android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/TNTag1"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/tags" />
 
@@ -150,7 +150,7 @@
 
                         <TextView
                             android:id="@+id/TNDate1"
-                            android:layout_width="0dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:hint="@string/date" />
@@ -167,9 +167,9 @@
                             android:id="@+id/likesNr1"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
+                            android:layout_gravity="end"
                             android:layout_marginEnd="5dp"
                             android:layout_marginRight="5dp"
-                            android:layout_gravity="end"
                             android:hint="@string/likes"
                             android:textSize="15sp" />
                     </LinearLayout>
@@ -181,19 +181,16 @@
                 android:id="@+id/BoardNews2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/TNImage2"
-                    android:layout_width="200dp"
-                    android:layout_height="100dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginLeft="5dp"
+                    android:layout_width="250dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:contentDescription="@string/todo"
-                    android:scaleType="fitStart"
-                    app:srcCompat="@mipmap/ic_launcher" />
+                    android:background="@drawable/textview_border"
+                    android:contentDescription="@string/image2" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -253,19 +250,16 @@
                 android:id="@+id/BoardNews3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/TNImage3"
-                    android:layout_width="200dp"
-                    android:layout_height="100dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginLeft="5dp"
+                    android:layout_width="250dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:contentDescription="@string/todo"
-                    android:scaleType="fitStart"
-                    app:srcCompat="@mipmap/ic_launcher" />
+                    android:background="@drawable/textview_border"
+                    android:contentDescription="image3" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -325,19 +319,16 @@
                 android:id="@+id/BoardNews4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/TNImage4"
-                    android:layout_width="200dp"
-                    android:layout_height="100dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginLeft="5dp"
+                    android:layout_width="250dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:contentDescription="@string/todo"
-                    android:scaleType="fitStart"
-                    app:srcCompat="@mipmap/ic_launcher" />
+                    android:background="@drawable/textview_border"
+                    android:contentDescription="image4" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -397,19 +388,16 @@
                 android:id="@+id/BoardNews5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/TNImage5"
-                    android:layout_width="200dp"
-                    android:layout_height="100dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginLeft="5dp"
+                    android:layout_width="250dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:contentDescription="@string/todo"
-                    android:scaleType="fitStart"
-                    app:srcCompat="@mipmap/ic_launcher" />
+                    android:background="@drawable/textview_border"
+                    android:contentDescription="image5" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -460,9 +448,11 @@
                             android:layout_gravity="end"
                             android:hint="@string/likes"
                             android:textSize="15sp" />
+
                     </LinearLayout>
 
                 </LinearLayout>
+
             </LinearLayout>
 
 

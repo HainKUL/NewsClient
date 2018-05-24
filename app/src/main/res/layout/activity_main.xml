@@ -28,28 +28,18 @@
             <ImageView
                 android:id="@+id/imageView3"
                 android:layout_width="142dp"
-                android:layout_height="85dp"
+                android:layout_height="52dp"
                 android:contentDescription="@string/todo"
                 app:srcCompat="@drawable/logo_kul" />
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal"
-                android:text="@string/welcome"
-                android:textSize="36sp"
-                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/butLogin"
                 android:layout_width="155dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
+                android:layout_marginTop="30dp"
                 android:background="@android:color/holo_blue_light"
-                android:text="@string/login" />
+                android:text="Login" />
 
             <Button
                 android:id="@+id/butRegister"
@@ -58,7 +48,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
                 android:background="@android:color/holo_blue_bright"
-                android:text="@string/register" />
+                android:text="Register" />
 
             <Button
                 android:id="@+id/butGuest"
@@ -67,7 +57,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
                 android:background="@android:color/holo_blue_dark"
-                android:text="@string/view_as_a_guest" />
+                android:text="Guest" />
 
             <Button
                 android:id="@+id/button"

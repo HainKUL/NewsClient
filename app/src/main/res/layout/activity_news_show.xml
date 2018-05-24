@@ -48,10 +48,11 @@
 
             <ImageView
                 android:id="@+id/newsImageUp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/todo"
-                app:srcCompat="@mipmap/ic_launcher" />
+                android:layout_width="120dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/textview_border"
+                android:contentDescription="@string/image1" />
 
             <TextView
                 android:id="@+id/Content"
@@ -63,13 +64,15 @@
 
             <ImageView
                 android:id="@+id/newsImageDown"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:srcCompat="@mipmap/ic_launcher_round" />
+                android:layout_width="120dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/textview_border"
+                android:contentDescription="@string/image2" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
@@ -79,7 +82,7 @@
                     android:id="@+id/likesIcon"
                     android:layout_width="63dp"
                     android:layout_height="30dp"
-                    android:contentDescription="@string/todo"
+                    android:contentDescription="@string/thumbup"
                     app:srcCompat="@drawable/like" />
 
                 <TextView
@@ -94,8 +97,9 @@
 
             <Button
                 android:id="@+id/ButSubmit"
-                android:layout_width="match_parent"
+                android:layout_width="350dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:background="@android:color/holo_green_light"
                 android:text="@string/submitBut" />
 
@@ -113,18 +117,6 @@
                 android:ems="10"
                 android:hint="@string/make_your_comment"
                 android:inputType="textMultiLine|textShortMessage|textLongMessage" />
-
-            <TextView
-                android:id="@+id/commentFour"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/com3" />
-
-            <TextView
-                android:id="@+id/commentFive"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/com4" />
 
             <TextView
                 android:id="@+id/cache"

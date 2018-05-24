@@ -13,7 +13,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             >
 
@@ -22,29 +22,29 @@
                 android:id="@+id/image"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:src="@mipmap/ic_launcher"/>
+                android:src="@mipmap/ic_launcher" android:contentDescription="@string/todo" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Path: "
+                android:text="@string/path"
                 android:id="@+id/path"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"/>
+                android:layout_marginBottom="5dp" android:layout_marginStart="10dp"/>
 
             <EditText
                 android:id="@+id/etCaption"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Caption"
+                android:hint="@string/caption"
                 android:imeOptions="actionDone"/>
 
             <Button
                 android:id="@+id/btnUpload"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Upload"
+                android:text="@string/upload"
                 />
 
         </LinearLayout>

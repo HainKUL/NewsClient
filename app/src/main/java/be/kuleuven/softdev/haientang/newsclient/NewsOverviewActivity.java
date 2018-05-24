@@ -29,14 +29,11 @@ public class NewsOverviewActivity extends AppCompatActivity {
     ImageView SearchIcon;
     Button SportsBut,EconomyBut,ChinaBut;
     int[] ids;
-    //int i;// make gloable to avoid final
-    //int[] likesNr;//to store id and likesNr for each Top News
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_overview);
-
 
         init();//initialise all references
 
@@ -82,7 +79,6 @@ public class NewsOverviewActivity extends AppCompatActivity {
         TNDates.add((TextView) findViewById(R.id.TNDate5));
 
         ids=new int[5];
-        //likesNr=new int[5];
     }
 
     public void requestsBreakingNews(String url) {//display top 5 breaking news on newsOverview
@@ -175,7 +171,5 @@ public class NewsOverviewActivity extends AppCompatActivity {
                 }
             });
         }
-        //i=j;
-
     }
 }

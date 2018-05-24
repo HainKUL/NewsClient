@@ -14,7 +14,7 @@
             android:layout_height="20dp"
             android:layout_marginLeft="15dp"
             android:src="@drawable/home"
-            />
+            android:contentDescription="@string/todo" android:layout_marginStart="15dp" />
 
         <TextView
             android:id="@+id/title"
@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:textColor="#000000"
-            android:text="demo"
+            android:text="@string/demo"
             />
 
     </LinearLayout>

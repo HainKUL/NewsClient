@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">NewsClient</string>
-    <string name="welcome">Welcome!</string>
-    <string name="register">Register</string>
     <string name="username">Username</string>
     <string name="button">Button</string>
     <string name="confirm_password">Confirm Password</string>
@@ -12,32 +10,24 @@
     <string name="repeat_password">Repeat password:</string>
     <string name="account">Account:</string>
     <string name="email">Email</string>
-    <string name="welcome_to_login">Welcome to login</string>
-    <string name="view_as_a_guest">View As A Guest</string>
-    <string name="login_to_your_account">Login to Your Account</string>
     <string name="password">Password</string>
     <string name="forgot_your_password">Forgot your password?</string>
     <string name="firstname">Firstname</string>
     <string name="surname">Surname</string>
     <string name="example_hello_world_kuleuven_be">example: hello.world@kuleuven.be</string>
-    <string name="must_start_with_uppercase_letter_nnmust_contain_at_least_one_digit_nmust_be_8_16_characters">Must start with uppercase letter nMust contain at least one digit Must be 8-16 characters</string>
     <string name="breaking_news">Breaking News</string>
-    <string name="category">category</string>
     <string name="tags2">tags2</string>
     <string name="tags1">tags1</string>
     <string name="sports">Sports</string>
     <string name="economy">Economy</string>
     <string name="china">China</string>
     <string name="news">News</string>
-    <string name="login">Login</string>
     <string name="date">date</string>
-    <string name="textview">TextView</string>
     <string name="title">Title</string>
     <string name="review_here">Review Here</string>
     <string name="nr">Nr</string>
     <string name="comment">comment</string>
     <string name="content">Content</string>
-    <string name="todo">TODO</string>
     <string name="com3">Com3</string>
     <string name="com4">Com4</string>
     <string name="make_your_comment">Make your comment</string>
@@ -47,5 +37,40 @@
     <string name="title1">title1</string>
     <string name="title4">title4</string>
     <string name="title5">title5</string>
-    <string name="tags">tags</string>
+    <string name="terms_of_use">Terms of use</string>
+    <string name="administrator">Administrator</string>
+    <string name="advertise_with_us">Advertise with us</string>
+    <string name="likes">likes</string>
+    <string name="calendar">calendar</string>
+    <string name="first_part">First part</string>
+    <string name="image1">Image1</string>
+    <string name="tags">Tags</string>
+    <string name="category">Category</string>
+    <string name="image2">Image2</string>
+    <string name="js">Js</string>
+    <string name="path">Path:</string>
+    <string name="caption">Caption</string>
+    <string name="upload">Upload</string>
+    <string name="demo">demo</string>
+    <string name="todo">TODO</string>
+    <string name="must_start_with_upper_case_letter_contain_at_least_one_digit_be_8_16_characters">Must start with upper case letter, contain at least one digit, be 8~16 characters!</string>
+    <string name="profilepic">profilePic</string>
+    <string name="emailpic">emailPic</string>
+    <string name="passwdpic">passwdPic</string>
+    <string name="sign_up_for_free">Sign Up For Free</string>
+    <string name="user_login">User Login</string>
+    <string name="textview">Textview</string>
+    <string name="textview2">textview2</string>
+    <string name="thumbup">thumbUp</string>
+    <string name="textview5">Textview5</string>
+    <string name="image3">image3</string>
+    <string name="image4">image4</string>
+    <string name="image5">image5</string>
+    <string name="textview1">Textview1</string>
+    <string-array name="categorylist">
+        <item>Economy</item>
+        <item>Sports</item>
+        <item>China</item>
+    </string-array>
+
 </resources>

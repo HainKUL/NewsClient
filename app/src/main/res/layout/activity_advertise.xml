@@ -67,7 +67,7 @@
                     android:id="@+id/categSpinner"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:entries="@array/categories" />
+                    android:entries="@array/categorylist" />
 
                 <ImageView
                     android:id="@+id/calendImg"
@@ -98,7 +98,7 @@
                     android:id="@+id/textView10"
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/tag"
+                    android:text="@string/tags"
                     android:textSize="18sp" />
 
                 <EditText
@@ -114,7 +114,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="@string/fisrt_part"
+                android:text="@string/first_part"
                 android:textAlignment="center"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -139,7 +139,6 @@
                     android:id="@+id/newsImageUp"
                     android:layout_width="70dp"
                     android:layout_height="wrap_content"
-                    android:hint="@string/image1"
                     android:text="@string/image1"
                     android:textSize="18sp" />
 

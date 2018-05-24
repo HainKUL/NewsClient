@@ -16,10 +16,20 @@
         android:id="@+id/txtLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textStyle="bold"
-        android:text="@string/login"
-        android:textSize="25sp"/>
+        android:fontFamily="serif"
+        android:text="@string/user_login"
+        android:textSize="35sp"
+        android:layout_marginTop="20dp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="102dp"
+        android:layout_height="102dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:contentDescription="@string/profilepic"
+        app:srcCompat="@drawable/profile" />
 
     <EditText
         android:id="@+id/etEmail"
@@ -44,7 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/holo_blue_light"
-        android:text="@string/login"
+        android:text="Login"
         android:textColor="@android:color/white" />
 
     <TextView
