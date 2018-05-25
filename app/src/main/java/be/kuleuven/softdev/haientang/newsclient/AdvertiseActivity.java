@@ -39,14 +39,7 @@ public class AdvertiseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_advertise);
 
         init();
-/*
-        categorySpin.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-            }
-        });
-*/
         dateTv.setText(date);//date by default
         calenderImg.setOnClickListener(new View.OnClickListener() {//choose the date from calendar and display it
             @Override

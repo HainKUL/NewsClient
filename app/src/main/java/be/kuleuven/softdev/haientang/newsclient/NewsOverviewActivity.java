@@ -1,6 +1,7 @@
 package be.kuleuven.softdev.haientang.newsclient;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +13,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -22,37 +24,45 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class NewsOverviewActivity extends AppCompatActivity {
+    int[] ids;
+    ArrayList<ImageView> newsImages = new ArrayList<ImageView>();
     ArrayList<ImageView> TNImages = new ArrayList<ImageView>();
     ArrayList<TextView> TNTitles = new ArrayList<TextView>();
-    ArrayList<TextView> TNTags = new ArrayList<TextView>();
     ArrayList<TextView> TNDates = new ArrayList<TextView>();
+    ArrayList<TextView> TNLikes = new ArrayList<TextView>();
     ImageView SearchIcon;
     Button SportsBut,EconomyBut,ChinaBut;
-    int[] ids;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_overview);
 
-        init();//initialise all references
+        initAllRef();
 
-        //new method to display top 5 breaking news on newsOverview
-        requestsBreakingNews("http://api.a17-sd606.studev.groept.be/selectBreakingNews");
+        top5NewsOrderedByLikes("http://api.a17-sd606.studev.groept.be/selectBreakingNews");
 
-        ButtonSearch();
-        ButtonSports();
-        ButtonEconomy();
-        ButtonChina();
+        clickButtonSearch();
+        clickButtonSports();
+        clickButtonEconomy();
+        clickButtonChina();
 
-        clickOnEachNews();
+        searchFullNewsById();
     }
 
-    private void init(){
-        SearchIcon=(ImageView) findViewById(R.id.searchIcon);
-        SportsBut = (Button) findViewById(R.id.Sports);
-        EconomyBut = (Button) findViewById(R.id.Economy);
-        ChinaBut = (Button) findViewById(R.id.China);
+    private void initAllRef(){
+        ids=new int[5];
+
+        SearchIcon = findViewById(R.id.searchIcon);
+        SportsBut = findViewById(R.id.Sports);
+        EconomyBut = findViewById(R.id.Economy);
+        ChinaBut = findViewById(R.id.China);
+
+        newsImages.add((ImageView) findViewById(R.id.newsImage1));
+        newsImages.add((ImageView) findViewById(R.id.newsImage2));
+        newsImages.add((ImageView) findViewById(R.id.newsImage3));
+        newsImages.add((ImageView) findViewById(R.id.newsImage4));
+        newsImages.add((ImageView) findViewById(R.id.newsImage5));
 
         TNImages.add((ImageView) findViewById(R.id.TNImage1));
         TNImages.add((ImageView) findViewById(R.id.TNImage2));
@@ -66,25 +76,21 @@ public class NewsOverviewActivity extends AppCompatActivity {
         TNTitles.add((TextView) findViewById(R.id.TNTitle4));
         TNTitles.add((TextView) findViewById(R.id.TNTitle5));
 
-        TNTags.add((TextView) findViewById(R.id.TNTag1));
-        TNTags.add((TextView) findViewById(R.id.TNTag2));
-        TNTags.add((TextView) findViewById(R.id.TNTag3));
-        TNTags.add((TextView) findViewById(R.id.TNTag4));
-        TNTags.add((TextView) findViewById(R.id.TNTag5));
-
         TNDates.add((TextView) findViewById(R.id.TNDate1));
         TNDates.add((TextView) findViewById(R.id.TNDate2));
         TNDates.add((TextView) findViewById(R.id.TNDate3));
         TNDates.add((TextView) findViewById(R.id.TNDate4));
         TNDates.add((TextView) findViewById(R.id.TNDate5));
 
-        ids=new int[5];
+        TNLikes.add((TextView) findViewById(R.id.likesNr1));
+        TNLikes.add((TextView) findViewById(R.id.likesNr2));
+        TNLikes.add((TextView) findViewById(R.id.likesNr3));
+        TNLikes.add((TextView) findViewById(R.id.likesNr4));
+        TNLikes.add((TextView) findViewById(R.id.likesNr5));
     }
 
-    public void requestsBreakingNews(String url) {//display top 5 breaking news on newsOverview
-        // Instantiate the RequestQueue.
+    public void top5NewsOrderedByLikes(String url) {
         RequestQueue queue = Volley.newRequestQueue(this);
-        // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -93,15 +99,16 @@ public class NewsOverviewActivity extends AppCompatActivity {
                             JSONArray jArr=new JSONArray(response);
                             for(int i=0;i<5;i++) {
                                 JSONObject jo=jArr.getJSONObject(i);
-                                String newsTitle=jo.getString("title");
-                                String newsTags=jo.getString("tags");
-                                String newsDate=jo.getString("date");
-
                                 ids[i]=jo.getInt("newsID");
-                                //likesNr[i]=jo.getInt("likes");
+                                String newsTitle=jo.getString("title");
+                                String newsDate=jo.getString("date");
+                                int newsLikes=jo.getInt("likes");
+
                                 TNTitles.get(i).setText(newsTitle);
-                                TNTags.get(i).setText(newsTags);
                                 TNDates.get(i).setText(newsDate);
+                                TNLikes.get(i).setText(""+newsLikes);//to insert integer to database, must use ""
+
+                                //getImageByNewsID(i,ids[i]);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -110,12 +117,11 @@ public class NewsOverviewActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {}
         });
-        // Add the request to the RequestQueue.
+
         queue.add(stringRequest);
     }
 
-    public void ButtonSearch()
-    {
+    private void clickButtonSearch() {
         SearchIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,51 +131,95 @@ public class NewsOverviewActivity extends AppCompatActivity {
         });
     }
 
-    public void ButtonSports() {
+    public void clickButtonSports() {
         SportsBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(NewsOverviewActivity.this, CategoryActivity.class);
-                intent.putExtra("category","sports");
+                Intent intent = new Intent(getApplicationContext(), CategoryActivity.class);
+                intent.putExtra("category","Sports");
                 startActivity(intent);
             }
         });
     }
 
-    public void ButtonEconomy() {
+    public void clickButtonEconomy() {
         EconomyBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(NewsOverviewActivity.this, CategoryActivity.class);
-                intent.putExtra("category","economy");
+                Intent intent = new Intent(getApplicationContext(), CategoryActivity.class);
+                intent.putExtra("category","Economy");
                 startActivity(intent);
             }
         });
     }
 
-    public void ButtonChina() {
+    public void clickButtonChina() {
         ChinaBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(NewsOverviewActivity.this, CategoryActivity.class);
-                intent.putExtra("category","china");
+                Intent intent = new Intent(getApplicationContext(), CategoryActivity.class);
+                intent.putExtra("category","China");
                 startActivity(intent);
             }
         });
     }
 
-    public void clickOnEachNews(){
+    public void searchFullNewsById(){
         for(int i=0;i<5;i++){
             final int j = i;
-            TNTitles.get(i).setOnClickListener(new View.OnClickListener() {//search full news by id( and title)
+            TNTitles.get(j).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent=new Intent(getApplicationContext(),NewsShowActivity.class);
                     intent.putExtra("newsID",ids[j]);
-                    //intent.putExtra("newsLikes",likesNr[i]);
+                    intent.putExtra("title",TNTitles.get(j).toString());
+                    intent.putExtra("date",TNDates.get(j).toString());
+                    intent.putExtra("likes",TNLikes.get(j).toString());
                     startActivity(intent);
                 }
             });
         }
+    }
+
+    public void getImageByNewsID(int i, int newsID) {//newsID is the foreign key in photo table
+        String url="http://api.a17-sd606.studev.groept.be/selectPhotosOnFrontFace/"+newsID;
+        final int j=i;
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jArr=new JSONArray(response);
+                            JSONObject jo=jArr.getJSONObject(0);
+                            String name=jo.getString("photoName");
+                            showImageByName("http://a17-sd606.studev.groept.be/Image/"+name,j);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }}
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {}
+        });
+
+        queue.add(stringRequest);
+    }
+
+    public void showImageByName(String url,int j) {  //through which you can show image.  the url is the image`s url
+        RequestQueue mQueue = Volley.newRequestQueue(this);
+        ImageLoader imageLoader = new ImageLoader(mQueue, new BitmapCache() {
+            @Override
+            public void putBitmap(String url, Bitmap bitmap) {
+            }
+            @Override
+            public Bitmap getBitmap(String url) {
+                return null;
+            }
+        });
+
+        ImageLoader.ImageListener listener = ImageLoader.getImageListener(newsImages.get(j),
+                R.drawable.home, R.drawable.home);
+        imageLoader.get(url,
+                listener, 600, 600);
     }
 }

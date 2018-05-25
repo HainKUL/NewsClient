@@ -2,12 +2,12 @@ package be.kuleuven.softdev.haientang.newsclient;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -19,7 +19,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -27,50 +26,62 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class NewsShowActivity extends AppCompatActivity {
-    ImageView homeIcon,thumbUpIcon;
     int newsID,likesNr;
-    TextView newsTitle,newsTags,newsContent,newsLikes;
+    ImageView homeIcon,thumbUpIcon;
+
+    TextView newsTitle,newsDate,newsTags,newsContent,newsLikes;
     EditText commentBoard;
     Button submitBut;
     ImageView ivUp;
     ImageView ivDown;
-    String[] imageUrl=new String[2];
-    String[] imagePosition=new String[2];
+//    String[] imageUrl=new String[2];
+//    String[] imagePosition=new String[2];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_show);
 
-        ivUp=(ImageView) findViewById(R.id.newsImageUp);
+        initAllRef();
+
+        displayFullNewsByID();
+        displayUpToTenComments();
+        addLike();
+        addComments();
+        backToNewsOverview();
+        //getImageInfo("http://api.a17-sd606.studev.groept.be/addPhotos/"+newsID);
+        //showImage(imageUrl[0]);
+    }
+
+    private void initAllRef() {
+        newsID = getIntent().getExtras().getInt("newsID");
+        //likesNr = Integer.parseInt (getIntent().getExtras().getString("likes"));
 
         homeIcon = (ImageView) findViewById(R.id.home);
         thumbUpIcon = (ImageView) findViewById(R.id.likesIcon);
-        newsID = getIntent().getExtras().getInt("newsID");
         newsTitle=(TextView) findViewById(R.id.Title);
+        newsDate = (TextView) findViewById(R.id.newsDate);
         newsTags=(TextView) findViewById(R.id.Tags);
         newsContent = (TextView) findViewById(R.id.Content);
         newsLikes=(TextView) findViewById(R.id.likesNr);
         commentBoard = (EditText) findViewById(R.id.CommentBoard);
         submitBut = (Button) findViewById(R.id.ButSubmit);
-
-        ivDown=(ImageView)findViewById(R.id.newsImageDown);
-
-        displayNews();
-        addLike();
-        addComments();//meanwhile, refresh comments list
-        iconHome();//back to news_overview
-        //getImageInfo("http://api.a17-sd606.studev.groept.be/addPhotos/"+newsID);
-        //showImage(imageUrl[0]);
-
-
+        //ivUp=(ImageView) findViewById(R.id.newsImageUp);
+        //ivDown=(ImageView)findViewById(R.id.newsImageDown);
     }
 
-    public void displayNews() { //get news content from json server
+    public void displayFullNewsByID() {
         String url="http://api.a17-sd606.studev.groept.be/selectNewsToDisplay/"+newsID;
+        //final String ttl=getIntent().getExtras().getString("title");
+        //final String nsDate=getIntent().getExtras().getString("date");
+
+//        newsTitle.setText(getIntent().getExtras().getString("title"));
+//        newsDate.setText(getIntent().getExtras().getString("date"));
+        //newsLikes.setText(""+likesNr);//set integer value into TextView
 
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -81,18 +92,19 @@ public class NewsShowActivity extends AppCompatActivity {
                             JSONArray jArr=new JSONArray(response);
                                 JSONObject jo=jArr.getJSONObject(0);
 
-                                String ttl=jo.getString("title");
+                                String tt=jo.getString("title");
                                 String tg=jo.getString("tags");
                                 String cnt=jo.getString("content");
-                                likesNr=jo.getInt("likes");
+                                String d=jo.getString("date");
+                                likesNr = jo.getInt("likes");
 
-                                newsTitle.setText(ttl);
+                                newsTitle.setText(tt);
                                 newsTags.setText(tg);
+                                newsLikes.setText(""+likesNr);
                                 newsContent.setText(Html.fromHtml(cnt, Html.FROM_HTML_MODE_LEGACY));
-                                newsLikes.setText(""+likesNr);//set integer value into TextView
+                                newsDate.setText(d);
                         } catch (JSONException e) {
                             e.printStackTrace();
-
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -124,8 +136,6 @@ public class NewsShowActivity extends AppCompatActivity {
                     }
                 });
                 queue.add(stringRequest);
-
-
             }
         });
     }
@@ -134,13 +144,17 @@ public class NewsShowActivity extends AppCompatActivity {
         submitBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url="http://api.a17-sd606.studev.groept.be/addComments/"+newsID+"/"+commentBoard.getText().toString();
+                //get instant time
+                Calendar mCurrentDate = Calendar.getInstance();;
+                SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                final String dt = format.format(mCurrentDate.getTime());
+                String url="http://api.a17-sd606.studev.groept.be/addComments/"+newsID+"/"+commentBoard.getText().toString()+dt;
 
                 RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                         new Response.Listener<String>() {
                             public void onResponse(String response) {
-                                refreshCommentsList(commentBoard.getText().toString());
+                                refreshCommentsLists(commentBoard.getText().toString(),dt);
                                 commentBoard.setText("");
                             }
                         }, new Response.ErrorListener() {
@@ -154,18 +168,67 @@ public class NewsShowActivity extends AppCompatActivity {
         });
     }
 
-    public void refreshCommentsList(String comment) {//in database, sort by comment id is equivalent to sorting by time. the last id is the newset comment
-        String url="http://api.a17-sd606.studev.groept.be/refreshComments/"+newsID;
-        // create a new textview
-        final TextView newComment = new TextView(this);
-        // set some properties of rowTextView or something
+    public void refreshCommentsLists(String comment,String dateTime) {
+        // 1.create Java objects for all views and viewgroups
+        LinearLayout llh = new LinearLayout(this);
+        LinearLayout llv = new LinearLayout(this);
+        ImageView pic = new ImageView(this);
+        TextView time = new TextView(this);
+        TextView newComment= new TextView(this);
+
+        //2.define properties for each
+        LinearLayout.LayoutParams dimension1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams dimension2 = new LinearLayout.LayoutParams(80, 80);
+        llh.setLayoutParams(dimension1);
+        llv.setLayoutParams(dimension1);
+        pic.setLayoutParams(dimension2);
+        time.setLayoutParams(dimension1);
+        newComment.setLayoutParams(dimension1);
+
+        //3.set other properties
+        llh.setOrientation(LinearLayout.HORIZONTAL);
+        llv.setOrientation(LinearLayout.VERTICAL);
+        time.setText(dateTime);
         newComment.setText(comment);
-        // add the textview to the linearlayout
+        pic.setLayoutParams(dimension2);
+
+        //4.add to viewGroup
+        llv.addView(time);
+        llv.addView(newComment);
+        llh.addView(pic);
+        llh.addView(llv);
         LinearLayout ll = (LinearLayout) findViewById(R.id.myLinearLayout);
-        ll.addView(newComment);
+        ll.addView(llh);
     }
 
-    public void iconHome() {
+    private void displayUpToTenComments(){
+        String url="http://api.a17-sd606.studev.groept.be/displayFiveComments/"+newsID;
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jArr=new JSONArray(response);
+                            for(int i=0;i<jArr.length();i++){
+                                JSONObject jo=jArr.getJSONObject(i);
+                                String c=jo.getString("content");
+                                String t=jo.getString("date");
+                                refreshCommentsLists(c,t);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Failed to load the comments!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        queue.add(stringRequest);
+    }
+
+    public void backToNewsOverview() {
         homeIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {//switch to news_overview activity
@@ -203,7 +266,7 @@ public class NewsShowActivity extends AppCompatActivity {
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
     }
-    */
+
 
     public void showImage(String url,String pos)  //through which you can show image.  the url is the image`s url
     {
@@ -245,5 +308,6 @@ public class NewsShowActivity extends AppCompatActivity {
 
 
     }
+    */
 }
 

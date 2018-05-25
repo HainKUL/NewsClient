@@ -39,7 +39,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="30dp"
                 android:background="@android:color/holo_blue_light"
-                android:text="Login" />
+                android:text="@string/login" />
 
             <Button
                 android:id="@+id/butRegister"
@@ -48,7 +48,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
                 android:background="@android:color/holo_blue_bright"
-                android:text="Register" />
+                android:text="@string/register" />
 
             <Button
                 android:id="@+id/butGuest"
@@ -57,12 +57,13 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
                 android:background="@android:color/holo_blue_dark"
-                android:text="Guest" />
+                android:text="@string/guest" />
 
             <Button
                 android:id="@+id/button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:text="@string/button" />
 
             <Button
@@ -75,7 +76,7 @@
                 android:id="@+id/background"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="110dp"
+                android:layout_marginTop="150dp"
                 android:gravity="bottom">
 
                 <TextView

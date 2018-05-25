@@ -11,14 +11,15 @@
         android:id="@+id/ScrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="5dp"
+        android:padding="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
         <LinearLayout
             android:id="@+id/Layout"
@@ -101,16 +102,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif"
                 android:text="@string/breaking_news"
                 android:textAlignment="center"
-                android:layout_marginTop="10dp"
                 android:textSize="30sp" />
 
             <LinearLayout
                 android:id="@+id/BoardNews1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
@@ -118,40 +119,36 @@
                     android:id="@+id/TNImage1"
                     android:layout_width="250dp"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@drawable/textview_border"
-                    android:layout_weight="1" />
-
+                    android:contentDescription="@string/image1" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:padding="10dp">
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/TNTitle1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:contentDescription="@string/image1"
-                        android:text="@string/title1"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:id="@+id/TNTag1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/tags" />
+                        android:layout_gravity="top"
+                        android:hint="@string/title1"
+                        android:textSize="18sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:gravity="bottom"
                         android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/TNDate1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="0dp"
+                            android:layout_height="20dp"
                             android:layout_weight="1"
                             android:hint="@string/date" />
 
@@ -159,17 +156,15 @@
                             android:id="@+id/likesIcon1"
                             android:layout_width="32dp"
                             android:layout_height="20dp"
-                            android:layout_gravity="end"
                             android:contentDescription="@string/todo"
                             app:srcCompat="@drawable/like" />
 
                         <TextView
                             android:id="@+id/likesNr1"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="end"
-                            android:layout_marginEnd="5dp"
-                            android:layout_marginRight="5dp"
+                            android:layout_height="20dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginRight="10dp"
                             android:hint="@string/likes"
                             android:textSize="15sp" />
                     </LinearLayout>
@@ -180,7 +175,7 @@
             <LinearLayout
                 android:id="@+id/BoardNews2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
@@ -194,33 +189,30 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:padding="10dp">
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/TNTitle2"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/title2"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:id="@+id/TNTag2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/tags" />
+                        android:layout_gravity="top"
+                        android:hint="@string/title2"
+                        android:textSize="18sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:gravity="bottom"
                         android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/TNDate2"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="20dp"
                             android:layout_weight="1"
                             android:hint="@string/date" />
 
@@ -228,17 +220,15 @@
                             android:id="@+id/likesIcon2"
                             android:layout_width="32dp"
                             android:layout_height="20dp"
-                            android:layout_gravity="end"
                             android:contentDescription="@string/todo"
                             app:srcCompat="@drawable/like" />
 
                         <TextView
                             android:id="@+id/likesNr2"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_gravity="end"
+                            android:layout_height="20dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginRight="10dp"
                             android:hint="@string/likes"
                             android:textSize="15sp" />
                     </LinearLayout>
@@ -249,7 +239,7 @@
             <LinearLayout
                 android:id="@+id/BoardNews3"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
@@ -259,37 +249,34 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/textview_border"
-                    android:contentDescription="image3" />
+                    android:contentDescription="@string/image3" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:padding="10dp">
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/TNTitle3"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/title3"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:id="@+id/TNTag3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/tags" />
+                        android:layout_gravity="top"
+                        android:hint="@string/title3"
+                        android:textSize="18sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:gravity="bottom"
                         android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/TNDate3"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="20dp"
                             android:layout_weight="1"
                             android:hint="@string/date" />
 
@@ -297,17 +284,15 @@
                             android:id="@+id/likesIcon3"
                             android:layout_width="32dp"
                             android:layout_height="20dp"
-                            android:layout_gravity="end"
                             android:contentDescription="@string/todo"
                             app:srcCompat="@drawable/like" />
 
                         <TextView
                             android:id="@+id/likesNr3"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_gravity="end"
+                            android:layout_height="20dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginRight="10dp"
                             android:hint="@string/likes"
                             android:textSize="15sp" />
                     </LinearLayout>
@@ -318,7 +303,7 @@
             <LinearLayout
                 android:id="@+id/BoardNews4"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
@@ -328,37 +313,34 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/textview_border"
-                    android:contentDescription="image4" />
+                    android:contentDescription="@string/image4" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:padding="10dp">
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/TNTitle4"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/title4"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:id="@+id/TNTag4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/tags" />
+                        android:layout_gravity="top"
+                        android:hint="@string/title4"
+                        android:textSize="18sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:gravity="bottom"
                         android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/TNDate4"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="20dp"
                             android:layout_weight="1"
                             android:hint="@string/date" />
 
@@ -366,17 +348,15 @@
                             android:id="@+id/likesIcon4"
                             android:layout_width="32dp"
                             android:layout_height="20dp"
-                            android:layout_gravity="end"
                             android:contentDescription="@string/todo"
                             app:srcCompat="@drawable/like" />
 
                         <TextView
                             android:id="@+id/likesNr4"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_gravity="end"
+                            android:layout_height="20dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginRight="10dp"
                             android:hint="@string/likes"
                             android:textSize="15sp" />
                     </LinearLayout>
@@ -387,7 +367,8 @@
             <LinearLayout
                 android:id="@+id/BoardNews5"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
+                android:layout_marginBottom="20dp"
                 android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
@@ -397,37 +378,34 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@drawable/textview_border"
-                    android:contentDescription="image5" />
+                    android:contentDescription="@string/image5" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:padding="10dp">
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/TNTitle5"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/title5"
-                        android:textSize="20sp" />
-
-                    <TextView
-                        android:id="@+id/TNTag5"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/tags" />
+                        android:layout_gravity="top"
+                        android:hint="@string/title5"
+                        android:textSize="18sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:gravity="bottom"
                         android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/TNDate5"
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="20dp"
                             android:layout_weight="1"
                             android:hint="@string/date" />
 
@@ -435,24 +413,20 @@
                             android:id="@+id/likesIcon5"
                             android:layout_width="32dp"
                             android:layout_height="20dp"
-                            android:layout_gravity="end"
                             android:contentDescription="@string/todo"
                             app:srcCompat="@drawable/like" />
 
                         <TextView
                             android:id="@+id/likesNr5"
                             android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="5dp"
-                            android:layout_marginRight="5dp"
-                            android:layout_gravity="end"
+                            android:layout_height="20dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginRight="10dp"
                             android:hint="@string/likes"
                             android:textSize="15sp" />
-
                     </LinearLayout>
 
                 </LinearLayout>
-
             </LinearLayout>
 
 

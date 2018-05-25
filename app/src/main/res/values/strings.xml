@@ -43,16 +43,13 @@
     <string name="likes">likes</string>
     <string name="calendar">calendar</string>
     <string name="first_part">First part</string>
-    <string name="image1">Image1</string>
     <string name="tags">Tags</string>
     <string name="category">Category</string>
-    <string name="image2">Image2</string>
     <string name="js">Js</string>
     <string name="path">Path:</string>
     <string name="caption">Caption</string>
     <string name="upload">Upload</string>
     <string name="demo">demo</string>
-    <string name="todo">TODO</string>
     <string name="must_start_with_upper_case_letter_contain_at_least_one_digit_be_8_16_characters">Must start with upper case letter, contain at least one digit, be 8~16 characters!</string>
     <string name="profilepic">profilePic</string>
     <string name="emailpic">emailPic</string>
@@ -63,10 +60,19 @@
     <string name="textview2">textview2</string>
     <string name="thumbup">thumbUp</string>
     <string name="textview5">Textview5</string>
+    <string name="textview1">Textview1</string>
+    <string name="image1">Image1</string>
+    <string name="image2">Image2</string>
     <string name="image3">image3</string>
     <string name="image4">image4</string>
     <string name="image5">image5</string>
-    <string name="textview1">Textview1</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="guest">Guest</string>
+    <string name="user_comments">User Comments</string>
+    <string name="time">time</string>
+    <string name="newsdate">newsDate</string>
+    <string name="todo">TODO</string>
     <string-array name="categorylist">
         <item>Economy</item>
         <item>Sports</item>

@@ -22,7 +22,6 @@ import org.json.JSONException;
 
 public class MainActivity extends AppCompatActivity {
 
-    //declare globle variables
     Button loginBut,registerBut,guestBut,imageBut,phpBut;
     TextView adverTV;
     @Override
@@ -30,18 +29,44 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //1. get references to the buttons
+        initAllRef();
+
+        clickButtonLogin();
+        clickButtonRegister();
+        clickButtonGuest();
+        clickTextViewAdvertise();
+
+        /*
+        imageBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(MainActivity.this,imageShow.class);
+                startActivity(intent);
+            }
+        });
+
+        phpBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(MainActivity.this,fileUploadTest.class);
+                startActivity(intent);
+            }
+        });*/
+    }
+
+    private void initAllRef() {
         loginBut=(Button) findViewById(R.id.butLogin);
         registerBut=(Button) findViewById(R.id.butRegister);
         guestBut=(Button) findViewById(R.id.butGuest);
         //imageBut=(Button) findViewById(R.id.button);
         phpBut=(Button) findViewById(R.id.php);  //the phpBut is the second gray button on the bottom of the layout, on which you click to get access to fileUploadTest testing the php!
         adverTV=(TextView) findViewById(R.id.advertiser);
+    }
 
-        //2. set click listeners to the buttons
+    private void clickButtonLogin() {
         loginBut.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {//here to create other dialog
+            public void onClick(View view) {
                 AlertDialog.Builder mBuilder=new AlertDialog.Builder(MainActivity.this);//create alert dialog
                 //create a new view,login view(mView) instead of main_activity view
                 View mView=getLayoutInflater().inflate(R.layout.dialog_login,null);//referencing the alert dialog to the login dialog
@@ -66,7 +91,9 @@ public class MainActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
+    }
 
+    private void clickButtonRegister() {
         registerBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,14 +101,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
 
-        guestBut.setOnClickListener(new View.OnClickListener() {//need to pass information telling the database the guest
+    private void clickButtonGuest() {
+        guestBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {//send guest info to database
                 String URL="http://api.a17-sd606.studev.groept.be/guestsLogin";
-                // Instantiate the RequestQueue.
                 RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-                // Request a string response from the provided URL.
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
                         new Response.Listener<String>() {
                             @Override
@@ -99,25 +126,9 @@ public class MainActivity extends AppCompatActivity {
                 queue.add(stringRequest);// Add the request to the RequestQueue.
             }
         });
+    }
 
-        /*
-        imageBut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(MainActivity.this,imageShow.class);
-                startActivity(intent);
-            }
-        });
-*/
-        phpBut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(MainActivity.this,fileUploadTest.class);
-                startActivity(intent);
-            }
-        });
-
-
+    private void clickTextViewAdvertise() {
         adverTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -126,8 +137,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
     public void loginCheck(String emailCheck,String passwdCheck) {
         String url="http://api.a17-sd606.studev.groept.be/loginCheck/"+emailCheck+"/"+passwdCheck;
