@@ -34,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
         clickButtonLogin();
         clickButtonRegister();
         clickButtonGuest();
-        clickTextViewAdvertise();
 
+        clickTextViewAdvertise();
         /*
         imageBut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
                             }else if(jArr.length()==1){
                                 Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_SHORT).show();
                                 Intent intent=new Intent(getApplicationContext(),NewsOverviewActivity.class);
+                                //intent.putExtra("")
                                 startActivity(intent);
                             }
                         } catch (JSONException e) {

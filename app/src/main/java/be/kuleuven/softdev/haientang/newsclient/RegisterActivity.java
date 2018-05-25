@@ -26,8 +26,6 @@ import org.json.JSONException;
 import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
-
-    //declare globle variables here
     EditText firstNameTxt,surnameTxt,emailTxt,passwd,rePasswd;
     TextView multiText;
     Button submitBut;
@@ -38,7 +36,13 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        //get references to the buttons and textbox
+        initAllRef();
+        emailDynamicCheck();
+        passwdDynamicCheck();
+        clickSubmitButton();
+    }
+
+    private void initAllRef() {
         firstNameTxt = (EditText) findViewById(R.id.firstName);
         surnameTxt = (EditText) findViewById(R.id.surname);
         emailTxt = (EditText) findViewById(R.id.email);
@@ -46,28 +50,27 @@ public class RegisterActivity extends AppCompatActivity {
         rePasswd = (EditText) findViewById(R.id.repeatPasswd);
         multiText=(TextView) findViewById(R.id.multiline);
         submitBut = (Button) findViewById(R.id.butSubmit);
+    }
 
-        //dynamically check email format in java
+    private void emailDynamicCheck() {
         emailTxt.addTextChangedListener(new TextWatcher() {//haien.tang@student.kuleuven.be or r0650137@kuleuven.be
             String reg="^[a-zA-Z0-9]+[-|_|.]?[a-zA-Z0-9]+[@]{1}[a-zA-Z0-9]+[.]{1}[a-zA-Z]+[.]?[a-zA-Z]+";//"+" means [1,infinite] times
-            //Pattern p= Pattern.compile(reg);
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
             @Override
             public void afterTextChanged(Editable s) {
-                boolean bool=Pattern.matches(reg,emailTxt.getText().toString());
-                //Matcher m=p.matcher(emailTxt.getText().toString());
-                //if(m.matches())
+                boolean bool= Pattern.matches(reg,emailTxt.getText().toString());
                 if(bool)
                     emailTxt.setTextColor(Color.BLACK);
                 else
                     emailTxt.setTextColor(Color.RED);
             }
         });
+    }
 
-        //dynamically check passwd format in java
+    private void passwdDynamicCheck() {
         passwd.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
@@ -85,7 +88,9 @@ public class RegisterActivity extends AppCompatActivity {
                     multiText.setTextColor(Color.BLACK);
             }
         });
+    }
 
+    private void clickSubmitButton() {
         submitBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,7 +103,7 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Please fill in any empty fields!", Toast.LENGTH_SHORT).show();
                 }
                 //2.check email format in java
-                else if (emailTxt.getCurrentTextColor()!=Color.BLACK){
+                else if (emailTxt.getCurrentTextColor()!= Color.BLACK){
                     Toast.makeText(getApplicationContext(), "Please enter valid email!", Toast.LENGTH_SHORT).show();
                 }
                 //3.check passwd format
@@ -116,6 +121,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+
     private void checkEmailDuplication(){
         String url="http://api.a17-sd606.studev.groept.be/checkEmailDuplication/"+emailTxt.getText().toString();
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -128,7 +134,7 @@ public class RegisterActivity extends AppCompatActivity {
                             if(jArr.length()!=0){//email already existed
                                 Toast.makeText(getApplicationContext(), "Email already existed!", Toast.LENGTH_SHORT).show();
                             }else if(jArr.length()==0){////email not existed
-                                Requests("http://api.a17-sd606.studev.groept.be/usersRegister/");
+                                registerUserInfo("http://api.a17-sd606.studev.groept.be/usersRegister/");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -143,12 +149,12 @@ public class RegisterActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    public void Requests(String url) {
+    public void registerUserInfo(String url) {
         URL=url+firstNameTxt.getText().toString()
                 +"/"+surnameTxt.getText().toString()+
                 "/"+emailTxt.getText().toString()
                 +"/"+passwd.getText().toString()
-                +"/"+1;//1 refers to teh userType registered user, 2 refers to guest
+                +"/"+1;//1 refers to the userType registered user, 2 refers to guest
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
         // Request a string response from the provided URL.
@@ -157,7 +163,7 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Toast.makeText(RegisterActivity.this, "Registration succeed!", Toast.LENGTH_SHORT).show();
-                        switchToLogin();//new method to switch to login dialog
+                        switchToLogin();
                     }
                 }, new Response.ErrorListener() {
                 @Override
@@ -181,7 +187,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(!mEmail.getText().toString().isEmpty()&&!mpasswd.getText().toString().isEmpty())
                 {
-                    LoginCheck(mEmail.getText().toString(),mpasswd.getText().toString());
+                    loginCheck(mEmail.getText().toString(),mpasswd.getText().toString());
                 }else{
                     Toast.makeText(RegisterActivity.this, "Please fill in any empty fields!", Toast.LENGTH_SHORT).show();
                 }
@@ -192,7 +198,7 @@ public class RegisterActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    public void LoginCheck(String emailCheck,String passwdCheck) {
+    public void loginCheck(String emailCheck, String passwdCheck) {
         String url="http://api.a17-sd606.studev.groept.be/loginCheck/"+emailCheck+"/"+passwdCheck;
         RequestQueue queue= Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,

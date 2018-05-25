@@ -181,45 +181,45 @@ public class NewsOverviewActivity extends AppCompatActivity {
         }
     }
 
-    public void getImageByNewsID(int i, int newsID) {//newsID is the foreign key in photo table
-        String url="http://api.a17-sd606.studev.groept.be/selectPhotosOnFrontFace/"+newsID;
-        final int j=i;
-        RequestQueue queue = Volley.newRequestQueue(this);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONArray jArr=new JSONArray(response);
-                            JSONObject jo=jArr.getJSONObject(0);
-                            String name=jo.getString("photoName");
-                            showImageByName("http://a17-sd606.studev.groept.be/Image/"+name,j);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }}
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {}
-        });
-
-        queue.add(stringRequest);
-    }
-
-    public void showImageByName(String url,int j) {  //through which you can show image.  the url is the image`s url
-        RequestQueue mQueue = Volley.newRequestQueue(this);
-        ImageLoader imageLoader = new ImageLoader(mQueue, new BitmapCache() {
-            @Override
-            public void putBitmap(String url, Bitmap bitmap) {
-            }
-            @Override
-            public Bitmap getBitmap(String url) {
-                return null;
-            }
-        });
-
-        ImageLoader.ImageListener listener = ImageLoader.getImageListener(newsImages.get(j),
-                R.drawable.home, R.drawable.home);
-        imageLoader.get(url,
-                listener, 600, 600);
-    }
+//    public void getImageByNewsID(int i, int newsID) {//newsID is the foreign key in photo table
+//        String url="http://api.a17-sd606.studev.groept.be/selectPhotosOnFrontFace/"+newsID;
+//        final int j=i;
+//        RequestQueue queue = Volley.newRequestQueue(this);
+//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        try {
+//                            JSONArray jArr=new JSONArray(response);
+//                            JSONObject jo=jArr.getJSONObject(0);
+//                            String name=jo.getString("photoName");
+//                            showImageByName("http://a17-sd606.studev.groept.be/Image/"+name,j);
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }}
+//                }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {}
+//        });
+//
+//        queue.add(stringRequest);
+//    }
+//
+//    public void showImageByName(String url,int j) {  //through which you can show image.  the url is the image`s url
+//        RequestQueue mQueue = Volley.newRequestQueue(this);
+//        ImageLoader imageLoader = new ImageLoader(mQueue, new BitmapCache() {
+//            @Override
+//            public void putBitmap(String url, Bitmap bitmap) {
+//            }
+//            @Override
+//            public Bitmap getBitmap(String url) {
+//                return null;
+//            }
+//        });
+//
+//        ImageLoader.ImageListener listener = ImageLoader.getImageListener(newsImages.get(j),
+//                R.drawable.home, R.drawable.home);
+//        imageLoader.get(url,
+//                listener, 600, 600);
+//    }
 }

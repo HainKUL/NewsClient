@@ -1,6 +1,7 @@
 package be.kuleuven.softdev.haientang.newsclient;
 
 import android.app.DatePickerDialog;
+import android.text.Html;
 import android.widget.DatePicker;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,7 +24,7 @@ import java.util.Calendar;
 
 public class AdvertiseActivity extends AppCompatActivity {
 
-    EditText titleEdit,tagsEdit,content1Edit;
+    EditText titleEdit,tagsEdit,contentEdit;
     Spinner categorySpin;
     TextView dateTv;
     Button submitBut;
@@ -39,7 +40,29 @@ public class AdvertiseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_advertise);
 
         init();
+        setDate();
+        clickOnSubmitButton();
+    }
 
+    private void init(){
+        titleEdit = (EditText) findViewById(R.id.title);
+        categorySpin = (Spinner) findViewById(R.id.categSpinner);
+        dateTv = (TextView) findViewById(R.id.date);
+        tagsEdit = (EditText) findViewById(R.id.Tags);
+        contentEdit = (EditText) findViewById(R.id.firstPart);
+        submitBut = (Button) findViewById(R.id.ButSubmit);
+        calenderImg=(ImageView) findViewById(R.id.calendImg);
+        //image1Edit = (EditText) findViewById(R.id.image1);
+        //image2Edit= (EditText) findViewById(R.id.image2);
+
+        mCurrentDate=Calendar.getInstance();
+        day=mCurrentDate.get(Calendar.DAY_OF_MONTH);
+        month=mCurrentDate.get(Calendar.MONTH)+1;
+        year=mCurrentDate.get(Calendar.YEAR);
+        date=year+"-"+month+'-'+day;
+    }
+
+    private void setDate() {
         dateTv.setText(date);//date by default
         calenderImg.setOnClickListener(new View.OnClickListener() {//choose the date from calendar and display it
             @Override
@@ -53,40 +76,23 @@ public class AdvertiseActivity extends AppCompatActivity {
                 datePickerDialog.show();
             }
         });
+    }
 
+    private void clickOnSubmitButton() {
         submitBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String title=titleEdit.getText().toString();
                 String category=categorySpin.getSelectedItem().toString();
                 String tags= tagsEdit.getText().toString();
-                String content=content1Edit.getText().toString();
+                String cont=contentEdit.getText().toString();
+                //String contHtml = Html.toHtml(content1Edit.getText());//convert normal to HTML format
                 String url="http://api.a17-sd606.studev.groept.be/postNews/"
-                        +title +"/" +content+"/"+tags+"/"+category+"/"+date;
-                //dateTv.setText(Html.fromHtml(content,Html.FROM_HTML_MODE_LEGACY));
+                        +title +"/" +cont+"/"+tags+"/"+category+"/"+date;
 
                 postNews(url);
             }
         });
-    }
-
-    private void init(){
-        titleEdit = (EditText) findViewById(R.id.title);
-        categorySpin = (Spinner) findViewById(R.id.categSpinner);
-        dateTv = (TextView) findViewById(R.id.date);
-        tagsEdit = (EditText) findViewById(R.id.Tags);
-        //image1Edit = (EditText) findViewById(R.id.image1);
-        //image2Edit= (EditText) findViewById(R.id.image2);
-        content1Edit = (EditText) findViewById(R.id.firstPart);
-        //content2Edit = (EditText) findViewById(R.id.secondPart);
-        submitBut = (Button) findViewById(R.id.ButSubmit);
-        calenderImg=(ImageView) findViewById(R.id.calendImg);
-
-        mCurrentDate=Calendar.getInstance();
-        day=mCurrentDate.get(Calendar.DAY_OF_MONTH);
-        month=mCurrentDate.get(Calendar.MONTH)+1;
-        year=mCurrentDate.get(Calendar.YEAR);
-        date=year+"-"+month+'-'+day;
     }
 
     private void postNews(String url){
