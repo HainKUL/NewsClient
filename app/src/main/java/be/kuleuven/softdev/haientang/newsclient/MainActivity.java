@@ -19,6 +19,7 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -129,11 +130,14 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         try {
                             JSONArray jArr=new JSONArray(response);
+                            JSONObject jo=jArr.getJSONObject(0);
                             if(jArr.length()==0){//email or passwd wrong
                                 Toast.makeText(getApplicationContext(), "Please enter correct Email or password!", Toast.LENGTH_SHORT).show();
                             }else if(jArr.length()==1){
                                 Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_SHORT).show();
                                 Intent intent=new Intent(getApplicationContext(),NewsOverviewActivity.class);
+                                int userID=jo.getInt("userID");
+                                intent.putExtra("userID",userID);
                                 startActivity(intent);
                             }
                         } catch (JSONException e) {
