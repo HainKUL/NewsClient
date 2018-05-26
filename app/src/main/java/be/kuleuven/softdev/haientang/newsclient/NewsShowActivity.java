@@ -32,11 +32,12 @@ import java.util.Calendar;
 public class NewsShowActivity extends AppCompatActivity {
     int newsID,likesNr;
     ImageView homeIcon,thumbUpIcon;
+
     TextView newsTitle,newsDate,newsTags,newsContent,newsLikes;
     EditText commentBoard;
     Button submitBut;
-//    ImageView ivUp;
-//    ImageView ivDown;
+    ImageView ivUp;
+    ImageView ivDown;
 //    String[] imageUrl=new String[2];
 //    String[] imagePosition=new String[2];
 
@@ -48,7 +49,7 @@ public class NewsShowActivity extends AppCompatActivity {
         initAllRef();
 
         displayFullNewsByID();
-        displayUpTo5Comments();
+        displayUpToTenComments();
         addLike();
         addComments();
         backToNewsOverview();
@@ -58,6 +59,8 @@ public class NewsShowActivity extends AppCompatActivity {
 
     private void initAllRef() {
         newsID = getIntent().getExtras().getInt("newsID");
+        //likesNr = Integer.parseInt (getIntent().getExtras().getString("likes"));
+
         homeIcon = (ImageView) findViewById(R.id.home);
         thumbUpIcon = (ImageView) findViewById(R.id.likesIcon);
         newsTitle=(TextView) findViewById(R.id.Title);
@@ -73,6 +76,12 @@ public class NewsShowActivity extends AppCompatActivity {
 
     public void displayFullNewsByID() {
         String url="http://api.a17-sd606.studev.groept.be/selectNewsToDisplay/"+newsID;
+        //final String ttl=getIntent().getExtras().getString("title");
+        //final String nsDate=getIntent().getExtras().getString("date");
+
+//        newsTitle.setText(getIntent().getExtras().getString("title"));
+//        newsDate.setText(getIntent().getExtras().getString("date"));
+        //newsLikes.setText(""+likesNr);//set integer value into TextView
 
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -85,14 +94,14 @@ public class NewsShowActivity extends AppCompatActivity {
 
                                 String tt=jo.getString("title");
                                 String tg=jo.getString("tags");
-                                String cntHtml=jo.getString("content");
+                                String cnt=jo.getString("content");
                                 String d=jo.getString("date");
                                 likesNr = jo.getInt("likes");
 
                                 newsTitle.setText(tt);
                                 newsTags.setText(tg);
                                 newsLikes.setText(""+likesNr);
-                                newsContent.setText(Html.fromHtml(cntHtml, Html.FROM_HTML_MODE_LEGACY));//convert html to normal
+                                newsContent.setText(Html.fromHtml(cnt, Html.FROM_HTML_MODE_LEGACY));
                                 newsDate.setText(d);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -139,16 +148,14 @@ public class NewsShowActivity extends AppCompatActivity {
                 Calendar mCurrentDate = Calendar.getInstance();;
                 SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 final String dt = format.format(mCurrentDate.getTime());
-                String commentHtml = Html.toHtml(commentBoard.getText());
-                String url="http://api.a17-sd606.studev.groept.be/addComments/"+newsID+"/"+commentHtml+dt;
+                String url="http://api.a17-sd606.studev.groept.be/addComments/"+newsID+"/"+commentBoard.getText().toString()+dt;
 
                 RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                         new Response.Listener<String>() {
                             public void onResponse(String response) {
                                 refreshCommentsLists(commentBoard.getText().toString(),dt);
-
-                                commentBoard.setText("");//clear comment board
+                                commentBoard.setText("");
                             }
                         }, new Response.ErrorListener() {
                     @Override
@@ -157,44 +164,6 @@ public class NewsShowActivity extends AppCompatActivity {
                     }
                 });
                 queue.add(stringRequest);
-            }
-        });
-    }
-
-    private void displayUpTo5Comments(){
-        String url="http://api.a17-sd606.studev.groept.be/displayFiveComments/"+newsID;
-        RequestQueue queue = Volley.newRequestQueue(this);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    public void onResponse(String response) {
-                        try {
-                            JSONArray jArr=new JSONArray(response);
-                            for(int i=0;i<jArr.length();i++){
-                                JSONObject jo=jArr.getJSONObject(i);
-                                String c=jo.getString("content");
-                                String t=jo.getString("datetime");
-
-                                refreshCommentsLists(c,t);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "Failed to load the comments!", Toast.LENGTH_SHORT).show();
-            }
-        });
-        queue.add(stringRequest);
-    }
-
-    public void backToNewsOverview() {
-        homeIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {//switch to news_overview activity
-                Intent intent = new Intent(NewsShowActivity.this, NewsOverviewActivity.class);
-                startActivity(intent);
             }
         });
     }
@@ -230,6 +199,43 @@ public class NewsShowActivity extends AppCompatActivity {
         llh.addView(llv);
         LinearLayout ll = (LinearLayout) findViewById(R.id.myLinearLayout);
         ll.addView(llh);
+    }
+
+    private void displayUpToTenComments(){
+        String url="http://api.a17-sd606.studev.groept.be/displayFiveComments/"+newsID;
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jArr=new JSONArray(response);
+                            for(int i=0;i<jArr.length();i++){
+                                JSONObject jo=jArr.getJSONObject(i);
+                                String c=jo.getString("content");
+                                String t=jo.getString("datetime");
+                                refreshCommentsLists(c,t);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Failed to load the comments!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        queue.add(stringRequest);
+    }
+
+    public void backToNewsOverview() {
+        homeIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {//switch to news_overview activity
+                Intent intent = new Intent(NewsShowActivity.this, NewsOverviewActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 /*
     public void getImageInfo(String url) {//display top 5 breaking news on newsOverview

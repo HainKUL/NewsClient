@@ -1,7 +1,16 @@
 package be.kuleuven.softdev.haientang.newsclient;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +19,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,29 +30,36 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import net.gotev.uploadservice.MultipartUploadRequest;
+import net.gotev.uploadservice.UploadNotificationConfig;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.IOException;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
-    EditText firstNameTxt,surnameTxt,emailTxt,passwd,rePasswd;
-    TextView multiText;
-    Button submitBut;
-    String URL;
+
+    //declare globle variables here
+    private EditText firstNameTxt,surnameTxt,emailTxt,passwd,rePasswd;
+    private TextView multiText;
+    private Button submitBut;
+    private String URL;
+    private ImageView imageUpload;
+    private static final String UPLOAD_URL="my php";
+    private static final int IMAGE_REQUEST_CODE=1;
+    private static final int STORAGE_PERMISSION_CODE=123;
+    private Bitmap bitmap;
+    private Uri filePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        initAllRef();
-        emailDynamicCheck();
-        passwdDynamicCheck();
-        clickSubmitButton();
-    }
-
-    private void initAllRef() {
+        //get references to the buttons and textbox
         firstNameTxt = (EditText) findViewById(R.id.firstName);
         surnameTxt = (EditText) findViewById(R.id.surname);
         emailTxt = (EditText) findViewById(R.id.email);
@@ -50,27 +67,43 @@ public class RegisterActivity extends AppCompatActivity {
         rePasswd = (EditText) findViewById(R.id.repeatPasswd);
         multiText=(TextView) findViewById(R.id.multiline);
         submitBut = (Button) findViewById(R.id.butSubmit);
-    }
+        imageUpload=(ImageView) findViewById(R.id.uploadImage) ;
 
-    private void emailDynamicCheck() {
+
+        //upload a client`s portrait
+        requestStoragePermission();
+
+        imageUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Complete action using"), IMAGE_REQUEST_CODE);
+            }
+        });
+
+        //dynamically check email format in java
         emailTxt.addTextChangedListener(new TextWatcher() {//haien.tang@student.kuleuven.be or r0650137@kuleuven.be
             String reg="^[a-zA-Z0-9]+[-|_|.]?[a-zA-Z0-9]+[@]{1}[a-zA-Z0-9]+[.]{1}[a-zA-Z]+[.]?[a-zA-Z]+";//"+" means [1,infinite] times
+            //Pattern p= Pattern.compile(reg);
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
             @Override
             public void afterTextChanged(Editable s) {
-                boolean bool= Pattern.matches(reg,emailTxt.getText().toString());
+                boolean bool=Pattern.matches(reg,emailTxt.getText().toString());
+                //Matcher m=p.matcher(emailTxt.getText().toString());
+                //if(m.matches())
                 if(bool)
                     emailTxt.setTextColor(Color.BLACK);
                 else
                     emailTxt.setTextColor(Color.RED);
             }
         });
-    }
 
-    private void passwdDynamicCheck() {
+        //dynamically check passwd format in java
         passwd.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
@@ -88,9 +121,7 @@ public class RegisterActivity extends AppCompatActivity {
                     multiText.setTextColor(Color.BLACK);
             }
         });
-    }
 
-    private void clickSubmitButton() {
         submitBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -103,7 +134,7 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Please fill in any empty fields!", Toast.LENGTH_SHORT).show();
                 }
                 //2.check email format in java
-                else if (emailTxt.getCurrentTextColor()!= Color.BLACK){
+                else if (emailTxt.getCurrentTextColor()!=Color.BLACK){
                     Toast.makeText(getApplicationContext(), "Please enter valid email!", Toast.LENGTH_SHORT).show();
                 }
                 //3.check passwd format
@@ -117,10 +148,13 @@ public class RegisterActivity extends AppCompatActivity {
                 //5.check emails duplication in database
                 else
                     checkEmailDuplication();
+
+                uploadMultipart();
             }
         });
-    }
 
+
+    }
 
     private void checkEmailDuplication(){
         String url="http://api.a17-sd606.studev.groept.be/checkEmailDuplication/"+emailTxt.getText().toString();
@@ -134,7 +168,7 @@ public class RegisterActivity extends AppCompatActivity {
                             if(jArr.length()!=0){//email already existed
                                 Toast.makeText(getApplicationContext(), "Email already existed!", Toast.LENGTH_SHORT).show();
                             }else if(jArr.length()==0){////email not existed
-                                registerUserInfo("http://api.a17-sd606.studev.groept.be/usersRegister/");
+                                Requests("http://api.a17-sd606.studev.groept.be/usersRegister/");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -149,12 +183,12 @@ public class RegisterActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    public void registerUserInfo(String url) {
+    public void Requests(String url) {
         URL=url+firstNameTxt.getText().toString()
                 +"/"+surnameTxt.getText().toString()+
                 "/"+emailTxt.getText().toString()
                 +"/"+passwd.getText().toString()
-                +"/"+1;//1 refers to the userType registered user, 2 refers to guest
+                +"/"+1;//1 refers to teh userType registered user, 2 refers to guest
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
         // Request a string response from the provided URL.
@@ -163,7 +197,7 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Toast.makeText(RegisterActivity.this, "Registration succeed!", Toast.LENGTH_SHORT).show();
-                        switchToLogin();
+                        switchToLogin();//new method to switch to login dialog
                     }
                 }, new Response.ErrorListener() {
                 @Override
@@ -187,7 +221,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(!mEmail.getText().toString().isEmpty()&&!mpasswd.getText().toString().isEmpty())
                 {
-                    loginCheck(mEmail.getText().toString(),mpasswd.getText().toString());
+                    LoginCheck(mEmail.getText().toString(),mpasswd.getText().toString());
                 }else{
                     Toast.makeText(RegisterActivity.this, "Please fill in any empty fields!", Toast.LENGTH_SHORT).show();
                 }
@@ -198,7 +232,7 @@ public class RegisterActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    public void loginCheck(String emailCheck, String passwdCheck) {
+    public void LoginCheck(String emailCheck,String passwdCheck) {
         String url="http://api.a17-sd606.studev.groept.be/loginCheck/"+emailCheck+"/"+passwdCheck;
         RequestQueue queue= Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -225,5 +259,87 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
         queue.add(stringRequest);
+    }
+
+    //upload images:
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == IMAGE_REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            filePath = data.getData();
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                imageUpload.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void uploadMultipart() {
+
+        //getting the actual path of the image
+        String path = getPath(filePath);
+
+        //Uploading code
+        try {
+            String uploadId = UUID.randomUUID().toString();
+
+            //Creating a multi part request
+            new MultipartUploadRequest(this, uploadId, UPLOAD_URL)
+                    .addFileToUpload(path, "image") //Adding file
+                    .setNotificationConfig(new UploadNotificationConfig())
+                    .setMaxRetries(2)
+                    .startUpload(); //Starting the upload
+        } catch (Exception exc) {
+            Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public String getPath(Uri uri) {
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        cursor.moveToFirst();
+        String document_id = cursor.getString(0);
+        document_id = document_id.substring(document_id.lastIndexOf(":") + 1);
+        cursor.close();
+
+        cursor = getContentResolver().query(
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                null, MediaStore.Images.Media._ID + " = ? ", new String[]{document_id}, null);
+        cursor.moveToFirst();
+        String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+        cursor.close();
+
+        return path;
+    }
+
+    private void requestStoragePermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+            return;
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            //If the user has denied the permission previously your code will come to this block
+            //Here you can explain why you need this permission
+            //Explain here why you need this permission
+        }
+        //And finally ask for the permission
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+    }
+
+    //This method will be called when the user will tap on allow or deny
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        //Checking the request code of our request
+        if (requestCode == STORAGE_PERMISSION_CODE) {
+
+            //If permission is granted
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //Displaying a toast
+                Toast.makeText(this, "Permission granted now you can read the storage", Toast.LENGTH_LONG).show();
+            } else {
+                //Displaying another toast if permission is not granted
+                Toast.makeText(this, "Oops you just denied the permission", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }
