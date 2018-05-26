@@ -30,8 +30,9 @@ public class NewsOverviewActivity extends AppCompatActivity {
     ArrayList<TextView> TNTitles = new ArrayList<TextView>();
     ArrayList<TextView> TNDates = new ArrayList<TextView>();
     ArrayList<TextView> TNLikes = new ArrayList<TextView>();
-    ImageView SearchIcon;
+    ImageView SearchIcon,profile;
     Button SportsBut,EconomyBut,ChinaBut;
+    int userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +43,14 @@ public class NewsOverviewActivity extends AppCompatActivity {
 
         top5NewsOrderedByLikes("http://api.a17-sd606.studev.groept.be/selectBreakingNews");
 
+        goToLoginInterface();
         clickButtonSearch();
         clickButtonSports();
         clickButtonEconomy();
         clickButtonChina();
 
         searchFullNewsById();
+        setUserProfile(userID);
     }
 
     private void initAllRef(){
@@ -57,6 +60,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
         SportsBut = findViewById(R.id.Sports);
         EconomyBut = findViewById(R.id.Economy);
         ChinaBut = findViewById(R.id.China);
+        userID=getIntent().getExtras().getInt("userID");
 
         TNImages.add((ImageView) findViewById(R.id.TNImage1));
         TNImages.add((ImageView) findViewById(R.id.TNImage2));
@@ -81,6 +85,20 @@ public class NewsOverviewActivity extends AppCompatActivity {
         TNLikes.add((TextView) findViewById(R.id.likesNr3));
         TNLikes.add((TextView) findViewById(R.id.likesNr4));
         TNLikes.add((TextView) findViewById(R.id.likesNr5));
+
+        profile=(ImageView) findViewById(R.id.profile);
+
+    }
+
+    public void goToLoginInterface()
+    {
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(NewsOverviewActivity.this,MainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     public void top5NewsOrderedByLikes(String url) {
@@ -130,6 +148,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), CategoryActivity.class);
+                intent.putExtra("userID",userID);
                 intent.putExtra("category","Sports");
                 startActivity(intent);
             }
@@ -141,6 +160,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), CategoryActivity.class);
+                intent.putExtra("userID",userID);
                 intent.putExtra("category","Economy");
                 startActivity(intent);
             }
@@ -152,6 +172,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), CategoryActivity.class);
+                intent.putExtra("userID",userID);
                 intent.putExtra("category","China");
                 startActivity(intent);
             }
@@ -169,6 +190,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
                     intent.putExtra("title",TNTitles.get(j).toString());
                     intent.putExtra("date",TNDates.get(j).toString());
                     intent.putExtra("likes",TNLikes.get(j).toString());
+                    intent.putExtra("userID",userID);
                     startActivity(intent);
                 }
             });
@@ -216,4 +238,32 @@ public class NewsOverviewActivity extends AppCompatActivity {
         imageLoader.get(url,
                 listener, 600, 600);
     }
+
+    public void setUserProfile(int userID)
+    {
+        if(userID!=0)
+        {
+            String url="http://a17-sd606.studev.groept.be/User/"+userID;
+            RequestQueue mQueue = Volley.newRequestQueue(this);
+            ImageLoader imageLoader = new ImageLoader(mQueue, new BitmapCache() {
+                @Override
+                public void putBitmap(String url, Bitmap bitmap) {
+                }
+                @Override
+                public Bitmap getBitmap(String url) {
+                    return null;
+                }
+            });
+
+            ImageLoader.ImageListener listener = ImageLoader.getImageListener(profile,
+                    R.drawable.home, R.drawable.home);
+            imageLoader.get(url,
+                    listener, 600, 600);
+
+        }
+        else
+        {
+            profile.setImageResource(R.drawable.profile);
+        }
+     }
 }

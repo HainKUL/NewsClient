@@ -31,6 +31,7 @@ public class CategoryActivity extends AppCompatActivity {
     ArrayList<TextView> newsTitles = new ArrayList<TextView>();
     ArrayList<TextView> newsDates = new ArrayList<TextView>();
     ArrayList<TextView> newsLikes = new ArrayList<TextView>();
+    int userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class CategoryActivity extends AppCompatActivity {
         ids=new int[5];
         category= getIntent().getExtras().getString("category");
         cateTitle=(TextView) findViewById(R.id.CategoryTitle);
+        userID=getIntent().getExtras().getInt("userID");
 
         newsImages.add((ImageView) findViewById(R.id.newsImage1));
         newsImages.add((ImageView) findViewById(R.id.newsImage2));
@@ -115,6 +117,7 @@ public class CategoryActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     Intent intent=new Intent(getApplicationContext(),NewsShowActivity.class);
                     intent.putExtra("newsID",ids[j]);
+                    intent.putExtra("userID",userID);
                     startActivity(intent);
                 }
             });
@@ -132,7 +135,7 @@ public class CategoryActivity extends AppCompatActivity {
         });
     }
 
-    public void getImageByNewsID(int i, int newsID) {//newsID is the foreign key in photo table
+    public void getImageByNewsID(int i, int newsID) {//newsID is the foreign key in photo tabele
         String url="http://api.a17-sd606.studev.groept.be/selectPhotosOnFrontFace/"+newsID;
         final int j=i;
         RequestQueue queue = Volley.newRequestQueue(this);

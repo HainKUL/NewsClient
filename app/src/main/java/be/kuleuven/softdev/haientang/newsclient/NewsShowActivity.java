@@ -32,7 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class NewsShowActivity extends AppCompatActivity {
-    int newsID,likesNr;
+    int newsID,likesNr,userID;
     ImageView homeIcon,thumbUpIcon;
 
     TextView newsTitle,newsDate,newsTags,newsContent,newsLikes;
@@ -42,6 +42,7 @@ public class NewsShowActivity extends AppCompatActivity {
     ImageView ivDown;
     String[] imageUrl=new String[2];
     String[] imagePosition=new String[2];
+    ImageView profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,9 @@ public class NewsShowActivity extends AppCompatActivity {
         addLike();
         addComments();
         backToNewsOverview();
+        goToLogin();
         getImageInfo("http://api.a17-sd606.studev.groept.be/addPhotos/"+newsID);
+        setUserProfile(userID);
 
     }
 
@@ -73,7 +76,21 @@ public class NewsShowActivity extends AppCompatActivity {
         submitBut = (Button) findViewById(R.id.ButSubmit);
         ivUp=(ImageView) findViewById(R.id.newsImageUp);
         ivDown=(ImageView)findViewById(R.id.newsImageDown);
+        profile=(ImageView) findViewById(R.id.profile);
+        userID=getIntent().getExtras().getInt("userID");
     }
+
+   public void goToLogin()
+   {
+       profile.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+
+               Intent intent=new Intent(NewsShowActivity.this,MainActivity.class);
+               startActivity(intent);
+           }
+       });
+   }
 
     public void displayFullNewsByID() {
         String url="http://api.a17-sd606.studev.groept.be/selectNewsToDisplay/"+newsID;
@@ -143,13 +160,13 @@ public class NewsShowActivity extends AppCompatActivity {
                 Calendar mCurrentDate = Calendar.getInstance();;
                 SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 final String dt = format.format(mCurrentDate.getTime());
-                String url="http://api.a17-sd606.studev.groept.be/addComments/"+newsID+"/"+commentBoard.getText().toString()+dt;
+                String url="http://api.a17-sd606.studev.groept.be/addComments/"+newsID+"/"+commentBoard.getText().toString()+"/"+dt+"/"+userID;
 
                 RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                         new Response.Listener<String>() {
                             public void onResponse(String response) {
-                                refreshCommentsLists(commentBoard.getText().toString(),dt);
+                                refreshCommentsLists(commentBoard.getText().toString(),dt,userID);
                                 commentBoard.setText("");
                             }
                         }, new Response.ErrorListener() {
@@ -163,7 +180,7 @@ public class NewsShowActivity extends AppCompatActivity {
         });
     }
 
-    public void refreshCommentsLists(String comment,String dateTime) {
+    public void refreshCommentsLists(String comment,String dateTime,int userID) {
         // 1.create Java objects for all views and viewgroups
         LinearLayout llh = new LinearLayout(this);
         LinearLayout llv = new LinearLayout(this);
@@ -173,7 +190,7 @@ public class NewsShowActivity extends AppCompatActivity {
 
         //2.define properties for each
         LinearLayout.LayoutParams dimension1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        LinearLayout.LayoutParams dimension2 = new LinearLayout.LayoutParams(80, 80);
+        LinearLayout.LayoutParams dimension2 = new LinearLayout.LayoutParams(40, 40);
         llh.setLayoutParams(dimension1);
         llv.setLayoutParams(dimension1);
         pic.setLayoutParams(dimension2);
@@ -187,6 +204,33 @@ public class NewsShowActivity extends AppCompatActivity {
         newComment.setText(comment);
         pic.setLayoutParams(dimension2);
 
+        //5.set image
+        if(userID==0)
+        {
+            pic.setImageResource(R.drawable.profile);
+        }
+        else
+        {
+            String url="http://a17-sd606.studev.groept.be/User/"+userID+".jpg";
+            RequestQueue mQueue = Volley.newRequestQueue(this);
+
+            ImageLoader imageLoader = new ImageLoader(mQueue, new BitmapCache() {
+                @Override
+                public void putBitmap(String url, Bitmap bitmap) {
+                }
+
+                @Override
+                public Bitmap getBitmap(String url) {
+                    return null;
+                }
+            });
+
+            ImageLoader.ImageListener listener = ImageLoader.getImageListener(pic,
+                    R.drawable.profile, R.drawable.profile);
+            imageLoader.get(url,
+                    listener, 600, 600);
+        }
+
         //4.add to viewGroup
         llv.addView(time);
         llv.addView(newComment);
@@ -194,6 +238,8 @@ public class NewsShowActivity extends AppCompatActivity {
         llh.addView(llv);
         LinearLayout ll = (LinearLayout) findViewById(R.id.myLinearLayout);
         ll.addView(llh);
+
+
     }
 
     private void displayUpToTenComments(){
@@ -208,7 +254,8 @@ public class NewsShowActivity extends AppCompatActivity {
                                 JSONObject jo=jArr.getJSONObject(i);
                                 String c=jo.getString("content");
                                 String t=jo.getString("datetime");
-                                refreshCommentsLists(c,t);
+                                int id=jo.getInt("userID");
+                                refreshCommentsLists(c,t,id);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -299,10 +346,37 @@ public class NewsShowActivity extends AppCompatActivity {
                ivUp.setImageResource(R.drawable.home);
                ivDown.setImageResource(R.drawable.home);
            }
-
-
-
     }
+
+    public void setUserProfile(int userID)
+    {
+        if(userID!=0)
+        {
+            String url="http://a17-sd606.studev.groept.be/User/"+userID;
+            RequestQueue mQueue = Volley.newRequestQueue(this);
+            ImageLoader imageLoader = new ImageLoader(mQueue, new BitmapCache() {
+                @Override
+                public void putBitmap(String url, Bitmap bitmap) {
+                }
+                @Override
+                public Bitmap getBitmap(String url) {
+                    return null;
+                }
+            });
+
+            ImageLoader.ImageListener listener = ImageLoader.getImageListener(profile,
+                    R.drawable.home, R.drawable.home);
+            imageLoader.get(url,
+                    listener, 600, 600);
+
+        }
+        else
+        {
+            profile.setImageResource(R.drawable.profile);
+        }
+    }
+
+
 
 }
 

@@ -37,6 +37,8 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.UUID;
 
+import static android.text.TextUtils.htmlEncode;
+
 public class EditorActivity extends AppCompatActivity {
 
     private static final String UPLOAD_URL = "http://a17-sd606.studev.groept.be/ImageUpload.php";  //the php url
@@ -160,7 +162,8 @@ public class EditorActivity extends AppCompatActivity {
                 String category=categorySpin.getSelectedItem().toString();
                 String tags= tagsEdit.getText().toString();
                 String cont=contentEdit.getText().toString();
-                String contHtml = Html.toHtml(contentEdit.getText());//convert normal to HTML format
+                //String contHtml = Html.toHtml(contentEdit.getText());//convert normal to HTML format
+                String contHtml=htmlEncode(cont);
                 String url="http://api.a17-sd606.studev.groept.be/postNews/"
                         +title +"/" +contHtml+"/"+tags+"/"+category+"/"+date;
 

@@ -1,12 +1,14 @@
 package be.kuleuven.softdev.haientang.newsclient;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,16 +16,19 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
     Button loginBut,registerBut,guestBut,imageBut,phpBut;
     TextView adverTV;
+    ImageView profile;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         registerBut=(Button) findViewById(R.id.butRegister);
         guestBut=(Button) findViewById(R.id.butGuest);
         adverTV=(TextView) findViewById(R.id.advertiser);
+        profile=(ImageView) findViewById(R.id.profile);
 
     }
 
@@ -97,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
                             public void onResponse(String response) {
                                 Toast.makeText(getApplicationContext(), "You can browser news as a guest now!", Toast.LENGTH_SHORT).show();
                                 Intent intent=new Intent(MainActivity.this,NewsOverviewActivity.class);
+                                intent.putExtra("userID",0);
                                 startActivity(intent);
                             }
                         }, new Response.ErrorListener() {
@@ -122,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void loginCheck(String emailCheck,String passwdCheck) {
         String url="http://api.a17-sd606.studev.groept.be/loginCheck/"+emailCheck+"/"+passwdCheck;
+
         RequestQueue queue= Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -129,11 +137,15 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         try {
                             JSONArray jArr=new JSONArray(response);
+                            JSONObject jo=jArr.getJSONObject(0);
                             if(jArr.length()==0){//email or passwd wrong
                                 Toast.makeText(getApplicationContext(), "Please enter correct Email or password!", Toast.LENGTH_SHORT).show();
                             }else if(jArr.length()==1){
                                 Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_SHORT).show();
                                 Intent intent=new Intent(getApplicationContext(),NewsOverviewActivity.class);
+                                int userID=jo.getInt("userID");
+                                intent.putExtra("userID",userID);
+                                //showImageByName("http://a17-sd606.studev.groept.be/User/",userID);
                                 startActivity(intent);
                             }
                         } catch (JSONException e) {
@@ -147,5 +159,33 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         queue.add(stringRequest);
+    }
+
+    public void showImageByName(String url,int id) {  //through which you can show image.  the url is the image`s url
+        if(id!=0)
+        {
+            String URL;
+            URL=url+id;
+            RequestQueue mQueue = Volley.newRequestQueue(this);
+            ImageLoader imageLoader = new ImageLoader(mQueue, new BitmapCache() {
+                @Override
+                public void putBitmap(String url, Bitmap bitmap) {
+                }
+                @Override
+                public Bitmap getBitmap(String url) {
+                    return null;
+                }
+            });
+
+            ImageLoader.ImageListener listener = ImageLoader.getImageListener(profile,
+                    R.drawable.home, R.drawable.home);
+            imageLoader.get(URL,
+                    listener, 400, 400);
+        }
+        else
+        {
+            profile.setImageResource(R.drawable.profile);
+        }
+
     }
 }

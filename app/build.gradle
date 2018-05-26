@@ -15,11 +15,14 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             //debuggable true
+            aaptOptions.cruncherEnabled = false
+            aaptOptions.useNewCruncher = false
         }
         debug {
             debuggable true
         }
     }
+
 }
 
 dependencies {

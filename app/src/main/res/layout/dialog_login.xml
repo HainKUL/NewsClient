@@ -23,7 +23,7 @@
         android:textStyle="bold" />
 
     <ImageView
-        android:id="@+id/imageView6"
+        android:id="@+id/profile"
         android:layout_width="102dp"
         android:layout_height="102dp"
         android:layout_gravity="center_horizontal"
