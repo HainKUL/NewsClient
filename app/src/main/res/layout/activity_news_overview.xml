@@ -118,7 +118,7 @@
                 <ImageView
                     android:id="@+id/TNImage1"
                     android:layout_width="250dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="100dp"
                     android:layout_weight="1"
                     android:background="@drawable/textview_border"
                     android:contentDescription="@string/image1" />
@@ -182,7 +182,7 @@
                 <ImageView
                     android:id="@+id/TNImage2"
                     android:layout_width="250dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="100dp"
                     android:layout_weight="1"
                     android:background="@drawable/textview_border"
                     android:contentDescription="@string/image2" />
@@ -246,7 +246,7 @@
                 <ImageView
                     android:id="@+id/TNImage3"
                     android:layout_width="250dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="100dp"
                     android:layout_weight="1"
                     android:background="@drawable/textview_border"
                     android:contentDescription="@string/image3" />
@@ -310,7 +310,7 @@
                 <ImageView
                     android:id="@+id/TNImage4"
                     android:layout_width="250dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="100dp"
                     android:layout_weight="1"
                     android:background="@drawable/textview_border"
                     android:contentDescription="@string/image4" />
@@ -375,7 +375,7 @@
                 <ImageView
                     android:id="@+id/TNImage5"
                     android:layout_width="250dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="100dp"
                     android:layout_weight="1"
                     android:background="@drawable/textview_border"
                     android:contentDescription="@string/image5" />

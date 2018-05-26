@@ -85,13 +85,13 @@ public class CategoryActivity extends AppCompatActivity {
                             for(int i=0;i<5;i++) {
                                 JSONObject jo=jArr.getJSONObject(i);
                                 ids[i]=jo.getInt("newsID");
-                                String newsTitle=jo.getString("title");
-                                String newsDate=jo.getString("date");
-                                int newsLikes=jo.getInt("likes");
+                                String title=jo.getString("title");
+                                String date=jo.getString("date");
+                                int likes=jo.getInt("likes");
 
-                                newsTitles.get(i).setText(newsTitle);
-                                newsDates.get(i).setText(newsDate);
-                                CategoryActivity.this.newsLikes.get(i).setText(""+newsLikes);
+                                newsTitles.get(i).setText(title);
+                                newsDates.get(i).setText(date);
+                                newsLikes.get(i).setText(""+likes);
 
                                 getImageByNewsID(i,ids[i]);
                             }
@@ -144,6 +144,7 @@ public class CategoryActivity extends AppCompatActivity {
                             JSONArray jArr=new JSONArray(response);
                             JSONObject jo=jArr.getJSONObject(0);
                             String name=jo.getString("photoName");
+
                             showImageByName("http://a17-sd606.studev.groept.be/Image/"+name,j);
                         } catch (JSONException e) {
                             e.printStackTrace();
