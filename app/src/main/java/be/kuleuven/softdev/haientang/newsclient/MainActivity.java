@@ -160,32 +160,4 @@ public class MainActivity extends AppCompatActivity {
         });
         queue.add(stringRequest);
     }
-
-    public void showImageByName(String url,int id) {  //through which you can show image.  the url is the image`s url
-        if(id!=0)
-        {
-            String URL;
-            URL=url+id;
-            RequestQueue mQueue = Volley.newRequestQueue(this);
-            ImageLoader imageLoader = new ImageLoader(mQueue, new BitmapCache() {
-                @Override
-                public void putBitmap(String url, Bitmap bitmap) {
-                }
-                @Override
-                public Bitmap getBitmap(String url) {
-                    return null;
-                }
-            });
-
-            ImageLoader.ImageListener listener = ImageLoader.getImageListener(profile,
-                    R.drawable.home, R.drawable.home);
-            imageLoader.get(URL,
-                    listener, 400, 400);
-        }
-        else
-        {
-            profile.setImageResource(R.drawable.profile);
-        }
-
-    }
 }
