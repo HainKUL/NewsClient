@@ -28,7 +28,7 @@
         <activity android:name=".NewsShowActivity" />
         <activity android:name=".imageShow" />
         <activity android:name=".fileUploadTest" />
-        <activity android:name=".AdvertiseActivity"></activity>
+        <activity android:name=".EditorActivity"></activity>
     </application>
 
 </manifest>

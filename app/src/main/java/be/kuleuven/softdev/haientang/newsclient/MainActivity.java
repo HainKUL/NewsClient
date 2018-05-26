@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
         adverTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getApplicationContext(),AdvertiseActivity.class);
+                Intent intent=new Intent(getApplicationContext(),EditorActivity.class);
                 startActivity(intent);
             }
         });

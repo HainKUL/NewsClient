@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.text.Html;
 import android.widget.DatePicker;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,9 +37,9 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.UUID;
 
-public class AdvertiseActivity extends AppCompatActivity {
+public class EditorActivity extends AppCompatActivity {
 
-    private static final String UPLOAD_URL = "http://a17-sd606.studev.groept.be/imageUpload.php";  //the php url
+    private static final String UPLOAD_URL = "http://a17-sd606.studev.groept.be/ImageUpload.php";  //the php url
     private static final int IMAGE_REQUEST_CODE_ONE = 3;
     private static final int IMAGE_REQUEST_CODE_TWO = 4;
     private static final int STORAGE_PERMISSION_CODE = 123;
@@ -60,7 +61,7 @@ public class AdvertiseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_advertise);
+        setContentView(R.layout.activity_editor);
 
         init();
 
@@ -70,12 +71,7 @@ public class AdvertiseActivity extends AppCompatActivity {
         uploadImage2();
         clickOnSubmitButton();
 
-        submitBut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                uploadMultipart();
-            }
-        });
+
 
 
     }
@@ -108,7 +104,7 @@ public class AdvertiseActivity extends AppCompatActivity {
         calenderImg.setOnClickListener(new View.OnClickListener() {//choose the date from calendar and display it
             @Override
             public void onClick(View view) {
-                DatePickerDialog datePickerDialog= new DatePickerDialog(AdvertiseActivity.this, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog datePickerDialog= new DatePickerDialog(EditorActivity.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int y, int m, int d) {
                         dateTv.setText(y+"-"+(m+1)+"-"+d);
@@ -164,11 +160,13 @@ public class AdvertiseActivity extends AppCompatActivity {
                 String category=categorySpin.getSelectedItem().toString();
                 String tags= tagsEdit.getText().toString();
                 String cont=contentEdit.getText().toString();
-                //String contHtml = Html.toHtml(content1Edit.getText());//convert normal to HTML format
+                String contHtml = Html.toHtml(contentEdit.getText());//convert normal to HTML format
                 String url="http://api.a17-sd606.studev.groept.be/postNews/"
-                        +title +"/" +cont+"/"+tags+"/"+category+"/"+date;
+                        +title +"/" +contHtml+"/"+tags+"/"+category+"/"+date;
 
                 postNews(url);
+                uploadMultipart();
+
             }
         });
     }
@@ -187,6 +185,8 @@ public class AdvertiseActivity extends AppCompatActivity {
                 public void onErrorResponse(VolleyError error) {Toast.makeText(getApplicationContext(), "Oops,please try again later!", Toast.LENGTH_SHORT).show();}
         });
         queue.add(stringRequest);
+
+
     }
 
     @Override
@@ -242,7 +242,7 @@ public class AdvertiseActivity extends AppCompatActivity {
             //Creating a multi part request
             new MultipartUploadRequest(this, uploadId, UPLOAD_URL)
                     .addFileToUpload(pathDown, "image") //Adding file
-                    .addParameter("caption", captionUp) //Adding text parameter to the request
+                    .addParameter("caption", captionDown) //Adding text parameter to the request
                     .addParameter("position","down")
                     .setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
