@@ -46,7 +46,7 @@ public class RegisterActivity extends AppCompatActivity {
     private Button submitBut;
     private String URL;
     private ImageView profilePic;
-    private static final String UPLOAD_URL="my php";
+    private static final String UPLOAD_URL="http://a17-sd606.studev.groept.be/user_portrait.php";
     private static final int IMAGE_REQUEST_CODE=1;
     private static final int STORAGE_PERMISSION_CODE=123;
     private Bitmap bitmap;
@@ -171,7 +171,8 @@ public class RegisterActivity extends AppCompatActivity {
                             if(jArr.length()!=0){//email already existed
                                 Toast.makeText(getApplicationContext(), "Email already existed!", Toast.LENGTH_SHORT).show();
                             }else if(jArr.length()==0){////email not existed
-                                uploadUserInfo("http://api.a17-sd606.studev.groept.be/usersRegister/");
+                                uploadUserInfo();
+
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -186,8 +187,8 @@ public class RegisterActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    public void uploadUserInfo(String url) {
-        URL=url+firstNameTxt.getText().toString()
+    public void uploadUserInfo() {
+        /*URL=url+firstNameTxt.getText().toString()
                 +"/"+surnameTxt.getText().toString()+
                 "/"+emailTxt.getText().toString()
                 +"/"+passwd.getText().toString()
@@ -198,18 +199,18 @@ public class RegisterActivity extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
                 new Response.Listener<String>() {
                     @Override
-                    public void onResponse(String response) {
+                    public void onResponse(String response) {*/
                         uploadMultipart();
-                        Toast.makeText(RegisterActivity.this, "Registration succeed!", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(RegisterActivity.this, "Registration succeed!", Toast.LENGTH_SHORT).show();
                         switchToLogin();//new method to switch to login dialog
-                    }
+/*                    }
                 }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Toast.makeText(RegisterActivity.this, "Oops,please try again later!", Toast.LENGTH_SHORT).show();
                 }
             });
-        queue.add(stringRequest);// Add the request to the RequestQueue.
+        queue.add(stringRequest);// Add the request to the RequestQueue.*/
     }
 
     public void switchToLogin() {
@@ -288,6 +289,12 @@ public class RegisterActivity extends AppCompatActivity {
             //Creating a multi part request
             new MultipartUploadRequest(this, uploadId, UPLOAD_URL)
                     .addFileToUpload(path, "image") //Adding file
+                    .addParameter("isSuccess","success")
+                    .addParameter("firstName",firstNameTxt.getText().toString())
+                    .addParameter("surName",surnameTxt.getText().toString())
+                    .addParameter("email",emailTxt.getText().toString())
+                    .addParameter("password",passwd.getText().toString())
+                    .addParameter("userType","1")
                     .setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
