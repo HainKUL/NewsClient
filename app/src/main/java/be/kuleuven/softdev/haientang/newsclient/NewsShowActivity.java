@@ -2,6 +2,7 @@ package be.kuleuven.softdev.haientang.newsclient;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -38,8 +40,8 @@ public class NewsShowActivity extends AppCompatActivity {
     Button submitBut;
     ImageView ivUp;
     ImageView ivDown;
-//    String[] imageUrl=new String[2];
-//    String[] imagePosition=new String[2];
+    String[] imageUrl=new String[2];
+    String[] imagePosition=new String[2];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +55,8 @@ public class NewsShowActivity extends AppCompatActivity {
         addLike();
         addComments();
         backToNewsOverview();
-        //getImageInfo("http://api.a17-sd606.studev.groept.be/addPhotos/"+newsID);
-        //showImage(imageUrl[0]);
+        getImageInfo("http://api.a17-sd606.studev.groept.be/addPhotos/"+newsID);
+
     }
 
     private void initAllRef() {
@@ -69,8 +71,8 @@ public class NewsShowActivity extends AppCompatActivity {
         newsLikes=(TextView) findViewById(R.id.likesNr);
         commentBoard = (EditText) findViewById(R.id.CommentBoard);
         submitBut = (Button) findViewById(R.id.ButSubmit);
-        //ivUp=(ImageView) findViewById(R.id.newsImageUp);
-        //ivDown=(ImageView)findViewById(R.id.newsImageDown);
+        ivUp=(ImageView) findViewById(R.id.newsImageUp);
+        ivDown=(ImageView)findViewById(R.id.newsImageDown);
     }
 
     public void displayFullNewsByID() {
@@ -230,11 +232,11 @@ public class NewsShowActivity extends AppCompatActivity {
             }
         });
     }
-/*
+
     public void getImageInfo(String url) {//display top 5 breaking news on newsOverview
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-        final TextView tvTest=(TextView)findViewById(R.id.showTest);
+
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -244,8 +246,8 @@ public class NewsShowActivity extends AppCompatActivity {
                             JSONArray jArr=new JSONArray(response);
                             for(int i=0;i<2;i++) {
                                 JSONObject jo=jArr.getJSONObject(i);
-                                String name=jo.getString("photo_name");
-                               String position=jo.getString("newsPosition");
+                                String name=jo.getString("photoName");
+                               String position=jo.getString("photoPosition");
                                 showImage("http://a17-sd606.studev.groept.be/Image/"+name,position);
                             }
                         } catch (JSONException e) {
@@ -301,6 +303,6 @@ public class NewsShowActivity extends AppCompatActivity {
 
 
     }
-    */
+
 }
 
