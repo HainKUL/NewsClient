@@ -155,7 +155,6 @@ public class RegisterActivity extends AppCompatActivity {
                 //5.check emails duplication in database
                 else
                     checkEmailDuplication();
-                uploadMultipart();////////////////////////////////???????????????????????
             }
         });
     }
@@ -172,7 +171,7 @@ public class RegisterActivity extends AppCompatActivity {
                             if(jArr.length()!=0){//email already existed
                                 Toast.makeText(getApplicationContext(), "Email already existed!", Toast.LENGTH_SHORT).show();
                             }else if(jArr.length()==0){////email not existed
-                                Requests("http://api.a17-sd606.studev.groept.be/usersRegister/");
+                                uploadUserInfo("http://api.a17-sd606.studev.groept.be/usersRegister/");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -187,7 +186,7 @@ public class RegisterActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    public void Requests(String url) {
+    public void uploadUserInfo(String url) {
         URL=url+firstNameTxt.getText().toString()
                 +"/"+surnameTxt.getText().toString()+
                 "/"+emailTxt.getText().toString()
@@ -200,6 +199,7 @@ public class RegisterActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        uploadMultipart();
                         Toast.makeText(RegisterActivity.this, "Registration succeed!", Toast.LENGTH_SHORT).show();
                         switchToLogin();//new method to switch to login dialog
                     }

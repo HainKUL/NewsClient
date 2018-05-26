@@ -59,19 +59,6 @@
                 android:background="@android:color/holo_blue_dark"
                 android:text="@string/guest" />
 
-            <Button
-                android:id="@+id/button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/button" />
-
-            <Button
-                android:id="@+id/php"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/button" />
-
             <LinearLayout
                 android:id="@+id/background"
                 android:layout_width="match_parent"
