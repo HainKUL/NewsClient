@@ -212,7 +212,7 @@ public class NewsShowActivity extends AppCompatActivity {
                             for(int i=0;i<jArr.length();i++){
                                 JSONObject jo=jArr.getJSONObject(i);
                                 String c=jo.getString("content");
-                                String t=jo.getString("date");
+                                String t=jo.getString("datetime");
                                 refreshCommentsLists(c,t);
                             }
                         } catch (JSONException e) {

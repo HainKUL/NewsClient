@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         clickButtonGuest();
         clickTextViewAdvertise();
 
-        /*
+
         imageBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent=new Intent(MainActivity.this,fileUploadTest.class);
                 startActivity(intent);
             }
-        });*/
+        });
     }
 
     private void initAllRef() {
@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         //imageBut=(Button) findViewById(R.id.button);
         phpBut=(Button) findViewById(R.id.php);  //the phpBut is the second gray button on the bottom of the layout, on which you click to get access to fileUploadTest testing the php!
         adverTV=(TextView) findViewById(R.id.advertiser);
+        imageBut=(Button) findViewById(R.id.button);
     }
 
     private void clickButtonLogin() {
