@@ -41,13 +41,11 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
-
-    //declare globle variables here
     private EditText firstNameTxt,surnameTxt,emailTxt,passwd,rePasswd;
     private TextView multiText;
     private Button submitBut;
     private String URL;
-    private ImageView imageUpload;
+    private ImageView profilePic;
     private static final String UPLOAD_URL="my php";
     private static final int IMAGE_REQUEST_CODE=1;
     private static final int STORAGE_PERMISSION_CODE=123;
@@ -59,7 +57,17 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        //get references to the buttons and textbox
+        initAllRef();
+
+        //upload a client`s portrait
+        requestStoragePermission();
+        clickUploadProfilePic();
+        emailDynamicCheck();
+        passwdDynamicCheck();
+        clickSubmitButton();
+    }
+
+    private void initAllRef() {
         firstNameTxt = (EditText) findViewById(R.id.firstName);
         surnameTxt = (EditText) findViewById(R.id.surname);
         emailTxt = (EditText) findViewById(R.id.email);
@@ -67,13 +75,11 @@ public class RegisterActivity extends AppCompatActivity {
         rePasswd = (EditText) findViewById(R.id.repeatPasswd);
         multiText=(TextView) findViewById(R.id.multiline);
         submitBut = (Button) findViewById(R.id.butSubmit);
-        imageUpload=(ImageView) findViewById(R.id.uploadImage) ;
+        profilePic =(ImageView) findViewById(R.id.uploadImage) ;
+    }
 
-
-        //upload a client`s portrait
-        requestStoragePermission();
-
-        imageUpload.setOnClickListener(new View.OnClickListener() {
+    private void clickUploadProfilePic() {
+        profilePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
@@ -82,28 +88,27 @@ public class RegisterActivity extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(intent, "Complete action using"), IMAGE_REQUEST_CODE);
             }
         });
+    }
 
-        //dynamically check email format in java
+    private void emailDynamicCheck() {
         emailTxt.addTextChangedListener(new TextWatcher() {//haien.tang@student.kuleuven.be or r0650137@kuleuven.be
             String reg="^[a-zA-Z0-9]+[-|_|.]?[a-zA-Z0-9]+[@]{1}[a-zA-Z0-9]+[.]{1}[a-zA-Z]+[.]?[a-zA-Z]+";//"+" means [1,infinite] times
-            //Pattern p= Pattern.compile(reg);
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
             @Override
             public void afterTextChanged(Editable s) {
-                boolean bool=Pattern.matches(reg,emailTxt.getText().toString());
-                //Matcher m=p.matcher(emailTxt.getText().toString());
-                //if(m.matches())
+                boolean bool= Pattern.matches(reg,emailTxt.getText().toString());
                 if(bool)
                     emailTxt.setTextColor(Color.BLACK);
                 else
                     emailTxt.setTextColor(Color.RED);
             }
         });
+    }
 
-        //dynamically check passwd format in java
+    private void passwdDynamicCheck() {
         passwd.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
@@ -121,7 +126,9 @@ public class RegisterActivity extends AppCompatActivity {
                     multiText.setTextColor(Color.BLACK);
             }
         });
+    }
 
+    private void clickSubmitButton() {
         submitBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -134,7 +141,7 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Please fill in any empty fields!", Toast.LENGTH_SHORT).show();
                 }
                 //2.check email format in java
-                else if (emailTxt.getCurrentTextColor()!=Color.BLACK){
+                else if (emailTxt.getCurrentTextColor()!= Color.BLACK){
                     Toast.makeText(getApplicationContext(), "Please enter valid email!", Toast.LENGTH_SHORT).show();
                 }
                 //3.check passwd format
@@ -148,12 +155,9 @@ public class RegisterActivity extends AppCompatActivity {
                 //5.check emails duplication in database
                 else
                     checkEmailDuplication();
-
-                uploadMultipart();
+                uploadMultipart();////////////////////////////////???????????????????????
             }
         });
-
-
     }
 
     private void checkEmailDuplication(){
@@ -268,7 +272,7 @@ public class RegisterActivity extends AppCompatActivity {
             filePath = data.getData();
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                imageUpload.setImageBitmap(bitmap);
+                profilePic.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -276,14 +280,11 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void uploadMultipart() {
-
         //getting the actual path of the image
         String path = getPath(filePath);
-
         //Uploading code
         try {
             String uploadId = UUID.randomUUID().toString();
-
             //Creating a multi part request
             new MultipartUploadRequest(this, uploadId, UPLOAD_URL)
                     .addFileToUpload(path, "image") //Adding file

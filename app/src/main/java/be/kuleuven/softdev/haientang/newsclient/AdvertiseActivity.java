@@ -47,12 +47,11 @@ public class AdvertiseActivity extends AppCompatActivity {
     private Uri filePathUp;
     private Uri filePathDown;
 
-    EditText titleEdit,tagsEdit,content1Edit,image1Edit,image2Edit;
+    EditText titleEdit,tagsEdit, contentEdit,image1Edit,image2Edit;
     Spinner categorySpin;
     TextView dateTv;
     Button submitBut;
     ImageView calenderImg,image1,image2;
-
 
     int day,month,year;
     Calendar mCurrentDate;
@@ -65,56 +64,11 @@ public class AdvertiseActivity extends AppCompatActivity {
 
         init();
 
-        dateTv.setText(date);//date by default
-        calenderImg.setOnClickListener(new View.OnClickListener() {//choose the date from calendar and display it
-            @Override
-            public void onClick(View view) {
-                DatePickerDialog datePickerDialog= new DatePickerDialog(AdvertiseActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int y, int m, int d) {
-                        dateTv.setText(y+"-"+(m+1)+"-"+d);
-                    }
-                },year,month-1,day);
-                datePickerDialog.show();
-            }
-        });
-
+        setDate();
         requestStoragePermission();
-
-        submitBut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String title=titleEdit.getText().toString();
-                String category=categorySpin.getSelectedItem().toString();
-                String tags= tagsEdit.getText().toString();
-                String content=content1Edit.getText().toString();
-                String url="http://api.a17-sd606.studev.groept.be/postNews/"
-                        +title +"/" +content+"/"+tags+"/"+category+"/"+date;
-                //dateTv.setText(Html.fromHtml(content,Html.FROM_HTML_MODE_LEGACY));
-
-                postNews(url);
-            }
-        });
-
-        image1.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Complete action using"), IMAGE_REQUEST_CODE_ONE);
-            }}
-        );
-
-        image2.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Complete action using"), IMAGE_REQUEST_CODE_TWO);
-            }}
-        );
+        uploadImage1();
+        uploadImage2();
+        clickOnSubmitButton();
 
         submitBut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,6 +80,7 @@ public class AdvertiseActivity extends AppCompatActivity {
 
     }
 
+
     private void init(){
         titleEdit = (EditText) findViewById(R.id.title);
         categorySpin = (Spinner) findViewById(R.id.categSpinner);
@@ -133,7 +88,7 @@ public class AdvertiseActivity extends AppCompatActivity {
         tagsEdit = (EditText) findViewById(R.id.Tags);
         image1Edit = (EditText) findViewById(R.id.image1);
         image2Edit= (EditText) findViewById(R.id.image2);
-        content1Edit = (EditText) findViewById(R.id.firstPart);
+        contentEdit = (EditText) findViewById(R.id.firstPart);
         //content2Edit = (EditText) findViewById(R.id.secondPart);
         submitBut = (Button) findViewById(R.id.ButSubmit);
         calenderImg=(ImageView) findViewById(R.id.calendImg);
@@ -147,6 +102,77 @@ public class AdvertiseActivity extends AppCompatActivity {
         image1=(ImageView) findViewById(R.id.upImage);
         image2=(ImageView) findViewById(R.id.downImage);
     }
+
+    private void setDate() {
+        dateTv.setText(date);//date by default
+        calenderImg.setOnClickListener(new View.OnClickListener() {//choose the date from calendar and display it
+            @Override
+            public void onClick(View view) {
+                DatePickerDialog datePickerDialog= new DatePickerDialog(AdvertiseActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int y, int m, int d) {
+                        dateTv.setText(y+"-"+(m+1)+"-"+d);
+                    }
+                },year,month-1,day);
+                datePickerDialog.show();
+            }
+        });
+    }
+
+    private void requestStoragePermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+            return;
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            //If the user has denied the permission previously your code will come to this block
+            //Here you can explain why you need this permission
+            //Explain here why you need this permission
+        }
+        //And finally ask for the permission
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+    }
+
+    private void uploadImage1() {
+        image1.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Complete action using"), IMAGE_REQUEST_CODE_ONE);
+            }}
+        );
+    }
+
+    private void uploadImage2() {
+        image2.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Complete action using"), IMAGE_REQUEST_CODE_TWO);
+            }}
+        );
+    }
+
+    private void clickOnSubmitButton() {
+        submitBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String title=titleEdit.getText().toString();
+                String category=categorySpin.getSelectedItem().toString();
+                String tags= tagsEdit.getText().toString();
+                String cont=contentEdit.getText().toString();
+                //String contHtml = Html.toHtml(content1Edit.getText());//convert normal to HTML format
+                String url="http://api.a17-sd606.studev.groept.be/postNews/"
+                        +title +"/" +cont+"/"+tags+"/"+category+"/"+date;
+
+                postNews(url);
+            }
+        });
+    }
+
 
     private void postNews(String url){
         RequestQueue queue= Volley.newRequestQueue(getApplicationContext());
@@ -244,19 +270,6 @@ public class AdvertiseActivity extends AppCompatActivity {
         return path;
     }
 
-
-    private void requestStoragePermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
-            return;
-
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            //If the user has denied the permission previously your code will come to this block
-            //Here you can explain why you need this permission
-            //Explain here why you need this permission
-        }
-        //And finally ask for the permission
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
-    }
 
     //This method will be called when the user will tap on allow or deny
     @Override

@@ -59,7 +59,6 @@ public class NewsShowActivity extends AppCompatActivity {
 
     private void initAllRef() {
         newsID = getIntent().getExtras().getInt("newsID");
-        //likesNr = Integer.parseInt (getIntent().getExtras().getString("likes"));
 
         homeIcon = (ImageView) findViewById(R.id.home);
         thumbUpIcon = (ImageView) findViewById(R.id.likesIcon);
@@ -76,12 +75,6 @@ public class NewsShowActivity extends AppCompatActivity {
 
     public void displayFullNewsByID() {
         String url="http://api.a17-sd606.studev.groept.be/selectNewsToDisplay/"+newsID;
-        //final String ttl=getIntent().getExtras().getString("title");
-        //final String nsDate=getIntent().getExtras().getString("date");
-
-//        newsTitle.setText(getIntent().getExtras().getString("title"));
-//        newsDate.setText(getIntent().getExtras().getString("date"));
-        //newsLikes.setText(""+likesNr);//set integer value into TextView
 
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,

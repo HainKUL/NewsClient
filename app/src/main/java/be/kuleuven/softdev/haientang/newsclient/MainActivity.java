@@ -36,22 +36,21 @@ public class MainActivity extends AppCompatActivity {
         clickButtonGuest();
         clickTextViewAdvertise();
 
-
-        imageBut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(MainActivity.this,imageShow.class);
-                startActivity(intent);
-            }
-        });
-
-        phpBut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent=new Intent(MainActivity.this,fileUploadTest.class);
-                startActivity(intent);
-            }
-        });
+//        imageBut.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent=new Intent(MainActivity.this,imageShow.class);
+//                startActivity(intent);
+//            }
+//        });
+//
+//        phpBut.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent=new Intent(MainActivity.this,fileUploadTest.class);
+//                startActivity(intent);
+//            }
+//        });
     }
 
     private void initAllRef() {
