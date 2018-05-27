@@ -341,8 +341,8 @@ public class NewsShowActivity extends AppCompatActivity {
            }
            else
            {
-               ivUp.setImageResource(R.drawable.home);
-               ivDown.setImageResource(R.drawable.home);
+               ivUp.setImageResource(R.drawable.loading);
+               ivDown.setImageResource(R.drawable.loading);
            }
     }
 
