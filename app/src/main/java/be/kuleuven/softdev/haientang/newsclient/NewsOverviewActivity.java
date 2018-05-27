@@ -2,6 +2,7 @@ package be.kuleuven.softdev.haientang.newsclient;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -23,16 +25,27 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 import be.kuleuven.softdev.haientang.newsclient.model.NewsItem;
 
 public class NewsOverviewActivity extends AppCompatActivity {
+    private static final String TAG = "NewsOverviewActivity";
     private ListView lvNews;
-    private ArrayList<NewsItem> newsItems;
-    private NewsItemAdapter adapter;
+   // private ArrayList<NewsItem> newsItems;
+   // private NewsItemAdapter adapter;
+    private String url="http://api.a17-sd606.studev.groept.be/selectBreakingNews";
+    private List<NewsItem> newsItemList=new ArrayList();
 
-    int[] ids;
+    private ArrayList<Integer> ids;
     ImageView SearchIcon;
     //ImageView profile;
     Button SportsBut,EconomyBut,ChinaBut;
@@ -44,23 +57,23 @@ public class NewsOverviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_news_overview);
 
         initAllRef();
-
-        top5NewsOrderedByLikes("http://api.a17-sd606.studev.groept.be/selectBreakingNews");
-
-        //clickProfilPicBackToLogin();
+       // clickProfilPicBackToLogin();
         clickButtonSearch();
         clickButtonSports();
         clickButtonEconomy();
         clickButtonChina();
 
-        //setUserProfile(userID);
+        NewsAsyncTask(url);
+        clickListview();
+
+       // setUserProfile(userID);
     }
 
     private void initAllRef(){
         lvNews = (ListView) findViewById(R.id.lvNews);
-        newsItems=new ArrayList<>();
+       // newsItems=new ArrayList<>();
 
-        ids=new int[5];
+        ids=new ArrayList<>();
         SearchIcon =(ImageView) findViewById(R.id.searchIcon);
         SportsBut = (Button) findViewById(R.id.Sports);
         EconomyBut =(Button) findViewById(R.id.Economy);
@@ -69,7 +82,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
         //userID=getIntent().getExtras().getInt("userID");
     }
 
-    public void top5NewsOrderedByLikes(String url) {
+    /*public void top5NewsOrderedByLikes(String url) {
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -77,7 +90,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         try {
                             JSONArray jArr=new JSONArray(response);
-                            for(int i=0;i<5;i++) {
+                            for(int i=0;i<jArr.length();i++) {   //maybe later,we can change "5" to jArr.length
                                 JSONObject jo=jArr.getJSONObject(i);
                                 ids[i]=jo.getInt("newsID");
                                 String newsTitle=jo.getString("title");
@@ -98,9 +111,98 @@ public class NewsOverviewActivity extends AppCompatActivity {
         });
 
         queue.add(stringRequest);
+    }*/
+
+
+    private void NewsAsyncTask(String url){  //这里的url就是从学校服务器
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jArr=new JSONArray(response);
+                            for(int i=0;i<jArr.length();i++) {   //maybe later,we can change "5" to jArr.length
+                                JSONObject jo = jArr.getJSONObject(i);
+                                ids.add(jo.getInt("newsID"));
+                                String newsTitle=jo.getString("title");
+                                String newsDate=jo.getString("date");
+                                String image="http://a17-sd606.studev.groept.be/Image/"+jo.getString("frontPhoto");
+                                int newsLikes=jo.getInt("likes");
+                                newsItemList.add(new NewsItem(image,newsTitle,newsDate,newsLikes));
+
+                             //   Toast.makeText(NewsOverviewActivity.this,newsItemList.get(i).image, Toast.LENGTH_SHORT).show();
+                            }
+                            NewsAdapter newsAdapter = new NewsAdapter(NewsOverviewActivity.this,newsItemList,lvNews);
+                            lvNews.setAdapter(newsAdapter);
+
+                            //populateNewsListView();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }}
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {}
+        });
+
+        queue.add(stringRequest);
     }
 
-    private void populateNewsListView(){
+   /* private List<NewsItem> getJsonData(String url){
+
+        List<NewsItem> newsBeanList=new ArrayList();
+        try {
+            String jsonString = readStream(new URL(url).openStream());
+            JSONObject jo;
+            try {
+
+                JSONArray jsonArray = new JSONArray(jsonString);
+
+                for(int i=0;i<jsonArray.length();i++){
+                    jo = jsonArray.getJSONObject(i);
+                    ids.add(jo.getInt("newsID"));
+                    String newsTitle=jo.getString("title");
+                    String newsDate=jo.getString("date");
+                    String image="http://a17-sd606.studev.groept.be/Image/"+jo.getString("frontPhoto");
+                    Toast.makeText(NewsOverviewActivity.this,image, Toast.LENGTH_SHORT).show();
+                    int newsLikes=jo.getInt("likes");
+                    newsItemList.add(new NewsItem(image,newsTitle,newsDate,newsLikes));
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return newsBeanList;
+
+    }*/
+
+    /*class NewsAsyncTask extends AsyncTask<String, Void, List<NewsItem>> {
+
+        @Override
+        protected List<NewsItem> doInBackground(String... params) {
+            getJsonData(url);
+            return newsItemList;
+        }
+
+        @Override
+        protected void onPostExecute(List<NewsItem> result) {
+            super.onPostExecute(result);
+
+            NewsAdapter newsAdapter = new NewsAdapter(NewsOverviewActivity.this,result,lvNews);
+            lvNews.setAdapter(newsAdapter);
+
+        }
+    }*/
+
+    /*private void populateNewsListView(){
         adapter=new NewsItemAdapter(NewsOverviewActivity.this,newsItems);
         lvNews.setAdapter(adapter);
         lvNews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -113,7 +215,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
+    }*/
 
 //    public void clickProfilPicBackToLogin() {
 //        profile.setOnClickListener(new View.OnClickListener() {
@@ -170,6 +272,20 @@ public class NewsOverviewActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void clickListview()
+    {
+        lvNews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //点击listview中的内容转到相关地方
+                Intent myIntent=new Intent(view.getContext(),NewsShowActivity.class);
+                myIntent.putExtra("newsID",ids.get(position));
+                startActivityForResult(myIntent,position);
+            }
+        });
+    }
+
 
 //    public void getImageByNewsID(int i, int newsID) {//newsID is the foreign key in photo table
 //        String url="http://api.a17-sd606.studev.groept.be/selectPhotosOnFrontFace/"+newsID;

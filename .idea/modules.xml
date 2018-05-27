@@ -2,17 +2,18 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://E:\AndroidStudioProjects\NewsClient6\NewsClient.iml" filepath="E:\AndroidStudioProjects\NewsClient6\NewsClient.iml" />
-      <module fileurl="file://E:\AndroidStudioProjects\NewsClient10\NewsClient.iml" filepath="E:\AndroidStudioProjects\NewsClient10\NewsClient.iml" />
-      <module fileurl="file://E:\AndroidStudioProjects\NewsClient5\NewsClient.iml" filepath="E:\AndroidStudioProjects\NewsClient5\NewsClient.iml" />
-      <module fileurl="file://E:\AndroidStudioProjects\NewsClient3\.idea\NewsClient.iml" filepath="E:\AndroidStudioProjects\NewsClient3\.idea\NewsClient.iml" />
+      <module fileurl="file://$PROJECT_DIR$/NewsClient.iml" filepath="$PROJECT_DIR$/NewsClient.iml" />
+      <module fileurl="file://E:/AndroidStudioProjects/NewsClient3/.idea/NewsClient.iml" filepath="E:/AndroidStudioProjects/NewsClient3/.idea/NewsClient.iml" />
+      <module fileurl="file://E:/AndroidStudioProjects/NewsClient10/NewsClient.iml" filepath="E:/AndroidStudioProjects/NewsClient10/NewsClient.iml" />
+      <module fileurl="file://E:/AndroidStudioProjects/NewsClient5/NewsClient.iml" filepath="E:/AndroidStudioProjects/NewsClient5/NewsClient.iml" />
+      <module fileurl="file://E:/AndroidStudioProjects/NewsClient6/NewsClient.iml" filepath="E:/AndroidStudioProjects/NewsClient6/NewsClient.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/NewsClient10.iml" filepath="$PROJECT_DIR$/.idea/NewsClient10.iml" />
-      <module fileurl="file://E:\News_Client\NewsClient\.idea\NewsClient3.iml" filepath="E:\News_Client\NewsClient\.idea\NewsClient3.iml" />
-      <module fileurl="file://E:\News_Client\NewsClient\.idea\NewsClient5.iml" filepath="E:\News_Client\NewsClient\.idea\NewsClient5.iml" />
-      <module fileurl="file://E:\AndroidStudioProjects\NewsClient7\.idea\NewsClient6.iml" filepath="E:\AndroidStudioProjects\NewsClient7\.idea\NewsClient6.iml" />
-      <module fileurl="file://E:\News_Client\NewsClient\NewsClient7.iml" filepath="E:\News_Client\NewsClient\NewsClient7.iml" />
+      <module fileurl="file://E:/News_Client/NewsClient/.idea/NewsClient3.iml" filepath="E:/News_Client/NewsClient/.idea/NewsClient3.iml" />
+      <module fileurl="file://E:/News_Client/NewsClient/.idea/NewsClient5.iml" filepath="E:/News_Client/NewsClient/.idea/NewsClient5.iml" />
+      <module fileurl="file://E:/AndroidStudioProjects/NewsClient7/.idea/NewsClient6.iml" filepath="E:/AndroidStudioProjects/NewsClient7/.idea/NewsClient6.iml" />
+      <module fileurl="file://E:/News_Client/NewsClient/NewsClient7.iml" filepath="E:/News_Client/NewsClient/NewsClient7.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://E:\AndroidStudioProjects\NewsClient10\app\app.iml" filepath="E:\AndroidStudioProjects\NewsClient10\app\app.iml" />
+      <module fileurl="file://E:/AndroidStudioProjects/NewsClient10/app/app.iml" filepath="E:/AndroidStudioProjects/NewsClient10/app/app.iml" />
     </modules>
   </component>
 </project>

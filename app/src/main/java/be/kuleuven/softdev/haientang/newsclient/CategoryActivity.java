@@ -23,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import be.kuleuven.softdev.haientang.newsclient.model.NewsItem;
 
@@ -30,6 +31,8 @@ public class CategoryActivity extends AppCompatActivity {
     private ListView lvNews;
     private ArrayList<NewsItem> newsItems;
     private NewsItemAdapter adapter;
+    private List<NewsItem> newsItemList;
+    private String url;
 
     int[] ids;
     String category;
@@ -42,8 +45,10 @@ public class CategoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_category);
 
         initAllRef();
-        top5NewsOrderedByDate("http://api.a17-sd606.studev.groept.be/selectCategoryNews/"+category);
+        //top5NewsOrderedByDate("http://api.a17-sd606.studev.groept.be/selectCategoryNews/"+category);
         clickButtonHome();
+        NewsAsyncTask(url);
+        clickListview();
     }
 
     private void initAllRef(){
@@ -56,9 +61,60 @@ public class CategoryActivity extends AppCompatActivity {
 
         cateTitle.setText(category);
         userID=getIntent().getExtras().getInt("userID");
+        newsItemList=new ArrayList<>();
+        url="http://api.a17-sd606.studev.groept.be/selectCategoryNews/"+category;
     }
 
-    public void top5NewsOrderedByDate(String url) {
+    private void NewsAsyncTask(String url){  //这里的url就是从学校服务器
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jArr=new JSONArray(response);
+                            for(int i=0;i<jArr.length();i++) {   //maybe later,we can change "5" to jArr.length
+                                JSONObject jo = jArr.getJSONObject(i);
+                                ids[i]=jo.getInt("newsID");
+                                String newsTitle=jo.getString("title");
+                                String newsDate=jo.getString("date");
+                                String image="http://a17-sd606.studev.groept.be/Image/"+jo.getString("frontPhoto");
+                                int newsLikes=jo.getInt("likes");
+                                newsItemList.add(new NewsItem(image,newsTitle,newsDate,newsLikes));
+
+                                //   Toast.makeText(NewsOverviewActivity.this,newsItemList.get(i).image, Toast.LENGTH_SHORT).show();
+                            }
+                            NewsAdapter newsAdapter = new NewsAdapter(CategoryActivity.this,newsItemList,lvNews);
+                            lvNews.setAdapter(newsAdapter);
+
+                            //populateNewsListView();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }}
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {}
+        });
+
+        queue.add(stringRequest);
+    }
+
+    public void clickListview()
+    {
+        lvNews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //点击listview中的内容转到相关地方
+                Intent myIntent=new Intent(view.getContext(),NewsShowActivity.class);
+                myIntent.putExtra("newsID",ids[position]);
+                startActivityForResult(myIntent,position);
+            }
+        });
+    }
+
+    /*public void top5NewsOrderedByDate(String url) {
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -87,7 +143,7 @@ public class CategoryActivity extends AppCompatActivity {
         });
 
         queue.add(stringRequest);
-    }
+    }*/
 
     private void populateNewsListView() {
         adapter = new NewsItemAdapter(CategoryActivity.this, newsItems);
