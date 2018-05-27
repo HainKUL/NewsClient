@@ -17,11 +17,11 @@
         android:id="@+id/searchIcon"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/BreakingNews"
+        android:layout_marginEnd="65dp"
         android:contentDescription="@string/todo"
-        app:srcCompat="@drawable/search"
-        android:layout_toRightOf="@+id/BreakingNews" />
+        app:srcCompat="@drawable/search" />
 
     <ImageView
         android:id="@+id/profile"
