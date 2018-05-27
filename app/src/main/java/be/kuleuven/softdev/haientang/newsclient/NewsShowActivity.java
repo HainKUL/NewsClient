@@ -154,26 +154,33 @@ public class NewsShowActivity extends AppCompatActivity {
         submitBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //get instant time
-                Calendar mCurrentDate = Calendar.getInstance();;
-                SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                final String dt = format.format(mCurrentDate.getTime());
-                String url="http://api.a17-sd606.studev.groept.be/addComments/"+newsID+"/"+commentBoard.getText().toString()+"/"+dt+"/"+userID;
+                if(userID==0)
+                {
+                    Toast.makeText(getApplicationContext(), "Guest have no permission for comment,please register", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    //get instant time
+                    Calendar mCurrentDate = Calendar.getInstance();;
+                    SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    final String dt = format.format(mCurrentDate.getTime());
+                    String url="http://api.a17-sd606.studev.groept.be/addComments/"+newsID+"/"+commentBoard.getText().toString()+"/"+dt+"/"+userID;
 
-                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                        new Response.Listener<String>() {
-                            public void onResponse(String response) {
-                                refreshCommentsLists(commentBoard.getText().toString(),dt,userID);
-                                commentBoard.setText("");
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Oops,please try again later!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                queue.add(stringRequest);
+                    RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                            new Response.Listener<String>() {
+                                public void onResponse(String response) {
+                                    refreshCommentsLists(commentBoard.getText().toString(),dt,userID);
+                                    commentBoard.setText("");
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(getApplicationContext(), "Oops,please try again later!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    queue.add(stringRequest);
+                }
             }
         });
     }
