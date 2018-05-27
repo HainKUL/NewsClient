@@ -35,24 +35,26 @@
             <ImageView
                 android:id="@+id/searchIcon"
                 android:layout_width="40dp"
-                android:layout_height="30dp"
-                android:layout_weight="0"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_gravity="right"
+                android:layout_marginLeft="100dp"
                 android:contentDescription="@string/todo"
                 app:srcCompat="@drawable/search" />
 
-            <Button
-                android:id="@+id/userInfo"
-                android:layout_width="12dp"
-                android:layout_height="40dp"
+            <ImageView
+                android:id="@+id/profile"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="right"
+
                 android:layout_weight="1"
-                android:hint="@string/username"
-                android:textSize="12sp" />
+                app:srcCompat="@drawable/profile" />
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/NewsCategroy"
-            style="?android:attr/buttonBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -61,7 +63,6 @@
 
             <Button
                 android:id="@+id/Sports"
-                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="122dp"
                 android:layout_height="wrap_content"
                 android:background="?attr/colorButtonNormal"
@@ -70,7 +71,6 @@
 
             <Button
                 android:id="@+id/Economy"
-                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="122dp"
                 android:layout_height="wrap_content"
                 android:background="@android:color/holo_purple"
@@ -79,7 +79,6 @@
 
             <Button
                 android:id="@+id/China"
-                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="122dp"
                 android:layout_height="wrap_content"
                 android:background="@android:color/holo_blue_light"

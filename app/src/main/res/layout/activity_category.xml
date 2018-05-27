@@ -24,9 +24,9 @@
 
             <ImageView
                 android:id="@+id/Ima_home"
-                android:layout_width="79dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_weight="0"
                 android:contentDescription="@string/todo"
                 app:srcCompat="@drawable/home" />
 
@@ -38,6 +38,14 @@
                 android:gravity="center_horizontal"
                 android:hint="@string/category"
                 android:textSize="30sp" />
+
+            <ImageView
+                android:id="@+id/profile"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_weight="0"
+                android:layout_gravity="right"
+                app:srcCompat="@drawable/profile" />
 
         </LinearLayout>
 

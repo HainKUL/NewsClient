@@ -33,6 +33,7 @@ public class CategoryActivity extends AppCompatActivity {
     private NewsItemAdapter adapter;
     private List<NewsItem> newsItemList;
     private String url;
+    private ImageView profile;
 
     int[] ids;
     String category;
@@ -48,10 +49,13 @@ public class CategoryActivity extends AppCompatActivity {
         clickButtonHome();
         NewsAsyncTask(url);
         clickListview();
+        setUserProfile(userID);
+        clickProfilePicBackToLogin();
     }
 
     private void initAllRef(){
         lvNews = (ListView) findViewById(R.id.lvNews);
+        profile=(ImageView) findViewById(R.id.profile);
         newsItems=new ArrayList<>();
 
         ids=new int[5];
@@ -98,6 +102,16 @@ public class CategoryActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
+    public void clickProfilePicBackToLogin() {
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(CategoryActivity.this,MainActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
     public void clickListview()
     {
         lvNews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -106,6 +120,7 @@ public class CategoryActivity extends AppCompatActivity {
                 //点击listview中的内容转到相关地方
                 Intent myIntent=new Intent(view.getContext(),NewsShowActivity.class);
                 myIntent.putExtra("newsID",ids[position]);
+                myIntent.putExtra("userID",userID);
                 startActivityForResult(myIntent,position);
             }
         });
@@ -120,6 +135,34 @@ public class CategoryActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    public void setUserProfile(int userID)
+    {
+        if(userID!=0)
+        {
+            String url="http://a17-sd606.studev.groept.be/User/"+userID;
+            RequestQueue mQueue = Volley.newRequestQueue(this);
+            ImageLoader imageLoader = new ImageLoader(mQueue, new BitmapCache() {
+                @Override
+                public void putBitmap(String url, Bitmap bitmap) {
+                }
+                @Override
+                public Bitmap getBitmap(String url) {
+                    return null;
+                }
+            });
+
+            ImageLoader.ImageListener listener = ImageLoader.getImageListener(profile,
+                    R.drawable.profile, R.drawable.profile);
+            imageLoader.get(url,
+                    listener, 600, 600);
+
+        }
+        else
+        {
+            profile.setImageResource(R.drawable.profile);
+        }
     }
 
 }

@@ -6,8 +6,6 @@ import java.util.List;
 //import org.apache.http.client.methods.AbortableHttpRequest;
 
 import android.content.Context;
-import android.sax.StartElementListener;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +36,7 @@ public class NewsAdapter extends BaseAdapter implements OnScrollListener{
         mListView=listView;
         isFirstIn = true;
 
-        imageLoader=new ImageLoader(mListView);
+        imageLoader =new ImageLoader(mListView);
         imageLoader.mUrls = new String[mList.size()]; //这几句话在murls当中加入pictures的url,对于我们而言就是把photoname给加进去
         for(int i=0;i<mList.size();i++){
             imageLoader.mUrls[i] = mList.get(i).image;

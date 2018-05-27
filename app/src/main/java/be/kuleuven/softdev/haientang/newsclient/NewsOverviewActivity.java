@@ -57,7 +57,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_news_overview);
 
         initAllRef();
-        clickProfilPicBackToLogin();
+        clickProfilePicBackToLogin();
         clickButtonSearch();
         clickButtonSports();
         clickButtonEconomy();
@@ -66,7 +66,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
         NewsAsyncTask(url);
         clickListview();
 
-        setUserProfile(userID);
+       setUserProfile(userID);
     }
 
     private void initAllRef(){
@@ -137,7 +137,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
         });
     }*/
 
-    public void clickProfilPicBackToLogin() {
+    public void clickProfilePicBackToLogin() {
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -225,7 +225,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
             });
 
             ImageLoader.ImageListener listener = ImageLoader.getImageListener(profile,
-                    R.drawable.home, R.drawable.home);
+                    R.drawable.profile, R.drawable.profile);
             imageLoader.get(url,
                     listener, 600, 600);
 
