@@ -26,8 +26,6 @@
         <activity android:name=".CategoryActivity" />
         <activity android:name=".NewsOverviewActivity" />
         <activity android:name=".NewsShowActivity" />
-        <activity android:name=".imageShow" />
-        <activity android:name=".fileUploadTest" />
         <activity android:name=".EditorActivity"></activity>
     </application>
 

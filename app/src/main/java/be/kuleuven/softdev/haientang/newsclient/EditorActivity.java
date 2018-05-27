@@ -72,10 +72,6 @@ public class EditorActivity extends AppCompatActivity {
         uploadImage1();
         uploadImage2();
         clickOnSubmitButton();
-
-
-
-
     }
 
 

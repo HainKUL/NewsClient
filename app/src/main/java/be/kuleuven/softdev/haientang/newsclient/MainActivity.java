@@ -26,7 +26,7 @@ import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button loginBut,registerBut,guestBut,imageBut,phpBut;
+    Button loginBut,registerBut,guestBut;
     TextView adverTV;
     ImageView profile;
     @Override
@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
         guestBut=(Button) findViewById(R.id.butGuest);
         adverTV=(TextView) findViewById(R.id.advertiser);
         profile=(ImageView) findViewById(R.id.profile);
-
     }
 
     private void clickButtonLogin() {

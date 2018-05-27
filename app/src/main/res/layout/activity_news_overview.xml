@@ -3,437 +3,109 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:padding="5dp"
     android:layout_height="match_parent"
+    android:padding="5dp"
     tools:context="be.kuleuven.softdev.haientang.newsclient.NewsOverviewActivity">
 
-    <ScrollView
-        android:id="@+id/ScrollView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:padding="5dp"
+    <LinearLayout
+        android:id="@+id/Layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
-            android:id="@+id/Layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/NewsOverView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/news"
-                    android:textColor="#ffee9cff"
-                    android:textSize="30sp" />
-
-                <ImageView
-                    android:id="@+id/searchIcon"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_weight="0"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginLeft="00dp"
-                    android:contentDescription="@string/todo"
-                    app:srcCompat="@drawable/search" />
-
-                <ImageView
-                    android:id="@+id/profile"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_weight="0"
-
-                    android:layout_gravity="right"
-                    app:srcCompat="@drawable/profile" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/NewsCategroy"
-                style="?android:attr/buttonBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/Sports"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="122dp"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/colorButtonNormal"
-                    android:text="@string/sports"
-                    android:textColor="@android:color/holo_orange_dark" />
-
-                <Button
-                    android:id="@+id/Economy"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="122dp"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/holo_purple"
-                    android:text="@string/economy"
-                    android:textColor="@android:color/white" />
-
-                <Button
-                    android:id="@+id/China"
-                    style="?android:attr/buttonBarButtonStyle"
-                    android:layout_width="122dp"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/holo_blue_light"
-                    android:text="@string/china"
-                    android:textColor="@android:color/holo_red_dark" />
-
-            </LinearLayout>
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/BreakingNews"
+                android:id="@+id/NewsOverView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:fontFamily="sans-serif"
-                android:text="@string/breaking_news"
-                android:textAlignment="center"
+                android:layout_weight="1"
+                android:text="@string/news"
+                android:textColor="#ffee9cff"
                 android:textSize="30sp" />
 
-            <LinearLayout
-                android:id="@+id/BoardNews1"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/searchIcon"
+                android:layout_width="40dp"
+                android:layout_height="30dp"
+                android:layout_weight="0"
+                android:contentDescription="@string/todo"
+                app:srcCompat="@drawable/search" />
 
-                <ImageView
-                    android:id="@+id/TNImage1"
-                    android:layout_width="250dp"
-                    android:layout_height="100dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/textview_border"
-                    android:contentDescription="@string/image1" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginStart="4dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/TNTitle1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top"
-                        android:hint="@string/title1"
-                        android:textSize="18sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="bottom"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/TNDate1"
-                            android:layout_width="0dp"
-                            android:layout_height="20dp"
-                            android:layout_weight="1"
-                            android:hint="@string/date" />
-
-                        <ImageView
-                            android:id="@+id/likesIcon1"
-                            android:layout_width="32dp"
-                            android:layout_height="20dp"
-                            android:contentDescription="@string/todo"
-                            app:srcCompat="@drawable/like" />
-
-                        <TextView
-                            android:id="@+id/likesNr1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="20dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginRight="10dp"
-                            android:hint="@string/likes"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/BoardNews2"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/TNImage2"
-                    android:layout_width="250dp"
-                    android:layout_height="100dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/textview_border"
-                    android:contentDescription="@string/image2" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginStart="4dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/TNTitle2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top"
-                        android:hint="@string/title2"
-                        android:textSize="18sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="bottom"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/TNDate2"
-                            android:layout_width="0dp"
-                            android:layout_height="20dp"
-                            android:layout_weight="1"
-                            android:hint="@string/date" />
-
-                        <ImageView
-                            android:id="@+id/likesIcon2"
-                            android:layout_width="32dp"
-                            android:layout_height="20dp"
-                            android:contentDescription="@string/todo"
-                            app:srcCompat="@drawable/like" />
-
-                        <TextView
-                            android:id="@+id/likesNr2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="20dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginRight="10dp"
-                            android:hint="@string/likes"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/BoardNews3"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/TNImage3"
-                    android:layout_width="250dp"
-                    android:layout_height="100dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/textview_border"
-                    android:contentDescription="@string/image3" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginStart="4dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/TNTitle3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top"
-                        android:hint="@string/title3"
-                        android:textSize="18sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="bottom"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/TNDate3"
-                            android:layout_width="0dp"
-                            android:layout_height="20dp"
-                            android:layout_weight="1"
-                            android:hint="@string/date" />
-
-                        <ImageView
-                            android:id="@+id/likesIcon3"
-                            android:layout_width="32dp"
-                            android:layout_height="20dp"
-                            android:contentDescription="@string/todo"
-                            app:srcCompat="@drawable/like" />
-
-                        <TextView
-                            android:id="@+id/likesNr3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="20dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginRight="10dp"
-                            android:hint="@string/likes"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/BoardNews4"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/TNImage4"
-                    android:layout_width="250dp"
-                    android:layout_height="100dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/textview_border"
-                    android:contentDescription="@string/image4" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginStart="4dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/TNTitle4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top"
-                        android:hint="@string/title4"
-                        android:textSize="18sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="bottom"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/TNDate4"
-                            android:layout_width="0dp"
-                            android:layout_height="20dp"
-                            android:layout_weight="1"
-                            android:hint="@string/date" />
-
-                        <ImageView
-                            android:id="@+id/likesIcon4"
-                            android:layout_width="32dp"
-                            android:layout_height="20dp"
-                            android:contentDescription="@string/todo"
-                            app:srcCompat="@drawable/like" />
-
-                        <TextView
-                            android:id="@+id/likesNr4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="20dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginRight="10dp"
-                            android:hint="@string/likes"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/BoardNews5"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/TNImage5"
-                    android:layout_width="250dp"
-                    android:layout_height="100dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/textview_border"
-                    android:contentDescription="@string/image5" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginStart="4dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/TNTitle5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="top"
-                        android:hint="@string/title5"
-                        android:textSize="18sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="bottom"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/TNDate5"
-                            android:layout_width="0dp"
-                            android:layout_height="20dp"
-                            android:layout_weight="1"
-                            android:hint="@string/date" />
-
-                        <ImageView
-                            android:id="@+id/likesIcon5"
-                            android:layout_width="32dp"
-                            android:layout_height="20dp"
-                            android:contentDescription="@string/todo"
-                            app:srcCompat="@drawable/like" />
-
-                        <TextView
-                            android:id="@+id/likesNr5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="20dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginRight="10dp"
-                            android:hint="@string/likes"
-                            android:textSize="15sp" />
-                    </LinearLayout>
-
-                </LinearLayout>
-            </LinearLayout>
-
+            <Button
+                android:id="@+id/userInfo"
+                android:layout_width="12dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:hint="@string/username"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
-    </ScrollView>
+        <LinearLayout
+            android:id="@+id/NewsCategroy"
+            style="?android:attr/buttonBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/Sports"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="122dp"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorButtonNormal"
+                android:text="@string/sports"
+                android:textColor="@android:color/holo_orange_dark" />
+
+            <Button
+                android:id="@+id/Economy"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="122dp"
+                android:layout_height="wrap_content"
+                android:background="@android:color/holo_purple"
+                android:text="@string/economy"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/China"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="122dp"
+                android:layout_height="wrap_content"
+                android:background="@android:color/holo_blue_light"
+                android:text="@string/china"
+                android:textColor="@android:color/holo_red_dark" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/BreakingNews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif"
+            android:text="@string/breaking_news"
+            android:textAlignment="center"
+            android:textSize="30sp" />
+
+
+        <ListView
+            android:id="@+id/lvNews"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>
