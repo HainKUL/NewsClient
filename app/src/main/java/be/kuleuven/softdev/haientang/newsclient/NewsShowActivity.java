@@ -40,8 +40,6 @@ public class NewsShowActivity extends AppCompatActivity {
     Button submitBut;
     ImageView ivUp;
     ImageView ivDown;
-    String[] imageUrl=new String[2];
-    String[] imagePosition=new String[2];
     ImageView profile;
 
     @Override
@@ -329,7 +327,7 @@ public class NewsShowActivity extends AppCompatActivity {
            if(pos.equals("up"))
            {
                ImageLoader.ImageListener listener = ImageLoader.getImageListener(ivUp,
-                       R.drawable.home, R.drawable.home);
+                       R.drawable.loading, R.drawable.loading);
                imageLoader.get(url,
                        listener, 600, 600);
            }
@@ -337,7 +335,7 @@ public class NewsShowActivity extends AppCompatActivity {
            {
 
                ImageLoader.ImageListener listener = ImageLoader.getImageListener(ivDown,
-                       R.drawable.home, R.drawable.home);
+                       R.drawable.loading, R.drawable.loading);
                imageLoader.get(url,
                        listener, 600, 600);
            }
@@ -365,7 +363,7 @@ public class NewsShowActivity extends AppCompatActivity {
             });
 
             ImageLoader.ImageListener listener = ImageLoader.getImageListener(profile,
-                    R.drawable.home, R.drawable.home);
+                    R.drawable.profile, R.drawable.profile);
             imageLoader.get(url,
                     listener, 600, 600);
 

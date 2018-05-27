@@ -45,7 +45,6 @@ public class CategoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_category);
 
         initAllRef();
-        //top5NewsOrderedByDate("http://api.a17-sd606.studev.groept.be/selectCategoryNews/"+category);
         clickButtonHome();
         NewsAsyncTask(url);
         clickListview();
@@ -83,12 +82,10 @@ public class CategoryActivity extends AppCompatActivity {
                                 int newsLikes=jo.getInt("likes");
                                 newsItemList.add(new NewsItem(image,newsTitle,newsDate,newsLikes));
 
-                                //   Toast.makeText(NewsOverviewActivity.this,newsItemList.get(i).image, Toast.LENGTH_SHORT).show();
                             }
                             NewsAdapter newsAdapter = new NewsAdapter(CategoryActivity.this,newsItemList,lvNews);
                             lvNews.setAdapter(newsAdapter);
 
-                            //populateNewsListView();
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -114,52 +111,6 @@ public class CategoryActivity extends AppCompatActivity {
         });
     }
 
-    /*public void top5NewsOrderedByDate(String url) {
-        RequestQueue queue = Volley.newRequestQueue(this);
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    public void onResponse(String response) {
-                        try {
-                            JSONArray jArr=new JSONArray(response);
-                            for(int i=0;i<5;i++) {
-                                JSONObject jo=jArr.getJSONObject(i);
-                                ids[i]=jo.getInt("newsID");
-                                String newsTitle=jo.getString("title");
-                                String newsDate=jo.getString("date");
-                                int newsLikes=jo.getInt("likes");
-                                newsItems.add(new NewsItem("",newsTitle,newsDate,newsLikes));
-                                //getImageByNewsID(i,ids[i]);
-                            }
-
-                            populateNewsListView();
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {}
-        });
-
-        queue.add(stringRequest);
-    }*/
-
-    private void populateNewsListView() {
-        adapter = new NewsItemAdapter(CategoryActivity.this, newsItems);
-        lvNews.setAdapter(adapter);
-        lvNews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                //search full news by id
-                Intent intent = new Intent(getApplicationContext(), NewsShowActivity.class);
-                intent.putExtra("newsID", ids[position]);
-                intent.putExtra("userID",userID);
-                startActivity(intent);
-            }
-        });
-    }
-
     private void clickButtonHome() {
         ImageView SearchBut=(ImageView) findViewById(R.id.Ima_home);
         SearchBut.setOnClickListener(new View.OnClickListener() {
@@ -171,46 +122,4 @@ public class CategoryActivity extends AppCompatActivity {
         });
     }
 
-//    public void getImageByNewsID(int i, int newsID) {//newsID is the foreign key in photo tabele
-//        String url="http://api.a17-sd606.studev.groept.be/selectPhotosOnFrontFace/"+newsID;
-//        final int j=i;
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        try {
-//                            JSONArray jArr=new JSONArray(response);
-//                            JSONObject jo=jArr.getJSONObject(0);
-//                            String name=jo.getString("photoName");
-//
-//                            showImageByName("http://a17-sd606.studev.groept.be/Image/"+name,j);
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }}
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {}
-//        });
-//
-//        queue.add(stringRequest);
-//    }
-//
-//    public void showImageByName(String url,int j) {  //through which you can show image.  the url is the image`s url
-//        RequestQueue mQueue = Volley.newRequestQueue(this);
-//        ImageLoader imageLoader = new ImageLoader(mQueue, new BitmapCache() {
-//            @Override
-//            public void putBitmap(String url, Bitmap bitmap) {
-//            }
-//            @Override
-//            public Bitmap getBitmap(String url) {
-//                return null;
-//            }
-//        });
-//
-//        ImageLoader.ImageListener listener = ImageLoader.getImageListener(newsImages.get(j),
-//                R.drawable.home, R.drawable.home);
-//        imageLoader.get(url,
-//                listener, 600, 600);
-//    }
 }
