@@ -49,6 +49,7 @@ public class EditorActivity extends AppCompatActivity {
     private Button btnUpload;
     private Uri filePathUp;
     private Uri filePathDown;
+    private ImageView home;
 
     EditText titleEdit,tagsEdit, contentEdit,image1Edit,image2Edit;
     Spinner categorySpin;
@@ -72,6 +73,7 @@ public class EditorActivity extends AppCompatActivity {
         uploadImage1();
         uploadImage2();
         clickOnSubmitButton();
+        homeClick();
     }
 
 
@@ -95,6 +97,20 @@ public class EditorActivity extends AppCompatActivity {
 
         image1=(ImageView) findViewById(R.id.upImage);
         image2=(ImageView) findViewById(R.id.downImage);
+        home=(ImageView) findViewById(R.id.home);
+    }
+
+    private void homeClick()
+    {
+        home.setOnClickListener(new View.OnClickListener(){
+
+           @Override
+            public void onClick(View view){
+                Intent intent=new Intent(EditorActivity.this,MainActivity.class);
+                startActivity(intent);
+            }
+
+        });
     }
 
     private void setDate() {

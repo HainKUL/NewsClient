@@ -84,7 +84,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginEnd="12dp"
         android:layout_marginRight="12dp"
-        android:text="@string/advertise_with_us"
+        android:text="Editors"
         android:textStyle="bold" />
 
 </RelativeLayout>

@@ -100,28 +100,7 @@ public class ImageLoader {
 
     }
 
-   /* private Handler mHandler = new Handler() {
-        public void handleMessage(android.os.Message msg) {
-            super.handleMessage(msg);
-            if (mImageView.getTag().equals(mUrl)) {
-                mImageView.setImageBitmap((Bitmap) msg.obj);
-            }
-        };
-    };*/
 
-
-   /* public void showImageByThead(ImageView iv, final String url) {
-        mImageView = iv;
-        mUrl = url;
-        new Thread() {
-            public void run() {
-                Bitmap bitmap = getBitmapFromUrl(url);
-                Message message = Message.obtain();
-                message.obj = bitmap;
-                mHandler.sendMessage(message);
-            };
-        }.start();
-    }*/
 
     public Bitmap getBitmapFromUrl(String urlString) {
         Bitmap bitmap;
