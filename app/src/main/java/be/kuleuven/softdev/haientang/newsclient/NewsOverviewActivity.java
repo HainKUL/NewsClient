@@ -3,17 +3,17 @@ package be.kuleuven.softdev.haientang.newsclient;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -27,17 +27,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import be.kuleuven.softdev.haientang.newsclient.model.NewsItem;
+
+
 
 public class NewsOverviewActivity extends AppCompatActivity {
     private static final String TAG = "NewsOverviewActivity";
@@ -65,10 +61,10 @@ public class NewsOverviewActivity extends AppCompatActivity {
         clickButtonEconomy();
         clickButtonChina();
 
-        NewsAsyncTask(url);
+        //getNewsInfo(url);
         clickListview();
-
        setUserProfile(userID);
+       new NewsAsyncTask().execute(url);
     }
 
     private void initAllRef(){
@@ -86,7 +82,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
 
 
 
-    private void NewsAsyncTask(String url){  //这里的url就是从学校服务器
+    private List<NewsItem> getNewsInfo(String url){  //这里的url就是从学校服务器
 
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -106,8 +102,9 @@ public class NewsOverviewActivity extends AppCompatActivity {
 
                              //   Toast.makeText(NewsOverviewActivity.this,newsItemList.get(i).image, Toast.LENGTH_SHORT).show();
                             }
-                            NewsAdapter newsAdapter = new NewsAdapter(NewsOverviewActivity.this,newsItemList,lvNews);
-                            lvNews.setAdapter(newsAdapter);
+                            /*NewsAdapter newsAdapter = new NewsAdapter(NewsOverviewActivity.this,newsItemList,lvNews);
+                            lvNews.setAdapter(newsAdapter);*/
+                            uploadNewsInfoByThead(newsItemList);
 
                             //populateNewsListView();
 
@@ -118,8 +115,8 @@ public class NewsOverviewActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {}
         });
-
         queue.add(stringRequest);
+        return newsItemList;
     }
 
 
@@ -237,4 +234,42 @@ public class NewsOverviewActivity extends AppCompatActivity {
             profile.setImageResource(R.drawable.profile);
         }
      }
+
+    class NewsAsyncTask extends AsyncTask<String, Void, List<NewsItem>> {
+
+        @Override
+        protected List<NewsItem> doInBackground(String... params) {
+            return getNewsInfo(params[0]);
+        }
+
+        @Override
+        protected void onPostExecute(List<NewsItem> result) {
+            super.onPostExecute(result);
+
+            NewsAdapter newsAdapter = new NewsAdapter(NewsOverviewActivity.this,result,lvNews);
+            lvNews.setAdapter(newsAdapter);
+
+        }
+    }
+
+    private Handler mHandler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            super.handleMessage(msg);
+
+                NewsAdapter newsAdapter = new NewsAdapter(NewsOverviewActivity.this,(List<NewsItem>) msg.obj,lvNews);
+                lvNews.setAdapter(newsAdapter);
+
+        };
+    };
+
+
+    public void uploadNewsInfoByThead(final List<NewsItem> ni) {
+        new Thread() {
+            public void run() {
+                Message message = Message.obtain();
+                message.obj = ni;
+                mHandler.sendMessage(message);
+            };
+        }.start();
+    }
 }
