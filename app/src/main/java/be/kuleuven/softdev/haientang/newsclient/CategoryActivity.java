@@ -2,6 +2,9 @@ package be.kuleuven.softdev.haientang.newsclient;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -85,11 +88,8 @@ public class CategoryActivity extends AppCompatActivity {
                                 String image="http://a17-sd606.studev.groept.be/Image/"+jo.getString("frontPhoto");
                                 int newsLikes=jo.getInt("likes");
                                 newsItemList.add(new NewsItem(image,newsTitle,newsDate,newsLikes));
-
                             }
-                            NewsAdapter newsAdapter = new NewsAdapter(CategoryActivity.this,newsItemList,lvNews);
-                            lvNews.setAdapter(newsAdapter);
-
+                            uploadNewsInfoByThead(newsItemList);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -164,5 +164,28 @@ public class CategoryActivity extends AppCompatActivity {
             profile.setImageResource(R.drawable.profile);
         }
     }
+
+    private Handler mHandler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            super.handleMessage(msg);
+
+            NewsAdapter newsAdapter = new NewsAdapter(CategoryActivity.this,(List<NewsItem>) msg.obj,lvNews);
+            lvNews.setAdapter(newsAdapter);
+
+        };
+    };
+
+
+    public void uploadNewsInfoByThead(final List<NewsItem> ni) {
+        new Thread() {
+            public void run() {
+                Message message = Message.obtain();
+                message.obj = ni;
+                mHandler.sendMessage(message);
+            };
+        }.start();
+    }
+
+
 
 }
