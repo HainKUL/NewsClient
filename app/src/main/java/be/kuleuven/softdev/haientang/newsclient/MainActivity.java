@@ -78,6 +78,39 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void loginCheck(String emailCheck, String passwdCheck) {
+        String url = "http://api.a17-sd606.studev.groept.be/loginCheck/" + emailCheck + "/" + passwdCheck;
+
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jArr = new JSONArray(response);
+                            JSONObject jo = jArr.getJSONObject(0);
+                            if (jArr.length() == 0) {//email or passwd wrong
+                                Toast.makeText(getApplicationContext(), "Please enter correct Email or password!", Toast.LENGTH_SHORT).show();
+                            } else if (jArr.length() == 1) {
+                                Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getApplicationContext(), NewsOverviewActivity.class);
+                                int userID = jo.getInt("userID");
+                                intent.putExtra("userID", userID);
+                                startActivity(intent);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Oops,please try again later!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        queue.add(stringRequest);
+    }
+
     private void clickButtonRegister() {
         registerBut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,99 +135,64 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void clickEditorLogin() {
+        editorTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);//create alert dialog
+                //create a new view,login view(mView) instead of main_activity view
+                View mView = getLayoutInflater().inflate(R.layout.dialog_editor, null);//referencing the alert dialog to the login dialog
+                //define the view inside the login layout
+                final EditText edAccount = (EditText) mView.findViewById(R.id.edAccount);
+                final EditText edpasswd = (EditText) mView.findViewById(R.id.edPasswd);
+                Button edLogin = (Button) mView.findViewById(R.id.butEditorLogin);
 
-            public void loginCheck(String emailCheck, String passwdCheck) {
-                String url = "http://api.a17-sd606.studev.groept.be/loginCheck/" + emailCheck + "/" + passwdCheck;
-
-                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                try {
-                                    JSONArray jArr = new JSONArray(response);
-                                    JSONObject jo = jArr.getJSONObject(0);
-                                    if (jArr.length() == 0) {//email or passwd wrong
-                                        Toast.makeText(getApplicationContext(), "Please enter correct Email or password!", Toast.LENGTH_SHORT).show();
-                                    } else if (jArr.length() == 1) {
-                                        Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(getApplicationContext(), NewsOverviewActivity.class);
-                                        int userID = jo.getInt("userID");
-                                        intent.putExtra("userID", userID);
-                                        //showImageByName("http://a17-sd606.studev.groept.be/User/",userID);
-                                        startActivity(intent);
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Oops,please try again later!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                queue.add(stringRequest);
-            }
-
-            private void clickEditorLogin() {
-                editorTv.setOnClickListener(new View.OnClickListener() {
+                edLogin.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);//create alert dialog
-                        //create a new view,login view(mView) instead of main_activity view
-                        View mView = getLayoutInflater().inflate(R.layout.dialog_editor, null);//referencing the alert dialog to the login dialog
-                        //define the view inside the login layout
-                        final EditText edAccount = (EditText) mView.findViewById(R.id.edAccount);
-                        final EditText edpasswd = (EditText) mView.findViewById(R.id.edPasswd);
-                        Button edLogin = (Button) mView.findViewById(R.id.butEditorLogin);
-
-                        edLogin.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                if (!edAccount.getText().toString().isEmpty() && !edpasswd.getText().toString().isEmpty()) {
-                                    editorLoginCheck(edAccount.getText().toString(), edpasswd.getText().toString());
-                                } else {
-                                    Toast.makeText(MainActivity.this, "Please fill in any empty fields!", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
-
-                        mBuilder.setView(mView);
-                        AlertDialog dialog = mBuilder.create();
-                        dialog.show();
+                        if (!edAccount.getText().toString().isEmpty() && !edpasswd.getText().toString().isEmpty()) {
+                            editorLoginCheck(edAccount.getText().toString(), edpasswd.getText().toString());
+                        } else {
+                            Toast.makeText(MainActivity.this, "Please fill in any empty fields!", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
+
+                mBuilder.setView(mView);
+                AlertDialog dialog = mBuilder.create();
+                dialog.show();
             }
+        });
+    }
 
-            public void editorLoginCheck(String edAccount, String edPasswd) {
-                String url = "http://api.a17-sd606.studev.groept.be/editorVerify/" + edAccount + "/" + edPasswd;
+    public void editorLoginCheck(String edAccount, String edPasswd) {
+        String url = "http://api.a17-sd606.studev.groept.be/editorVerify/" + edAccount + "/" + edPasswd;
 
-                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                try {
-                                    JSONArray jArr = new JSONArray(response);
-                                    JSONObject jo = jArr.getJSONObject(0);
-                                    if (jArr.length() == 0) {//email or passwd wrong
-                                        Toast.makeText(getApplicationContext(), "Please enter correct Email or password!", Toast.LENGTH_SHORT).show();
-                                    } else if (jArr.length() == 1) {
-                                        Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(getApplicationContext(), EditorActivity.class);
-                                        startActivity(intent);
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }, new Response.ErrorListener() {
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
                     @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Oops,please try again later!", Toast.LENGTH_SHORT).show();
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jArr = new JSONArray(response);
+                            JSONObject jo = jArr.getJSONObject(0);
+                            if (jArr.length() == 0) {//email or passwd wrong
+                                Toast.makeText(getApplicationContext(), "Please enter correct Email or password!", Toast.LENGTH_SHORT).show();
+                            } else if (jArr.length() == 1) {
+                                Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getApplicationContext(), EditorActivity.class);
+                                startActivity(intent);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
-                });
-                queue.add(stringRequest);
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Oops,please try again later!", Toast.LENGTH_SHORT).show();
             }
-        }
+        });
+        queue.add(stringRequest);
+    }
+}
