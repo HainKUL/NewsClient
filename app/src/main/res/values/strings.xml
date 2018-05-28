@@ -74,6 +74,7 @@
     <string name="newsdate">newsDate</string>
     <string name="todo">TODO</string>
     <string name="likeicon">likeIcon</string>
+    <string name="head">head</string>
     <string-array name="categorylist">
         <item>Economy</item>
         <item>Sports</item>
