@@ -68,7 +68,7 @@ public class CategoryActivity extends AppCompatActivity {
         cateTitle.setText(category);
         userID=getIntent().getExtras().getInt("userID");
         newsItemList=new ArrayList<>();
-        url="http://api.a17-sd606.studev.groept.be/selectCategoryNews/";//+category;
+        url="http://api.a17-sd606.studev.groept.be/selectCategoryNews/"+category;
     }
 
     private void NewsAsyncTask(String url){  //这里的url就是从学校服务器
