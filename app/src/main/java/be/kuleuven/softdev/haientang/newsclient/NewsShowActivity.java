@@ -130,24 +130,87 @@ public class NewsShowActivity extends AppCompatActivity {
         thumbUpIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                likesNr++;
-                String url="http://api.a17-sd606.studev.groept.be/addLikes/"+likesNr+"/"+newsID;
+                if(userID==0)
+                {
+                    Toast.makeText(getApplicationContext(), "Guest can not add like, please register", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    likeDuplicationCheck();
+                }
 
-                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                        new Response.Listener<String>() {
-                            public void onResponse(String response) {
-                                newsLikes.setText(""+likesNr);
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Oops,please try again later!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                queue.add(stringRequest);
             }
         });
+    }
+
+    public void likeDuplicationCheck()
+    {
+        String likeCheckUrl="http://api.a17-sd606.studev.groept.be/checkLikes/"+newsID+"/"+userID;
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, likeCheckUrl,
+                new Response.Listener<String>() {
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jArr=new JSONArray(response);
+                            JSONObject jo= jArr.getJSONObject(0);
+                            if(jo.getInt("num")==0)  //there is no repeated
+                            {
+
+                                String url="http://api.a17-sd606.studev.groept.be/addLikes/"+userID+"/"+newsID;
+
+                                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                                StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                                        new Response.Listener<String>() {
+                                            public void onResponse(String response) {
+                                                likesNr++;
+                                                updateLikes(likesNr,newsID);
+                                                newsLikes.setText(""+likesNr);
+                                                Toast.makeText(getApplicationContext(), "You add a like", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Toast.makeText(getApplicationContext(), "Oops,please try again later!", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                                queue.add(stringRequest);
+
+                            }
+                            else
+                            {
+                                Toast.makeText(getApplicationContext(), "You have approved the news, can`t do again", Toast.LENGTH_SHORT).show();
+                            }
+                            }
+                         catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Failed to load the comments!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        queue.add(stringRequest);
+    }
+
+    public void updateLikes(int likesNum,int newsID)
+    {
+        String url="http://api.a17-sd606.studev.groept.be/updateLikesToNews/"+likesNum+"/"+newsID;
+        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    public void onResponse(String response) {
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Oops,please try again later!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        queue.add(stringRequest);
+
     }
 
     public void addComments() {
@@ -280,6 +343,7 @@ public class NewsShowActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {//switch to news_overview activity
                 Intent intent = new Intent(NewsShowActivity.this, NewsOverviewActivity.class);
+                intent.putExtra("userID",userID);
                 startActivity(intent);
             }
         });
