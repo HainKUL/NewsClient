@@ -166,6 +166,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent myIntent=new Intent(view.getContext(),NewsShowActivity.class);
                 myIntent.putExtra("newsID",newsIDs.get(position));
+                myIntent.putExtra("userID",userID);
                 startActivityForResult(myIntent,position);
             }
         });

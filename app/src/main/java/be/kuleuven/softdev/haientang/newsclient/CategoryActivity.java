@@ -138,6 +138,7 @@ public class CategoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CategoryActivity.this, NewsOverviewActivity.class);
+                intent.putExtra("userID",userID);
                 startActivity(intent);
             }
         });
