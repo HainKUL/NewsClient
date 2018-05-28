@@ -161,12 +161,10 @@ public class NewsOverviewActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    public void clickListviewForFullNews()
-    {
+    public void clickListviewForFullNews() {
         lvNews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //点击listview中的内容转到相关地方
                 Intent myIntent=new Intent(view.getContext(),NewsShowActivity.class);
                 myIntent.putExtra("newsID",newsIDs.get(position));
                 startActivityForResult(myIntent,position);
