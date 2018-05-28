@@ -153,14 +153,6 @@
                         android:text="@string/image1"
                         android:textSize="18sp" />
 
-                    <EditText
-                        android:id="@+id/image1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint="caption"
-                        android:inputType="textMultiLine" />
-
                 </LinearLayout>
 
                 <ImageView
@@ -184,14 +176,6 @@
                         android:text="@string/image2"
                         android:textSize="18sp" />
 
-                    <EditText
-                        android:id="@+id/image2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint="caption"
-                        android:inputType="textMultiLine" />
-
                 </LinearLayout>
 
                 <ImageView
@@ -211,11 +195,6 @@
                 android:layout_gravity="bottom"
                 android:background="@android:color/holo_green_light"
                 android:text="@string/submitBut" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"></LinearLayout>
 
         </LinearLayout>
     </ScrollView>

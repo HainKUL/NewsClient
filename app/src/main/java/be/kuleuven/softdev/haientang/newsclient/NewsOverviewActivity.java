@@ -30,12 +30,8 @@ import be.kuleuven.softdev.haientang.newsclient.model.NewsItem;
 public class NewsOverviewActivity extends AppCompatActivity {
     private ListView lvNews;
     private List<NewsItem> newsItemList;
-
-    private String url;
-
     int userID;
     private ArrayList<Integer> newsIDs;
-
     ImageView SearchIcon, profilePic;
     Button SportsBut,EconomyBut,ChinaBut;
 
@@ -55,14 +51,13 @@ public class NewsOverviewActivity extends AppCompatActivity {
         clickButtonChina();
 
         setUserProfile(userID);
-        NewsAsyncTask(url);
+        NewsAsyncTask();
         clickListviewForFullNews();
     }
 
     private void initAllRef(){
         lvNews = (ListView) findViewById(R.id.lvNews);
         newsItemList=new ArrayList();
-        url="http://api.a17-sd606.studev.groept.be/selectBreakingNews";
         userID=getIntent().getExtras().getInt("userID");
         newsIDs=new ArrayList<>();
 
@@ -129,7 +124,8 @@ public class NewsOverviewActivity extends AppCompatActivity {
         });
     }
 
-    private void NewsAsyncTask(String url){  //这里的url就是从学校服务器
+    private void NewsAsyncTask(){  //这里的url就是从学校服务器
+        String url="http://api.a17-sd606.studev.groept.be/selectBreakingNews";
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
