@@ -32,5 +32,4 @@ public class BitmapCache implements ImageLoader.ImageCache {
     public void putBitmap(String url, Bitmap bitmap) {
         mCache.put(url, bitmap);
     }
-
 }

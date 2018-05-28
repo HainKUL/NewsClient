@@ -2,9 +2,6 @@ package be.kuleuven.softdev.haientang.newsclient;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -32,16 +29,21 @@ import be.kuleuven.softdev.haientang.newsclient.model.NewsItem;
 
 public class CategoryActivity extends AppCompatActivity {
     private ListView lvNews;
-    private ArrayList<NewsItem> newsItems;
-    private NewsItemAdapter adapter;
     private List<NewsItem> newsItemList;
+    private ArrayList<Integer> newsIds;
+
     private String url;
+
+    private ArrayList<NewsItem> newsItems;
+
+
     private ImageView profile;
 
-    int[] ids;
+
     String category;
     TextView cateTitle;
     int userID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +62,9 @@ public class CategoryActivity extends AppCompatActivity {
         lvNews = (ListView) findViewById(R.id.lvNews);
         profile=(ImageView) findViewById(R.id.profile);
         newsItems=new ArrayList<>();
+        newsIds=new ArrayList<>();
 
-        ids=new int[5];
+
         category= getIntent().getExtras().getString("category");
         cateTitle=(TextView) findViewById(R.id.CategoryTitle);
 
@@ -82,14 +85,17 @@ public class CategoryActivity extends AppCompatActivity {
                             JSONArray jArr=new JSONArray(response);
                             for(int i=0;i<jArr.length();i++) {   //maybe later,we can change "5" to jArr.length
                                 JSONObject jo = jArr.getJSONObject(i);
-                                ids[i]=jo.getInt("newsID");
+                                newsIds.add(jo.getInt("newsID"));
                                 String newsTitle=jo.getString("title");
                                 String newsDate=jo.getString("date");
                                 String image="http://a17-sd606.studev.groept.be/Image/"+jo.getString("frontPhoto");
                                 int newsLikes=jo.getInt("likes");
                                 newsItemList.add(new NewsItem(image,newsTitle,newsDate,newsLikes));
+
                             }
-                            uploadNewsInfoByThead(newsItemList);
+                            NewsAdapter newsAdapter = new NewsAdapter(CategoryActivity.this,newsItemList,lvNews);
+                            lvNews.setAdapter(newsAdapter);
+
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -119,7 +125,7 @@ public class CategoryActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //点击listview中的内容转到相关地方
                 Intent myIntent=new Intent(view.getContext(),NewsShowActivity.class);
-                myIntent.putExtra("newsID",ids[position]);
+                myIntent.putExtra("newsID",newsIds.get(position));
                 myIntent.putExtra("userID",userID);
                 startActivityForResult(myIntent,position);
             }
@@ -164,28 +170,4 @@ public class CategoryActivity extends AppCompatActivity {
             profile.setImageResource(R.drawable.profile);
         }
     }
-
-    private Handler mHandler = new Handler() {
-        public void handleMessage(android.os.Message msg) {
-            super.handleMessage(msg);
-
-            NewsAdapter newsAdapter = new NewsAdapter(CategoryActivity.this,(List<NewsItem>) msg.obj,lvNews);
-            lvNews.setAdapter(newsAdapter);
-
-        };
-    };
-
-
-    public void uploadNewsInfoByThead(final List<NewsItem> ni) {
-        new Thread() {
-            public void run() {
-                Message message = Message.obtain();
-                message.obj = ni;
-                mHandler.sendMessage(message);
-            };
-        }.start();
-    }
-
-
-
 }

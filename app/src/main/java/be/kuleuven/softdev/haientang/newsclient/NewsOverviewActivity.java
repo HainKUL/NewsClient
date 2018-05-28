@@ -32,6 +32,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
     private List<NewsItem> newsItemList;
 
     private String url;
+
     int userID;
     private ArrayList<Integer> newsIDs;
 
@@ -147,8 +148,6 @@ public class NewsOverviewActivity extends AppCompatActivity {
                             }
                             NewsAdapter newsAdapter = new NewsAdapter(NewsOverviewActivity.this,newsItemList,lvNews);
                             lvNews.setAdapter(newsAdapter);
-
-                            //populateNewsListView();
 
                         } catch (JSONException e) {
                             e.printStackTrace();
