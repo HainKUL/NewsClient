@@ -34,7 +34,6 @@ public class CategoryActivity extends AppCompatActivity {
 
     private String url;
 
-    private ArrayList<NewsItem> newsItems;
 
 
     private ImageView profile;
@@ -61,7 +60,6 @@ public class CategoryActivity extends AppCompatActivity {
     private void initAllRef(){
         lvNews = (ListView) findViewById(R.id.lvNews);
         profile=(ImageView) findViewById(R.id.profile);
-        newsItems=new ArrayList<>();
         newsIds=new ArrayList<>();
 
 
