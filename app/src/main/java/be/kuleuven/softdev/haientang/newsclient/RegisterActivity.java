@@ -65,6 +65,7 @@ public class RegisterActivity extends AppCompatActivity {
         emailDynamicCheck();
         passwdDynamicCheck();
         clickSubmitButton();
+
     }
 
     private void initAllRef() {
@@ -188,29 +189,30 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public void uploadUserInfo() {
-        /*URL=url+firstNameTxt.getText().toString()
+        String url="http://api.a17-sd606.studev.groept.be/usersRegister/";
+        URL=url+firstNameTxt.getText().toString()
                 +"/"+surnameTxt.getText().toString()+
                 "/"+emailTxt.getText().toString()
-                +"/"+passwd.getText().toString()
-                +"/"+1;//1 refers to teh userType registered user, 2 refers to guest
+                +"/"+passwd.getText().toString();//1 refers to teh userType registered user, 2 refers to guest
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
                 new Response.Listener<String>() {
                     @Override
-                    public void onResponse(String response) {*/
-                        uploadMultipart();
-                        //Toast.makeText(RegisterActivity.this, "Registration succeed!", Toast.LENGTH_SHORT).show();
-                        switchToLogin();//new method to switch to login dialog
-/*                    }
+                    public void onResponse(String response) {
+                        Toast.makeText(RegisterActivity.this, "Registration succeed!", Toast.LENGTH_SHORT).show();
+
+                    }
                 }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Toast.makeText(RegisterActivity.this, "Oops,please try again later!", Toast.LENGTH_SHORT).show();
                 }
             });
-        queue.add(stringRequest);// Add the request to the RequestQueue.*/
+        queue.add(stringRequest);// Add the request to the RequestQueue.
+        uploadMultipart();
+        switchToLogin();//new method to switch to login dialog
     }
 
     public void switchToLogin() {
@@ -290,11 +292,6 @@ public class RegisterActivity extends AppCompatActivity {
             new MultipartUploadRequest(this, uploadId, UPLOAD_URL)
                     .addFileToUpload(path, "image") //Adding file
                     .addParameter("isSuccess","success")
-                    .addParameter("firstName",firstNameTxt.getText().toString())
-                    .addParameter("surName",surnameTxt.getText().toString())
-                    .addParameter("email",emailTxt.getText().toString())
-                    .addParameter("password",passwd.getText().toString())
-                    .addParameter("userType","1")
                     .setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
@@ -350,4 +347,5 @@ public class RegisterActivity extends AppCompatActivity {
             }
         }
     }
+
 }
