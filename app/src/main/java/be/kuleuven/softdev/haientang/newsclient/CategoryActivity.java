@@ -59,12 +59,12 @@ public class CategoryActivity extends AppCompatActivity {
     private void initAllRef(){
         lvNews = (ListView) findViewById(R.id.lvNews);
         profile=(ImageView) findViewById(R.id.profile);
+        category= getIntent().getExtras().getString("category");
         newsItemList=new ArrayList<>();
         newsIds=new ArrayList<>();
         userID=getIntent().getExtras().getInt("userID");
         url="http://api.a17-sd606.studev.groept.be/selectCategoryNews/"+category;
         profile=(ImageView) findViewById(R.id.profile);
-        category= getIntent().getExtras().getString("category");
         cateTitle=(TextView) findViewById(R.id.CategoryTitle);
         cateTitle.setText(category);
     }

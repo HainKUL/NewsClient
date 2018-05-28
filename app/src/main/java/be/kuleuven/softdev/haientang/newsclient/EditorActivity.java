@@ -192,29 +192,29 @@ public class EditorActivity extends AppCompatActivity {
                 //String contHtml=htmlEncode(cont);
                 String url="http://api.a17-sd606.studev.groept.be/postNews/"
                         +title +"/" +cont+"/"+tags+"/"+category+"/"+date;
-                selectCurrentMaxNewsId(url);
+                uploadNews(url);
             }
         });
     }
 
-    public void selectCurrentMaxNewsId(String url){
-        String URL_MAXID="http://api.a17-sd606.studev.groept.be/selectCurrentMaxNewsId";
+   /* public void uploadNews(String url){
+        //String URL_MAXID="http://api.a17-sd606.studev.groept.be/selectCurrentMaxNewsId";
         final String URL_POSTNEWS=url;
         RequestQueue queue= Volley.newRequestQueue(getApplicationContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_MAXID,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
                             JSONArray jArr = new JSONArray(response);
                             JSONObject jo = jArr.getJSONObject(0);
-                            cureentMaxId = jo.getInt("currentNewID");
-                            String upImageName=Integer.toString(cureentMaxId+1)+"up.jpg";
-                            String downImageName=Integer.toString(cureentMaxId+1)+"down.jpg";
-                            String url=URL_POSTNEWS+"/"+upImageName+"/"+downImageName;
+                            //cureentMaxId = jo.getInt("currentNewID");
+                            //String upImageName=Integer.toString(cureentMaxId+1)+"up.jpg";
+                            // String downImageName=Integer.toString(cureentMaxId+1)+"down.jpg";
+                           //+"/"+upImageName+"/"+downImageName;
 
-                            postNews(url);
-                            uploadMultipart(cureentMaxId+1);
+                            postNews(URL_POSTNEWS);
+                            uploadMultipart();
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -225,15 +225,16 @@ public class EditorActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {}
         });
         queue.add(stringRequest);
-    }
+    }*/
 
 
-    private void postNews(String url){
+    private void uploadNews(String url){
         RequestQueue queue= Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        uploadMultipart();
                         Toast.makeText(getApplicationContext(), "Post succeed! To be reviewed by administrator!", Toast.LENGTH_SHORT).show();
                     }
                 }, new Response.ErrorListener() {
@@ -243,7 +244,7 @@ public class EditorActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    public void uploadMultipart(int ID) {
+    public void uploadMultipart() {
         String UPLOAD_URL = "http://a17-sd606.studev.groept.be/ImageUpload.php";  //the php url
 
         //getting the actual path of the image
@@ -258,7 +259,6 @@ public class EditorActivity extends AppCompatActivity {
                     .addFileToUpload(pathUp, "image") //Adding file
                     .addParameter("isSuccess","success")
                     .addParameter("position","up")
-                    .addParameter("newsID",""+ID)
                     .setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload
@@ -274,7 +274,6 @@ public class EditorActivity extends AppCompatActivity {
                     .addFileToUpload(pathDown, "image") //Adding file
                     .addParameter("isSuccess","success")
                     .addParameter("position","down")
-                    .addParameter("newsID",""+ID)
                     .setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
                     .startUpload(); //Starting the upload

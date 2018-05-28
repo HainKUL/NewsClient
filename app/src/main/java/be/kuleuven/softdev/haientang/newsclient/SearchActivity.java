@@ -30,6 +30,7 @@ public class SearchActivity extends AppCompatActivity {
     private ArrayList<Integer> ids = new ArrayList<>();
     private SearchView mSearchView;
     private ListView mListView;
+    private int userID;
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,7 @@ public class SearchActivity extends AppCompatActivity {
         final ArrayAdapter<String> adapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mStrs);
         mListView.setAdapter(adapter);
         mListView.setTextFilterEnabled(true);
+        userID=getIntent().getExtras().getInt("userID");
 
         // 设置搜索文本监听
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -76,6 +78,7 @@ public class SearchActivity extends AppCompatActivity {
 
                     Intent myIntent=new Intent(view.getContext(),NewsShowActivity.class);
                     myIntent.putExtra("newsID",ids.get(position));
+                    myIntent.putExtra("userID",userID);
                     startActivityForResult(myIntent,position);
             }
         });

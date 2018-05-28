@@ -73,6 +73,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(NewsOverviewActivity.this, SearchActivity.class);
+                intent.putExtra("userID",userID);
                 startActivity(intent);
             }
         });
