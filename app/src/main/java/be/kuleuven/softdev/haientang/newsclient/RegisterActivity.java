@@ -35,6 +35,7 @@ import net.gotev.uploadservice.UploadNotificationConfig;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -65,7 +66,6 @@ public class RegisterActivity extends AppCompatActivity {
         emailDynamicCheck();
         passwdDynamicCheck();
         clickSubmitButton();
-
     }
 
     private void initAllRef() {
@@ -193,7 +193,7 @@ public class RegisterActivity extends AppCompatActivity {
         URL=url+firstNameTxt.getText().toString()
                 +"/"+surnameTxt.getText().toString()+
                 "/"+emailTxt.getText().toString()
-                +"/"+passwd.getText().toString();//1 refers to teh userType registered user, 2 refers to guest
+                +"/"+passwd.getText().toString();//2 refers to teh userType registered user, 0 refers to guest
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
         // Request a string response from the provided URL.
@@ -202,6 +202,8 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Toast.makeText(RegisterActivity.this, "Registration succeed!", Toast.LENGTH_SHORT).show();
+                        switchToLogin();//new method to switch to login dialog
+                        uploadMultipart();
 
                     }
                 }, new Response.ErrorListener() {
@@ -211,8 +213,8 @@ public class RegisterActivity extends AppCompatActivity {
                 }
             });
         queue.add(stringRequest);// Add the request to the RequestQueue.
-        uploadMultipart();
-        switchToLogin();//new method to switch to login dialog
+
+
     }
 
     public void switchToLogin() {
@@ -221,6 +223,7 @@ public class RegisterActivity extends AppCompatActivity {
         //define the view inside the login layout
         final EditText mEmail=(EditText) mView.findViewById(R.id.etEmail);
         final EditText mpasswd=(EditText) mView.findViewById(R.id.etPasswd);
+        mEmail.setText(emailTxt.getText());
         Button mLogin=(Button) mView.findViewById(R.id.butLogin);
 
         mLogin.setOnClickListener(new View.OnClickListener() {
@@ -239,8 +242,9 @@ public class RegisterActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    public void LoginCheck(String emailCheck,String passwdCheck) {
+    public void LoginCheck(final String emailCheck, String passwdCheck) {
         String url="http://api.a17-sd606.studev.groept.be/loginCheck/"+emailCheck+"/"+passwdCheck;
+
         RequestQueue queue= Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -248,11 +252,14 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         try {
                             JSONArray jArr=new JSONArray(response);
+                            JSONObject jo = jArr.getJSONObject(0);
                             if(jArr.length()==0){//email or passwd wrong
                                 Toast.makeText(getApplicationContext(), "Please enter correct Email or password!", Toast.LENGTH_SHORT).show();
                             }else if(jArr.length()==1){
                                 Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_SHORT).show();
                                 Intent intent=new Intent(getApplicationContext(),NewsOverviewActivity.class);
+                                int userID = jo.getInt("userID");
+                                intent.putExtra("userID", userID);
                                 startActivity(intent);
                             }
                         } catch (JSONException e) {
@@ -271,7 +278,7 @@ public class RegisterActivity extends AppCompatActivity {
     //upload images:
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == IMAGE_REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+        if (requestCode == IMAGE_REQUEST_CODE && resultCode == RESULT_OK  && data.getData() != null) {
             filePath = data.getData();
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);

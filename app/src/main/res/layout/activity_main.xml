@@ -78,12 +78,9 @@
         android:id="@+id/advertiser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/Administrator"
-        android:layout_alignBottom="@+id/Administrator"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginEnd="12dp"
-        android:layout_marginRight="12dp"
+        android:layout_alignTop="@+id/Term"
+        android:layout_marginEnd="50dp"
         android:text="Editors"
         android:textStyle="bold" />
 

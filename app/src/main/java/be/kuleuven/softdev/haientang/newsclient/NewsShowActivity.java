@@ -258,7 +258,7 @@ public class NewsShowActivity extends AppCompatActivity {
 
         //2.define properties for each
         LinearLayout.LayoutParams dimension1 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        LinearLayout.LayoutParams dimension2 = new LinearLayout.LayoutParams(40, 40);
+        LinearLayout.LayoutParams dimension2 = new LinearLayout.LayoutParams(80, 80);
         llh.setLayoutParams(dimension1);
         llv.setLayoutParams(dimension1);
         pic.setLayoutParams(dimension2);
@@ -378,7 +378,6 @@ public class NewsShowActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-
     public void showImage(String urlUp,String urlDown)  //through which you can show image.  the url is the image`s url
     {
 
@@ -406,8 +405,6 @@ public class NewsShowActivity extends AppCompatActivity {
                        R.drawable.loading, R.drawable.loading);
                imageLoader.get(urlDown,
                        listenerDown, 600, 600);
-
-
 
     }
 
