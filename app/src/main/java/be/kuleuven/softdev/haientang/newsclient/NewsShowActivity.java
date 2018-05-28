@@ -362,9 +362,9 @@ public class NewsShowActivity extends AppCompatActivity {
                             JSONArray jArr=new JSONArray(response);
                             for(int i=0;i<2;i++) {
                                 JSONObject jo=jArr.getJSONObject(i);
-                                String name=jo.getString("photoName");
-                               String position=jo.getString("photoPosition");
-                                showImage("http://a17-sd606.studev.groept.be/Image/"+name,position);
+                                String upPhoto="http://a17-sd606.studev.groept.be/Image/"+jo.getString("frontPhoto");
+                                String downPhoto="http://a17-sd606.studev.groept.be/Image/"+jo.getString("backPhoto");
+                                showImage(upPhoto,downPhoto);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -379,7 +379,7 @@ public class NewsShowActivity extends AppCompatActivity {
     }
 
 
-    public void showImage(String url,String pos)  //through which you can show image.  the url is the image`s url
+    public void showImage(String urlUp,String urlDown)  //through which you can show image.  the url is the image`s url
     {
 
         RequestQueue mQueue = Volley.newRequestQueue(this);
@@ -395,26 +395,20 @@ public class NewsShowActivity extends AppCompatActivity {
             }
         });
 
-           if(pos.equals("up"))
-           {
-               ImageLoader.ImageListener listener = ImageLoader.getImageListener(ivUp,
-                       R.drawable.loading, R.drawable.loading);
-               imageLoader.get(url,
-                       listener, 600, 600);
-           }
-           else if(pos.equals("down"))
-           {
 
-               ImageLoader.ImageListener listener = ImageLoader.getImageListener(ivDown,
+               ImageLoader.ImageListener listenerUp = ImageLoader.getImageListener(ivUp,
                        R.drawable.loading, R.drawable.loading);
-               imageLoader.get(url,
-                       listener, 600, 600);
-           }
-           else
-           {
-               ivUp.setImageResource(R.drawable.loading);
-               ivDown.setImageResource(R.drawable.loading);
-           }
+               imageLoader.get(urlUp,
+                       listenerUp, 600, 600);
+
+
+               ImageLoader.ImageListener listenerDown = ImageLoader.getImageListener(ivDown,
+                       R.drawable.loading, R.drawable.loading);
+               imageLoader.get(urlDown,
+                       listenerDown, 600, 600);
+
+
+
     }
 
     public void setUserProfile(int userID)
