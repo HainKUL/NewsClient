@@ -65,7 +65,6 @@ public class RegisterActivity extends AppCompatActivity {
         emailDynamicCheck();
         passwdDynamicCheck();
         clickSubmitButton();
-
     }
 
     private void initAllRef() {
@@ -193,7 +192,7 @@ public class RegisterActivity extends AppCompatActivity {
         URL=url+firstNameTxt.getText().toString()
                 +"/"+surnameTxt.getText().toString()+
                 "/"+emailTxt.getText().toString()
-                +"/"+passwd.getText().toString();//1 refers to teh userType registered user, 2 refers to guest
+                +"/"+passwd.getText().toString();//2 refers to teh userType registered user, 0 refers to guest
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
         // Request a string response from the provided URL.
@@ -271,7 +270,7 @@ public class RegisterActivity extends AppCompatActivity {
     //upload images:
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == IMAGE_REQUEST_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+        if (requestCode == IMAGE_REQUEST_CODE && resultCode == RESULT_OK  && data.getData() != null) {
             filePath = data.getData();
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);

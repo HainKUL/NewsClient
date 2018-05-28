@@ -31,14 +31,18 @@ public class CategoryActivity extends AppCompatActivity {
     private ListView lvNews;
     private List<NewsItem> newsItemList;
     private ArrayList<Integer> newsIds;
-    int userID;
+
     private String url;
+
+    private ArrayList<NewsItem> newsItems;
+
 
     private ImageView profile;
 
+
     String category;
     TextView cateTitle;
-
+    int userID;
 
 
     @Override
@@ -56,14 +60,18 @@ public class CategoryActivity extends AppCompatActivity {
 
     private void initAllRef(){
         lvNews = (ListView) findViewById(R.id.lvNews);
-        newsItemList=new ArrayList<>();
-        newsIds=new ArrayList<>();
-        userID=getIntent().getExtras().getInt("userID");
-        url="http://api.a17-sd606.studev.groept.be/selectCategoryNews/"+category;
         profile=(ImageView) findViewById(R.id.profile);
+        newsItems=new ArrayList<>();
+        newsIds=new ArrayList<>();
+
+
         category= getIntent().getExtras().getString("category");
         cateTitle=(TextView) findViewById(R.id.CategoryTitle);
+
         cateTitle.setText(category);
+        userID=getIntent().getExtras().getInt("userID");
+        newsItemList=new ArrayList<>();
+        url="http://api.a17-sd606.studev.groept.be/selectCategoryNews/"+category;
     }
 
     private void NewsAsyncTask(String url){  //这里的url就是从学校服务器
@@ -130,14 +138,15 @@ public class CategoryActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CategoryActivity.this, NewsOverviewActivity.class);
-                intent.putExtra("userID",userID);
                 startActivity(intent);
             }
         });
     }
 
-    public void setUserProfile(int userID) {
-        if(userID!=0) {
+    public void setUserProfile(int userID)
+    {
+        if(userID!=0)
+        {
             String url="http://a17-sd606.studev.groept.be/User/"+userID;
             RequestQueue mQueue = Volley.newRequestQueue(this);
             ImageLoader imageLoader = new ImageLoader(mQueue, new BitmapCache() {
@@ -156,7 +165,8 @@ public class CategoryActivity extends AppCompatActivity {
                     listener, 600, 600);
 
         }
-        else {
+        else
+        {
             profile.setImageResource(R.drawable.profile);
         }
     }

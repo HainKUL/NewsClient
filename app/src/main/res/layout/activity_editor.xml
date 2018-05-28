@@ -148,20 +148,25 @@
 
                     <TextView
                         android:id="@+id/newsImageUp"
-                        android:layout_width="70dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_horizontal"
                         android:text="@string/image1"
-                        android:textSize="18sp" />
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
                 <ImageView
                     android:id="@+id/upImage"
-                    android:layout_width="400dp"
+                    android:layout_width="300dp"
                     android:layout_height="200dp"
                     android:layout_weight="0"
-                    android:gravity="center"
-                    app:srcCompat="@mipmap/ic_launcher_round" />
+                    android:layout_gravity="center"
+                    android:background="@drawable/textview_border"
+                    app:srcCompat="@drawable/uploadimage" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -171,19 +176,25 @@
 
                     <TextView
                         android:id="@+id/textView11"
-                        android:layout_width="70dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
                         android:text="@string/image2"
-                        android:textSize="18sp" />
+                        android:layout_marginTop="10dp"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
                 <ImageView
                     android:id="@+id/downImage"
-                    android:layout_width="400dp"
+                    android:layout_width="300dp"
                     android:layout_height="200dp"
                     android:layout_weight="0"
-                    app:srcCompat="@mipmap/ic_launcher" />
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/textview_border"
+                    app:srcCompat="@drawable/uploadimage" />
 
             </LinearLayout>
 
@@ -192,7 +203,8 @@
                 android:id="@+id/ButSubmit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="20dp"
                 android:background="@android:color/holo_green_light"
                 android:text="@string/submitBut" />
 

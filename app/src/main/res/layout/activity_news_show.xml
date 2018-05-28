@@ -71,8 +71,8 @@
 
             <ImageView
                 android:id="@+id/newsImageUp"
-                android:layout_width="120dp"
-                android:layout_height="80dp"
+                android:layout_width="300dp"
+                android:layout_height="200dp"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/textview_border"
                 android:contentDescription="@string/image1" />
@@ -87,8 +87,8 @@
 
             <ImageView
                 android:id="@+id/newsImageDown"
-                android:layout_width="120dp"
-                android:layout_height="80dp"
+                android:layout_width="300dp"
+                android:layout_height="200dp"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/textview_border"
                 android:contentDescription="@string/image2" />

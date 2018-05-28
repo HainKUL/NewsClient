@@ -100,8 +100,6 @@ public class ImageLoader {
 
     }
 
-
-
     public Bitmap getBitmapFromUrl(String urlString) {
         Bitmap bitmap;
         InputStream is = null;
