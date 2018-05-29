@@ -41,8 +41,8 @@ public class EditorActivity extends AppCompatActivity {
     private static final int IMAGE_REQUEST_CODE_TWO = 4;
     private static final int STORAGE_PERMISSION_CODE = 123;
     private Bitmap bitmap;
-    private Uri filePathUp;
-    private Uri filePathDown;
+    private Uri fileUriUp;
+    private Uri fileUriDown;
 
     EditText titleEdit,tagsEdit, contentEdit;
     Spinner categorySpin;
@@ -120,37 +120,6 @@ public class EditorActivity extends AppCompatActivity {
         });
     }
 
-    private void requestStoragePermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
-            return;
-
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            //If the user has denied the permission previously your code will come to this block
-            //Here you can explain why you need this permission
-            //Explain here why you need this permission
-        }
-        //And finally ask for the permission
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
-    }
-
-    //This method will be called when the user will tap on allow or deny
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
-        //Checking the request code of our request
-        if (requestCode == STORAGE_PERMISSION_CODE) {
-
-            //If permission is granted
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                //Displaying a toast
-                Toast.makeText(this, "Permission granted now you can read the storage", Toast.LENGTH_LONG).show();
-            } else {
-                //Displaying another toast if permission is not granted
-                Toast.makeText(this, "Oops you just denied the permission", Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
     private void setUpImage() {
         upImagePic.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -183,8 +152,6 @@ public class EditorActivity extends AppCompatActivity {
                 String category=categorySpin.getSelectedItem().toString();
                 String tags= tagsEdit.getText().toString();
                 String cont=contentEdit.getText().toString();
-                //String contHtml = Html.toHtml(contentEdit.getText());//convert normal to HTML format
-                //String contHtml=htmlEncode(cont);
                 String url="http://api.a17-sd606.studev.groept.be/postNews/"
                         +title +"/" +cont+"/"+tags+"/"+category+"/"+date;
                 uploadNews(url);
@@ -192,44 +159,13 @@ public class EditorActivity extends AppCompatActivity {
         });
     }
 
-   /* public void uploadNews(String url){
-        //String URL_MAXID="http://api.a17-sd606.studev.groept.be/selectCurrentMaxNewsId";
-        final String URL_POSTNEWS=url;
-        RequestQueue queue= Volley.newRequestQueue(getApplicationContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONArray jArr = new JSONArray(response);
-                            JSONObject jo = jArr.getJSONObject(0);
-                            //cureentMaxId = jo.getInt("currentNewID");
-                            //String upImageName=Integer.toString(cureentMaxId+1)+"up.jpg";
-                            // String downImageName=Integer.toString(cureentMaxId+1)+"down.jpg";
-                           //+"/"+upImageName+"/"+downImageName;
-
-                            postNews(URL_POSTNEWS);
-                            uploadMultipart();
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {}
-        });
-        queue.add(stringRequest);
-    }*/
-
-
     private void uploadNews(String url){
         RequestQueue queue= Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        uploadMultipart();
+                        uploadImagesByMultipart();
                         Toast.makeText(getApplicationContext(), "Post succeed! To be reviewed by administrator!", Toast.LENGTH_SHORT).show();
                     }
                 }, new Response.ErrorListener() {
@@ -239,16 +175,47 @@ public class EditorActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    public void uploadMultipart() {
-        String UPLOAD_URL = "http://a17-sd606.studev.groept.be/ImageUpload.php";  //the php url
+    /*Follow codes will upload the images to the web server*/
 
+    //ask for permission to local storage
+    private void requestStoragePermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+            return;
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            //If the user has denied the permission previously your code will come to this block
+        }
+        //And finally ask for the permission
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+    }
+
+    //This method will be called when the user will tap on allow or deny
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        //Checking the request code of our request
+        if (requestCode == STORAGE_PERMISSION_CODE) {
+
+            //If permission is granted
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //Displaying a toast
+                Toast.makeText(this, "Permission granted now you can read the storage", Toast.LENGTH_LONG).show();
+            } else {
+                //Displaying another toast if permission is not granted
+                Toast.makeText(this, "Oops you just denied the permission", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    //use a library of Multipart to upload image
+    public void uploadImagesByMultipart() {
+        String UPLOAD_URL = "http://a17-sd606.studev.groept.be/ImageUpload.php";  //the php url
         //getting the actual path of the image
-        String pathUp = getPath(filePathUp);
-        String pathDown=getPath(filePathDown);
-        //Uploading code up
+        String pathUp = getPathThroughUri(fileUriUp);
+        String pathDown= getPathThroughUri(fileUriDown);
+        //Uploading the first picture
         try {
             String uploadId = UUID.randomUUID().toString();
-
             //Creating a multi part request
             new MultipartUploadRequest(this, uploadId, UPLOAD_URL)
                     .addFileToUpload(pathUp, "image") //Adding file
@@ -260,10 +227,9 @@ public class EditorActivity extends AppCompatActivity {
         } catch (Exception exc) {
             Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
         }
-        //Uploading code down
+        //Uploading the second picture
         try {
             String uploadId = UUID.randomUUID().toString();
-
             //Creating a multi part request
             new MultipartUploadRequest(this, uploadId, UPLOAD_URL)
                     .addFileToUpload(pathDown, "image") //Adding file
@@ -277,21 +243,22 @@ public class EditorActivity extends AppCompatActivity {
         }
     }
 
+    //fileUriUp is a uri of the first picture on the newsShow layout, fileUriDown is of the second one
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == IMAGE_REQUEST_CODE_ONE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            filePathUp = data.getData();
+            fileUriUp = data.getData();
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePathUp);
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), fileUriUp);
                 upImagePic.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
         else if(requestCode==IMAGE_REQUEST_CODE_TWO && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            filePathDown = data.getData();
+            fileUriDown = data.getData();
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePathDown);
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), fileUriDown);
                 downImagePic.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -299,7 +266,7 @@ public class EditorActivity extends AppCompatActivity {
         }
     }
 
-    public String getPath(Uri uri) {
+    public String getPathThroughUri(Uri uri) {
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
         cursor.moveToFirst();
         String document_id = cursor.getString(0);

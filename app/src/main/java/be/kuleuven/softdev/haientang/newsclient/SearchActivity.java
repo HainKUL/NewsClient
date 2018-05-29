@@ -28,6 +28,7 @@ public class SearchActivity extends AppCompatActivity {
 
     private ArrayList<String> mStrs = new ArrayList<>();
     private ArrayList<Integer> ids = new ArrayList<>();
+    private ArrayAdapter<String> adapter;
     private SearchView mSearchView;
     private ListView mListView;
     private int userID;
@@ -36,35 +37,10 @@ public class SearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        init();
         ButtonHome();
-        mSearchView = (SearchView) findViewById(R.id.searchView);
-        mListView = (ListView) findViewById(R.id.listView);
-        final ArrayAdapter<String> adapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mStrs);
-        mListView.setAdapter(adapter);
-        mListView.setTextFilterEnabled(true);
-        userID=getIntent().getExtras().getInt("userID");
+        clickSearchListener();
 
-        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                mStrs.clear();
-                ids.clear();
-                request("http://api.a17-sd606.studev.groept.be/search/"+query);
-                adapter.notifyDataSetChanged();
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if (!TextUtils.isEmpty(newText)){
-
-                }else{
-                    //mListView.clearTextFilter();
-                }
-                return false;
-            }
-        });
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -77,7 +53,42 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
-    public void request(String url) {
+    public void init()
+    {
+        mSearchView = (SearchView) findViewById(R.id.searchView);
+        mListView = (ListView) findViewById(R.id.listView);
+        adapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mStrs);
+        mListView.setAdapter(adapter);
+        mListView.setTextFilterEnabled(true);
+        userID=getIntent().getExtras().getInt("userID");
+    }
+
+    //when you want to search something and click the "SearchView"
+    public void clickSearchListener()
+    {
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                mStrs.clear();
+                ids.clear();
+                getNewsTitleFromUrl("http://api.a17-sd606.studev.groept.be/search/"+query);
+                //we will add these info to listview through this adapter
+                adapter.notifyDataSetChanged();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (!TextUtils.isEmpty(newText)){
+
+                }else{}
+                return false;
+            }
+        });
+    }
+
+    public void getNewsTitleFromUrl(String url) {
         RequestQueue queue = Volley.newRequestQueue(this);
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,

@@ -57,11 +57,12 @@ public class NewsAdapter extends BaseAdapter implements OnScrollListener{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
-        //if statement to see if it has ben recycled or not
-        if(convertView==null){//if not been recycled yet, call inflate function
+        //to see if it has been recycled or not
+        if(convertView==null){
+            //if not been recycled yet, call inflate function, and new tag will be set
             convertView=mInflater.inflate(R.layout.news_item,null);
 
-            viewHolder=new ViewHolder();//using a new class called view holder
+            viewHolder=new ViewHolder();
             //cache the result of the findViewById function suing view holder
             viewHolder.ivImage=(ImageView) convertView.findViewById(R.id.image);
             viewHolder.ivLikes=(ImageView) convertView.findViewById(R.id.likesIcon);
@@ -70,14 +71,15 @@ public class NewsAdapter extends BaseAdapter implements OnScrollListener{
             viewHolder.tvlikes=(TextView) convertView.findViewById(R.id.likes);
             //store in a tag on the view
             convertView.setTag(viewHolder);//set tag
-        }else{//if has been recycled, it already exsits and we don't need to call inflator function---save time
+        }else{
+            //if has been recycled, it already exsits and we don't need to call inflator function again---save time
             viewHolder=(ViewHolder) convertView.getTag(); //get the tag
         }
 
         viewHolder.ivImage.setTag(mList.get(position).image_URL);
         viewHolder.ivImage.setImageResource(R.drawable.loading);
 
-        //show image, different from loading
+        //show the images that has been loaded and stored
         imageLoader.showImage(viewHolder.ivImage,mList.get(position).image_URL);
 
         viewHolder.tvTitle.setText(mList.get(position).title);

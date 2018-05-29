@@ -51,7 +51,7 @@ public class RegisterActivity extends AppCompatActivity {
     private static final int IMAGE_REQUEST_CODE=1;
     private static final int STORAGE_PERMISSION_CODE=123;
     private Bitmap bitmap;
-    private Uri filePath;
+    private Uri fileUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,6 +188,7 @@ public class RegisterActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
+    //upload the user`s register information including profile picture
     public void uploadUserInfo() {
         String url="http://api.a17-sd606.studev.groept.be/usersRegister/";
         URL=url+firstNameTxt.getText().toString()
@@ -203,7 +204,7 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         Toast.makeText(RegisterActivity.this, "Registration succeed!", Toast.LENGTH_SHORT).show();
                         switchToLogin();//new method to switch to login dialog
-                        uploadMultipart();
+                        uploadMultipart();//this method will upload the image
 
                     }
                 }, new Response.ErrorListener() {
@@ -277,13 +278,43 @@ public class RegisterActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    //upload images:
+    /*Following codes responsible for image uploading*/
+
+    // ask for permission to local storage
+    private void requestStoragePermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+            return;
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            //If the user has denied the permission previously your code will come to this block
+        }
+        //And finally ask for the permission
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
+    }
+
+    //This method will be called when the user will tap on allow or deny
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        //Checking the request code of our request
+        if (requestCode == STORAGE_PERMISSION_CODE) {
+
+            //If permission is granted
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Permission granted now you can read the storage", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "Oops you just denied the permission", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    //when receiving an image_request_code, get the uri of the picture selected
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == IMAGE_REQUEST_CODE && resultCode == RESULT_OK  && data.getData() != null) {
-            filePath = data.getData();
+            fileUri = data.getData();
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), fileUri);
                 profilePic.setImageBitmap(bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -293,7 +324,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void uploadMultipart() {
         //getting the actual path of the image
-        String path = getPath(filePath);
+        String path = getPathThroughUri(fileUri);
         //Uploading code
         try {
             String uploadId = UUID.randomUUID().toString();
@@ -309,7 +340,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    public String getPath(Uri uri) {
+    public String getPathThroughUri(Uri uri) {
         Cursor cursor = getContentResolver().query(uri, null, null, null, null);
         cursor.moveToFirst();
         String document_id = cursor.getString(0);
@@ -324,37 +355,6 @@ public class RegisterActivity extends AppCompatActivity {
         cursor.close();
 
         return path;
-    }
-
-    private void requestStoragePermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
-            return;
-
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            //If the user has denied the permission previously your code will come to this block
-            //Here you can explain why you need this permission
-            //Explain here why you need this permission
-        }
-        //And finally ask for the permission
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
-    }
-
-    //This method will be called when the user will tap on allow or deny
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
-        //Checking the request code of our request
-        if (requestCode == STORAGE_PERMISSION_CODE) {
-
-            //If permission is granted
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                //Displaying a toast
-                Toast.makeText(this, "Permission granted now you can read the storage", Toast.LENGTH_LONG).show();
-            } else {
-                //Displaying another toast if permission is not granted
-                Toast.makeText(this, "Oops you just denied the permission", Toast.LENGTH_LONG).show();
-            }
-        }
     }
 
 }

@@ -24,8 +24,6 @@ import android.widget.ListView;
 
 public class ImageLoader {
 
-    private ImageView mImageView;
-    private String mUrl;
     private LruCache<String, Bitmap> mMemoryCaches;
     private Set<NewsAsyncTask> mTasks;
     private ListView mListView;
@@ -125,19 +123,7 @@ public class ImageLoader {
         return null;
     }
 
-    public void showImageByAsyncTask(String url) {
-
-        Bitmap bitmap = getBitmapFromLrucache(url);
-
-        if (bitmap != null) {
-            ImageView imageView = (ImageView) mListView.findViewWithTag(url);
-            imageView.setImageBitmap(bitmap);
-        } else {
-
-            new NewsAsyncTask(url).execute(url);
-        }
-    }
-
+    //we get bitmap from url and change the imageView asynchronously
     class NewsAsyncTask extends AsyncTask<String, Void, Bitmap> {
 
         private String mUrl;
@@ -163,9 +149,6 @@ public class ImageLoader {
         @Override
         protected void onPostExecute(Bitmap bitmap) {
             super.onPostExecute(bitmap);
-            // if (myImageView.getTag().equals(mUrl)) {
-            // myImageView.setImageBitmap(bitmap);
-            // }
 
             ImageView imageView = (ImageView) mListView.findViewWithTag(mUrl);
 

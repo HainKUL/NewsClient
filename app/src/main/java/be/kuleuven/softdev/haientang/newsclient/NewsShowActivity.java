@@ -142,6 +142,7 @@ public class NewsShowActivity extends AppCompatActivity {
         });
     }
 
+    //check whether the user add like repeatedly
     public void likeDuplicationCheck() {
         String likeCheckUrl="http://api.a17-sd606.studev.groept.be/checkLikes/"+newsID+"/"+userID;
         RequestQueue queue = Volley.newRequestQueue(this);

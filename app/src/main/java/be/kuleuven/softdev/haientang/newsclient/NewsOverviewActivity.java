@@ -50,7 +50,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
         clickButtonChina();
 
         setUserProfile(userID);
-        NewsAsyncTask();
+        downloadNews();
         clickListviewForFullNews();
     }
 
@@ -67,6 +67,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
         ChinaBut = (Button) findViewById(R.id.China);
     }
 
+    // go to search activity
     private void clickIconSearch() {
         SearchIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +79,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
         });
     }
 
+    // go to main activity
     public void clickProfilePicBackToLogin() {
         profilePic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +90,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
         });
     }
 
+    /*go to a category, what the category shows depends on which button you click*/
     public void clickButtonSports() {
         SportsBut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,7 +127,8 @@ public class NewsOverviewActivity extends AppCompatActivity {
         });
     }
 
-    private void NewsAsyncTask(){
+    //download news information from web server, and load the info to the listview through an adapter
+    private void downloadNews(){
         String url="http://api.a17-sd606.studev.groept.be/selectBreakingNews";
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -156,6 +160,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
+    //click any item of the listview, you will go to newsShow activity to read the content of the news
     public void clickListviewForFullNews() {
         lvNews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -168,6 +173,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
         });
     }
 
+    //use a imageloader to load a user`s profile picture
     public void setUserProfile(int userID) {
         if(userID!=0) {//not guest
             String url="http://a17-sd606.studev.groept.be/User/"+userID;

@@ -44,7 +44,7 @@ public class CategoryActivity extends AppCompatActivity {
 
         initAllRef();
         clickButtonHome();
-        NewsAsyncTask();
+        downloadNews();
         clickListviewForFullNews();
         setUserProfile(userID);
         clickProfilePicBackToLogin();
@@ -64,7 +64,7 @@ public class CategoryActivity extends AppCompatActivity {
         newsItemList=new ArrayList<>();
     }
 
-    private void NewsAsyncTask(){
+    private void downloadNews(){
         String url="http://api.a17-sd606.studev.groept.be/selectCategoryNews/"+category;
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
