@@ -32,10 +32,6 @@ import com.android.volley.toolbox.Volley;
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.UploadNotificationConfig;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.UUID;
@@ -57,8 +53,7 @@ public class EditorActivity extends AppCompatActivity {
     int day,month,year;
     Calendar mCurrentDate;
     String date;
-
-    int cureentMaxId;
+    //int cureentMaxId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -50,13 +50,13 @@ public class NewsShowActivity extends AppCompatActivity {
         initAllRef();
 
         displayFullNewsByID();
-        displayUpToTenComments();
+        displayUpToFiveComments();
         addLike();
         addComments();
         backToNewsOverview();
         goToLogin();
-        getImageInfo("http://api.a17-sd606.studev.groept.be/addPhotos/"+newsID);
-        setUserProfile(userID);
+        //getImageInfo();
+        setUserProfile();
 
     }
 
@@ -78,8 +78,7 @@ public class NewsShowActivity extends AppCompatActivity {
         userID=getIntent().getExtras().getInt("userID");
     }
 
-   public void goToLogin()
-   {
+   public void goToLogin() {
        profile.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
@@ -113,6 +112,8 @@ public class NewsShowActivity extends AppCompatActivity {
                                 newsLikes.setText(""+likesNr);
                                 newsContent.setText(Html.fromHtml(cnt, Html.FROM_HTML_MODE_LEGACY));
                                 newsDate.setText(d);
+
+                            getImageInfo();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -130,12 +131,10 @@ public class NewsShowActivity extends AppCompatActivity {
         thumbUpIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(userID==0)
-                {
+                if(userID==0) {
                     Toast.makeText(getApplicationContext(), "Guest can not add like, please register", Toast.LENGTH_SHORT).show();
                 }
-                else
-                {
+                else {
                     likeDuplicationCheck();
                 }
 
@@ -143,8 +142,7 @@ public class NewsShowActivity extends AppCompatActivity {
         });
     }
 
-    public void likeDuplicationCheck()
-    {
+    public void likeDuplicationCheck() {
         String likeCheckUrl="http://api.a17-sd606.studev.groept.be/checkLikes/"+newsID+"/"+userID;
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, likeCheckUrl,
@@ -155,7 +153,6 @@ public class NewsShowActivity extends AppCompatActivity {
                             JSONObject jo= jArr.getJSONObject(0);
                             if(jo.getInt("num")==0)  //there is no repeated
                             {
-
                                 String url="http://api.a17-sd606.studev.groept.be/addLikes/"+userID+"/"+newsID;
 
                                 RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
@@ -174,10 +171,8 @@ public class NewsShowActivity extends AppCompatActivity {
                                     }
                                 });
                                 queue.add(stringRequest);
-
                             }
-                            else
-                            {
+                            else {
                                 Toast.makeText(getApplicationContext(), "You have approved the news, can`t do again", Toast.LENGTH_SHORT).show();
                             }
                             }
@@ -194,14 +189,12 @@ public class NewsShowActivity extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    public void updateLikes(int likesNum,int newsID)
-    {
+    public void updateLikes(int likesNum,int newsID) {
         String url="http://api.a17-sd606.studev.groept.be/updateLikesToNews/"+likesNum+"/"+newsID;
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     public void onResponse(String response) {
-
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -209,20 +202,18 @@ public class NewsShowActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Oops,please try again later!", Toast.LENGTH_SHORT).show();
             }
         });
-        queue.add(stringRequest);
 
+        queue.add(stringRequest);
     }
 
     public void addComments() {
         submitBut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(userID==0)
-                {
+                if(userID==0) {
                     Toast.makeText(getApplicationContext(), "Guest have no permission for comment,please register", Toast.LENGTH_SHORT).show();
                 }
-                else
-                {
+                else {
                     //get instant time
                     Calendar mCurrentDate = Calendar.getInstance();;
                     SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -272,13 +263,11 @@ public class NewsShowActivity extends AppCompatActivity {
         newComment.setText(comment);
         pic.setLayoutParams(dimension2);
 
-        //5.set image
-        if(userID==0)
-        {
+        //4.set image
+        if(userID==0) {
             pic.setImageResource(R.drawable.profile);
         }
-        else
-        {
+        else {
             String url="http://a17-sd606.studev.groept.be/User/"+userID+".jpg";
             RequestQueue mQueue = Volley.newRequestQueue(this);
 
@@ -299,18 +288,16 @@ public class NewsShowActivity extends AppCompatActivity {
                     listener, 600, 600);
         }
 
-        //4.add to viewGroup
+        //5.add to viewGroup
         llv.addView(time);
         llv.addView(newComment);
         llh.addView(pic);
         llh.addView(llv);
         LinearLayout ll = (LinearLayout) findViewById(R.id.myLinearLayout);
         ll.addView(llh);
-
-
     }
 
-    private void displayUpToTenComments(){
+    private void displayUpToFiveComments(){
         String url="http://api.a17-sd606.studev.groept.be/displayFiveComments/"+newsID;
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -349,10 +336,10 @@ public class NewsShowActivity extends AppCompatActivity {
         });
     }
 
-    public void getImageInfo(String url) {//display top 5 breaking news on newsOverview
+    public void getImageInfo() {
+        String url="http://api.a17-sd606.studev.groept.be/addPhotos/"+newsID;
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -374,15 +361,11 @@ public class NewsShowActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {}
         });
 
-        // Add the request to the RequestQueue.
         queue.add(stringRequest);
     }
 
-    public void showImage(String urlUp,String urlDown)  //through which you can show image.  the url is the image`s url
-    {
-
+    public void showImage(String urlUp,String urlDown) {//through which you can show image.  the url is the image`s url
         RequestQueue mQueue = Volley.newRequestQueue(this);
-
         ImageLoader imageLoader = new ImageLoader(mQueue, new BitmapCache() {
             @Override
             public void putBitmap(String url, Bitmap bitmap) {
@@ -408,10 +391,8 @@ public class NewsShowActivity extends AppCompatActivity {
 
     }
 
-    public void setUserProfile(int userID)
-    {
-        if(userID!=0)
-        {
+    public void setUserProfile() {
+        if(userID!=0) {
             String url="http://a17-sd606.studev.groept.be/User/"+userID;
             RequestQueue mQueue = Volley.newRequestQueue(this);
             ImageLoader imageLoader = new ImageLoader(mQueue, new BitmapCache() {
@@ -430,8 +411,7 @@ public class NewsShowActivity extends AppCompatActivity {
                     listener, 600, 600);
 
         }
-        else
-        {
+        else {
             profile.setImageResource(R.drawable.profile);
         }
     }

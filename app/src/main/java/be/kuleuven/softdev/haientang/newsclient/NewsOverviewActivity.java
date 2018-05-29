@@ -35,7 +35,6 @@ public class NewsOverviewActivity extends AppCompatActivity {
     ImageView SearchIcon, profilePic;
     Button SportsBut,EconomyBut,ChinaBut;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,7 +124,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
         });
     }
 
-    private void NewsAsyncTask(){  //这里的url就是从学校服务器
+    private void NewsAsyncTask(){
         String url="http://api.a17-sd606.studev.groept.be/selectBreakingNews";
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -139,9 +138,9 @@ public class NewsOverviewActivity extends AppCompatActivity {
                                 newsIDs.add(jo.getInt("newsID"));
                                 String newsTitle=jo.getString("title");
                                 String newsDate=jo.getString("date");
-                                String image="http://a17-sd606.studev.groept.be/Image/"+jo.getString("frontPhoto");
+                                String image_URL="http://a17-sd606.studev.groept.be/Image/"+jo.getString("frontPhoto");
                                 int newsLikes=jo.getInt("likes");
-                                newsItemList.add(new NewsItem(image,newsTitle,newsDate,newsLikes));
+                                newsItemList.add(new NewsItem(image_URL,newsTitle,newsDate,newsLikes));
                             }
                             NewsAdapter newsAdapter = new NewsAdapter(NewsOverviewActivity.this,newsItemList,lvNews);
                             lvNews.setAdapter(newsAdapter);

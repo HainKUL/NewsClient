@@ -31,19 +31,11 @@ public class CategoryActivity extends AppCompatActivity {
     private ListView lvNews;
     private List<NewsItem> newsItemList;
     private ArrayList<Integer> newsIds;
-
     private String url;
-
-    private ArrayList<NewsItem> newsItems;
-
-
     private ImageView profile;
-
-
     String category;
     TextView cateTitle;
     int userID;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +44,8 @@ public class CategoryActivity extends AppCompatActivity {
 
         initAllRef();
         clickButtonHome();
-        NewsAsyncTask(url);
-        clickListview();
+        NewsAsyncTask();
+        clickListviewForFullNews();
         setUserProfile(userID);
         clickProfilePicBackToLogin();
     }
@@ -61,7 +53,6 @@ public class CategoryActivity extends AppCompatActivity {
     private void initAllRef(){
         lvNews = (ListView) findViewById(R.id.lvNews);
         profile=(ImageView) findViewById(R.id.profile);
-        newsItems=new ArrayList<>();
         newsIds=new ArrayList<>();
 
 
@@ -71,11 +62,10 @@ public class CategoryActivity extends AppCompatActivity {
         cateTitle.setText(category);
         userID=getIntent().getExtras().getInt("userID");
         newsItemList=new ArrayList<>();
-        url="http://api.a17-sd606.studev.groept.be/selectCategoryNews/"+category;
     }
 
-    private void NewsAsyncTask(String url){  //这里的url就是从学校服务器
-
+    private void NewsAsyncTask(){
+        String url="http://api.a17-sd606.studev.groept.be/selectCategoryNews/"+category;
         RequestQueue queue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -83,20 +73,18 @@ public class CategoryActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         try {
                             JSONArray jArr=new JSONArray(response);
-                            for(int i=0;i<jArr.length();i++) {   //maybe later,we can change "5" to jArr.length
+                            for(int i=0;i<jArr.length();i++) {
                                 JSONObject jo = jArr.getJSONObject(i);
                                 newsIds.add(jo.getInt("newsID"));
                                 String newsTitle=jo.getString("title");
                                 String newsDate=jo.getString("date");
-                                String image="http://a17-sd606.studev.groept.be/Image/"+jo.getString("frontPhoto");
+                                String image_URL="http://a17-sd606.studev.groept.be/Image/"+jo.getString("frontPhoto");
                                 int newsLikes=jo.getInt("likes");
-                                newsItemList.add(new NewsItem(image,newsTitle,newsDate,newsLikes));
-
+                                newsItemList.add(new NewsItem(image_URL,newsTitle,newsDate,newsLikes));
                             }
+
                             NewsAdapter newsAdapter = new NewsAdapter(CategoryActivity.this,newsItemList,lvNews);
                             lvNews.setAdapter(newsAdapter);
-
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }}
@@ -118,12 +106,10 @@ public class CategoryActivity extends AppCompatActivity {
         });
     }
 
-    public void clickListview()
-    {
+    public void clickListviewForFullNews() {
         lvNews.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //点击listview中的内容转到相关地方
                 Intent myIntent=new Intent(view.getContext(),NewsShowActivity.class);
                 myIntent.putExtra("newsID",newsIds.get(position));
                 myIntent.putExtra("userID",userID);
@@ -143,10 +129,8 @@ public class CategoryActivity extends AppCompatActivity {
         });
     }
 
-    public void setUserProfile(int userID)
-    {
-        if(userID!=0)
-        {
+    public void setUserProfile(int userID) {
+        if(userID!=0) {//for registered users
             String url="http://a17-sd606.studev.groept.be/User/"+userID;
             RequestQueue mQueue = Volley.newRequestQueue(this);
             ImageLoader imageLoader = new ImageLoader(mQueue, new BitmapCache() {
@@ -163,10 +147,8 @@ public class CategoryActivity extends AppCompatActivity {
                     R.drawable.profile, R.drawable.profile);
             imageLoader.get(url,
                     listener, 600, 600);
-
         }
-        else
-        {
+        else {
             profile.setImageResource(R.drawable.profile);
         }
     }

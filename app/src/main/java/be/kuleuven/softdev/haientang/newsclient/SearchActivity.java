@@ -44,13 +44,10 @@ public class SearchActivity extends AppCompatActivity {
         mListView.setTextFilterEnabled(true);
         userID=getIntent().getExtras().getInt("userID");
 
-        // 设置搜索文本监听
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
-            // 当点击搜索按钮时触发该方法
             @Override
             public boolean onQueryTextSubmit(String query) {
-
                 mStrs.clear();
                 ids.clear();
                 request("http://api.a17-sd606.studev.groept.be/search/"+query);
@@ -58,13 +55,11 @@ public class SearchActivity extends AppCompatActivity {
                 return false;
             }
 
-            // 当搜索内容改变时触发该方法
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (!TextUtils.isEmpty(newText)){
 
                 }else{
-
                     //mListView.clearTextFilter();
                 }
                 return false;
@@ -74,9 +69,7 @@ public class SearchActivity extends AppCompatActivity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //点击listview中的内容转到相关地方
-
-                    Intent myIntent=new Intent(view.getContext(),NewsShowActivity.class);
+                 Intent myIntent=new Intent(view.getContext(),NewsShowActivity.class);
                     myIntent.putExtra("newsID",ids.get(position));
                     myIntent.putExtra("userID",userID);
                     startActivityForResult(myIntent,position);
@@ -84,43 +77,33 @@ public class SearchActivity extends AppCompatActivity {
         });
     }
 
-    public void request(String url)
-    {
+    public void request(String url) {
         RequestQueue queue = Volley.newRequestQueue(this);
-// Request a string response from the provided URL.
+        // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
 
                     public void onResponse(String response) {
-
-
                         try {
                             //mStrs.clear();
                             JSONArray jArr=new JSONArray(response);
-                            for(int i=0;i<jArr.length();i++) //here we just select the tpo 10
-                            {
+                            for(int i=0;i<jArr.length();i++) {
                                 JSONObject jo=jArr.getJSONObject(i);
                                 String NewsTitle=jo.getString("title");
                                 int id=jo.getInt("newsID");
-                                if(!NewsTitle.equals("null"))
-                                {
+                                if(!NewsTitle.equals("null")) {
                                     ids.add(id);
                                     mStrs.add(NewsTitle);
                                 }
-
                             }
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        //之后再增加tag 等东西
-
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {}
         });
-// Add the request to the RequestQueue.
         queue.add(stringRequest);
     }
 

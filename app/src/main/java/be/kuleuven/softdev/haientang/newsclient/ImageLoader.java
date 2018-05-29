@@ -30,7 +30,7 @@ public class ImageLoader {
     private Set<NewsAsyncTask> mTasks;
     private ListView mListView;
 
-    public String mUrls[];// 这个在adapter中修改
+    public String mUrls[];
 
     public ImageLoader(ListView listView) {
 
@@ -51,7 +51,7 @@ public class ImageLoader {
 
     }
 
-    public Bitmap getBitmapFromLrucache(String url) {  //从缓存当中获取图片信息，
+    public Bitmap getBitmapFromLrucache(String url) {
 
         return mMemoryCaches.get(url);
     }

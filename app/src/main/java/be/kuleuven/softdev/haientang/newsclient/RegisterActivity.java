@@ -252,10 +252,10 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         try {
                             JSONArray jArr=new JSONArray(response);
-                            JSONObject jo = jArr.getJSONObject(0);
                             if(jArr.length()==0){//email or passwd wrong
                                 Toast.makeText(getApplicationContext(), "Please enter correct Email or password!", Toast.LENGTH_SHORT).show();
                             }else if(jArr.length()==1){
+                                JSONObject jo = jArr.getJSONObject(0);
                                 Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_SHORT).show();
                                 Intent intent=new Intent(getApplicationContext(),NewsOverviewActivity.class);
                                 int userID = jo.getInt("userID");
@@ -265,6 +265,8 @@ public class RegisterActivity extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+
+
                     }
                 }, new Response.ErrorListener() {
             @Override

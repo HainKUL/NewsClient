@@ -5,11 +5,11 @@ package be.kuleuven.softdev.haientang.newsclient.model;
  */
 
 public class NewsItem {
-    public String image,title,date;
+    public String image_URL,title,date;
     public int likes;
 
-    public NewsItem(String image, String title, String date, int likes) {
-        this.image = image;
+    public NewsItem(String image_URL, String title, String date, int likes) {
+        this.image_URL = image_URL;
         this.title = title;
         this.date = date;
         this.likes = likes;

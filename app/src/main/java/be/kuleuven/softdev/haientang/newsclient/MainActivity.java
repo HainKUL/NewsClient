@@ -80,18 +80,17 @@ public class MainActivity extends AppCompatActivity {
 
     public void loginCheck(String emailCheck, String passwdCheck) {
         String url = "http://api.a17-sd606.studev.groept.be/loginCheck/" + emailCheck + "/" + passwdCheck;
-
-        RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+        RequestQueue queue= Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
                             JSONArray jArr = new JSONArray(response);
-                            JSONObject jo = jArr.getJSONObject(0);
-                            if (jArr.length() == 0) {//email or passwd wrong
+                            if (jArr.length() ==0) {//email or passwd wrong
                                 Toast.makeText(getApplicationContext(), "Please enter correct Email or password!", Toast.LENGTH_SHORT).show();
                             } else if (jArr.length() == 1) {
+                                JSONObject jo = jArr.getJSONObject(0);
                                 Toast.makeText(getApplicationContext(), "Login successful!", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getApplicationContext(), NewsOverviewActivity.class);
                                 int userID = jo.getInt("userID");
