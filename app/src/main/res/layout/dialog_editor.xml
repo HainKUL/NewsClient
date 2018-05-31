@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="serif"
-        android:text="Editor Login"
+        android:text="@string/editor_login"
         android:textSize="35sp"
         android:layout_marginTop="20dp"
         android:textStyle="bold" />
@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Editor account"
+        android:hint="@string/editor_account"
         android:layout_marginTop="10dp"
         android:inputType="textEmailAddress" />
 
@@ -54,7 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/holo_blue_light"
-        android:text="Login"
+        android:text="@string/login"
         android:textColor="@android:color/white" />
 
     <TextView

@@ -56,7 +56,7 @@ public class NewsOverviewActivity extends AppCompatActivity {
 
     private void initAllRef(){
         lvNews = (ListView) findViewById(R.id.lvNews);
-        newsItemList=new ArrayList();
+        newsItemList=new ArrayList<>();
         userID=getIntent().getExtras().getInt("userID");
         newsIDs=new ArrayList<>();
 

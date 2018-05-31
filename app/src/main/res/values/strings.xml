@@ -66,7 +66,6 @@
     <string name="image3">image3</string>
     <string name="image4">image4</string>
     <string name="image5">image5</string>
-    <string name="login">Login</string>
     <string name="register">Register</string>
     <string name="guest">Guest</string>
     <string name="user_comments">User Comments</string>
@@ -75,6 +74,9 @@
     <string name="todo">TODO</string>
     <string name="likeicon">likeIcon</string>
     <string name="head">head</string>
+    <string name="editor_login">Editor Login</string>
+    <string name="editor_account">Editor account</string>
+    <string name="login">Login</string>
     <string-array name="categorylist">
         <item>Economy</item>
         <item>Sports</item>
